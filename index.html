@@ -1,1 +1,1867 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VizPM – Visual Project Manager OS</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <style>
+        :root {
+            --bg-deep: #0b0f19;
+            --card-bg: #111827;
+            --border-subtle: #1e293b;
+            --accent-blue: #38bdf8;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-orange: #f97316;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        #app-shell {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+        }
+        #global-header {
+            background: #0d1525;
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 6px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 100;
+            flex-shrink: 0;
+            min-height: 44px;
+        }
+        #global-header .logo {
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #38bdf8, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            white-space: nowrap;
+        }
+        .header-btn {
+            padding: 5px 11px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all .18s;
+            border: 1px solid transparent;
+            background: #1a2235;
+            color: #cbd5e1;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+        .header-btn:hover {
+            background: #232d42;
+            border-color: #334155;
+            color: #fff;
+        }
+        .header-btn.active-view {
+            background: #1e3a5f;
+            border-color: #38bdf8;
+            color: #fff;
+            box-shadow: 0 0 10px #38bdf833;
+        }
+        #main-workspace {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background: #080c16;
+        }
+        #canvas-container {
+            position: absolute;
+            inset: 0;
+            transform-origin: 0 0;
+            cursor: grab;
+            transition: transform .05s linear;
+        }
+        #canvas-container:active {
+            cursor: grabbing;
+        }
+        #canvas-container.panning {
+            transition: none;
+        }
+        .canvas-card {
+            position: absolute;
+            background: var(--card-bg);
+            border: 1px solid #1e293b;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px #0000004d;
+            transition: box-shadow .2s, border-color .2s;
+            display: flex;
+            flex-direction: column;
+            min-width: 180px;
+            cursor: pointer;
+        }
+        .canvas-card:hover {
+            box-shadow: 0 12px 40px #00000066;
+            border-color: #334155;
+        }
+        .canvas-card.selected {
+            border-color: #38bdf8 !important;
+            box-shadow: 0 0 0 3px #38bdf833, 0 12px 40px #00000066;
+        }
+        .canvas-card.drag-over {
+            border-color: #f59e0b !important;
+            box-shadow: 0 0 0 4px #f59e0b44;
+        }
+        .card-zone-a {
+            background: #1a1f2e;
+            padding: 8px 10px;
+            border-left: 3px solid #38bdf8;
+            flex-shrink: 0;
+            cursor: pointer;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        .card-zone-a .card-title {
+            font-weight: 700;
+            font-size: .82rem;
+            color: #f1f5f9;
+            line-height: 1.2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 100%;
+        }
+        .card-zone-a2 {
+            height: 5px;
+            background: #1e293b;
+            border-radius: 0 0 3px 3px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .card-zone-a2 .progress-fill {
+            height: 100%;
+            border-radius: inherit;
+            transition: width .4s;
+        }
+        .card-zone-b {
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .card-zone-b img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .card-zone-c {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 8px;
+            flex-shrink: 0;
+            font-size: .7rem;
+            color: #94a3b8;
+            flex-wrap: wrap;
+        }
+        .card-zone-c .avatar-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: .6rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .card-zone-d {
+            flex: 1;
+            overflow-y: auto;
+            padding: 4px 8px;
+            font-size: .68rem;
+            max-height: 100px;
+            scrollbar-width: thin;
+            scrollbar-color: #334155 transparent;
+        }
+        .card-zone-e {
+            padding: 4px;
+            flex-shrink: 0;
+            min-height: 28px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            align-items: flex-start;
+        }
+        .card-zone-f {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3px;
+            padding: 4px;
+            flex-shrink: 0;
+        }
+        .card-zone-f img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #1e293b;
+        }
+        .tab-mini {
+            padding: 3px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: .65rem;
+            background: #1a2235;
+            border: 1px solid transparent;
+            transition: all .15s;
+            white-space: nowrap;
+        }
+        .tab-mini:hover,
+        .tab-mini.active {
+            background: #1e3a5f;
+            border-color: #38bdf8;
+            color: #fff;
+        }
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 0;
+            font-size: .65rem;
+            cursor: pointer;
+        }
+        .checklist-item.checked {
+            text-decoration: line-through;
+            opacity: .5;
+        }
+        #minimap {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            width: 180px;
+            height: 120px;
+            background: #0d1525dd;
+            border: 2px solid #1e293b;
+            border-radius: 10px;
+            z-index: 50;
+            overflow: hidden;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+        }
+        #minimap canvas {
+            width: 100%;
+            height: 100%;
+        }
+        #side-panel {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 340px;
+            background: #0f1729;
+            border-left: 1px solid #1e293b;
+            z-index: 60;
+            transform: translateX(100%);
+            transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            box-shadow: -8px 0 32px #00000055;
+        }
+        #side-panel.open {
+            transform: translateX(0);
+        }
+        #side-panel-toggle {
+            position: absolute;
+            right: 340px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 61;
+            width: 24px;
+            height: 48px;
+            background: #1a2235;
+            border: 1px solid #1e293b;
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .7rem;
+            color: #94a3b8;
+            transition: all .25s;
+        }
+        #side-panel-toggle:hover {
+            background: #232d42;
+            color: #fff;
+        }
+        #gantt-view,
+        #kanban-view,
+        #graph-view {
+            position: absolute;
+            inset: 0;
+            z-index: 30;
+            background: #0b0f19;
+            overflow: auto;
+            display: none;
+            padding: 20px;
+        }
+        #gantt-view.active,
+        #kanban-view.active,
+        #graph-view.active {
+            display: flex;
+        }
+        #kanban-view {
+            gap: 16px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            align-items: flex-start;
+        }
+        .kanban-column {
+            min-width: 260px;
+            max-width: 320px;
+            background: #111827;
+            border-radius: 12px;
+            padding: 12px;
+            flex-shrink: 0;
+            border: 1px solid #1e293b;
+            max-height: calc(100vh - 160px);
+            overflow-y: auto;
+        }
+        .kanban-column h3 {
+            font-weight: 700;
+            font-size: .85rem;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #1e293b;
+        }
+        .kanban-card {
+            background: #1a2235;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
+            cursor: grab;
+            border: 1px solid #1e293b;
+            transition: all .2s;
+            font-size: .75rem;
+        }
+        .kanban-card:hover {
+            border-color: #38bdf8;
+            box-shadow: 0 4px 16px #00000033;
+        }
+        #gantt-chart-area {
+            position: relative;
+            min-width: 100%;
+            min-height: 400px;
+        }
+        .gantt-row {
+            display: flex;
+            align-items: center;
+            height: 36px;
+            border-bottom: 1px solid #1e293b;
+            position: relative;
+        }
+        .gantt-bar {
+            position: absolute;
+            height: 22px;
+            border-radius: 5px;
+            top: 7px;
+            cursor: pointer;
+            transition: filter .2s;
+            display: flex;
+            align-items: center;
+            padding-left: 6px;
+            font-size: .65rem;
+            font-weight: 600;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            min-width: 30px;
+        }
+        .gantt-bar:hover {
+            filter: brightness(1.3);
+        }
+        #dashboard-panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 40;
+            background: #0d1525ee;
+            border-bottom: 1px solid #1e293b;
+            backdrop-filter: blur(10px);
+            transition: max-height .35s ease;
+            overflow: hidden;
+        }
+        #dashboard-panel.collapsed {
+            max-height: 36px;
+        }
+        #dashboard-panel.expanded {
+            max-height: 200px;
+        }
+        #graph-svg {
+            width: 100%;
+            height: 100%;
+            min-height: 500px;
+        }
+        .graph-node {
+            cursor: pointer;
+            transition: all .2s;
+        }
+        .graph-node:hover {
+            filter: brightness(1.4);
+        }
+        .badge-pulse {
+            animation: pulse-border 1.5s infinite;
+        }
+        @keyframes pulse-border {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 #ef444499;
+            }
+            50% {
+                box-shadow: 0 0 0 8px #ef444400;
+            }
+        }
+        .scrollbar-thin::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .scrollbar-thin::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        @media (max-width: 768px) {
+            #side-panel {
+                width: 100%;
+                right: -100%;
+            }
+            #side-panel.open {
+                transform: translateX(-100%);
+            }
+            #side-panel-toggle {
+                right: 100%;
+            }
+            #minimap {
+                width: 100px;
+                height: 70px;
+                bottom: 8px;
+                right: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app-shell">
+        <!-- GLOBAL HEADER -->
+        <header id="global-header">
+            <span class="logo">⚡ VizPM</span>
+            <span style="color:#475569;font-size:.7rem;">v2.0</span>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+                <button class="header-btn" onclick="VizPM.newProject()" title="Nuevo Proyecto">📄 Nuevo</button>
+                <button class="header-btn" onclick="VizPM.saveDraft()" title="Guardar Borrador">💾 Guardar</button>
+                <button class="header-btn" onclick="VizPM.loadVersion()" title="Cargar Versión">📂 Cargar</button>
+            </div>
+            <div style="flex:1;"></div>
+            <div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center;">
+                <button class="header-btn active-view" data-view="canvas" onclick="VizPM.switchView('canvas',this)">🗺️ Canvas</button>
+                <button class="header-btn" data-view="gantt" onclick="VizPM.switchView('gantt',this)">📊 Gantt</button>
+                <button class="header-btn" data-view="kanban" onclick="VizPM.switchView('kanban',this)">📋 Kanban</button>
+                <button class="header-btn" data-view="graph" onclick="VizPM.switchView('graph',this)">🔗 Grafo</button>
+            </div>
+            <label style="display:flex;align-items:center;gap:6px;font-size:.7rem;color:#94a3b8;cursor:pointer;white-space:nowrap;">
+                <span>Simple</span>
+                <input type="checkbox" id="mode-toggle" onchange="VizPM.toggleMode()" style="accent-color:#38bdf8;">
+                <span>Avanzado</span>
+            </label>
+            <div class="avatar-dot" style="background:#38bdf8;color:#000;width:28px;height:28px;font-size:.7rem;" title="Usuario">👤</div>
+        </header>
 
+        <!-- MAIN WORKSPACE -->
+        <div id="main-workspace">
+            <div id="canvas-container"></div>
+            <svg id="connections-svg" style="position:absolute;inset:0;pointer-events:none;z-index:5;"></svg>
+            <div id="minimap"><canvas id="minimap-canvas"></canvas></div>
+            <div id="side-panel-toggle" onclick="VizPM.toggleSidePanel()" title="Panel Lateral">◀</div>
+            <div id="side-panel" class="scrollbar-thin"></div>
+            <div id="gantt-view"></div>
+            <div id="kanban-view"></div>
+            <div id="graph-view"></div>
+            <div id="dashboard-panel" class="expanded"></div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== VizPM – CORE ENGINE ====================
+        const VizPM = (() => {
+            // --- STATE ---
+            let projectData = null;
+            let openWindows = [];
+            let globalSettings = { mode: 'advanced', theme: 'dark', autoSaveInterval: 300000 };
+            let activityLog = [];
+            let undoStack = [];
+            let redoStack = [];
+            let selectedCardId = null;
+            let currentView = 'canvas';
+            let canvasTransform = { x: 0, y: 0, scale: 0.55 };
+            let isPanning = false;
+            let panStart = { x: 0, y: 0 };
+            let dragData = null;
+            let sidePanelOpen = false;
+            let dashboardExpanded = true;
+
+            // --- INITIAL AEROVEND 1.0 DATA ---
+            const aeroVendData = {
+                "id": "main",
+                "projectName": "AeroVend 1.0 – Máquina Expendedora de Albahaca Viva",
+                "description": "Sistema automatizado de cultivo aeropónico, cosecha robótica y distribución de albahaca fresca.",
+                "width": 8000,
+                "height": 5000,
+                "x": 0,
+                "y": 0,
+                "parentId": null,
+                "collapsed": false,
+                "compactView": false,
+                "owner": "Leo",
+                "area": "Sistema General",
+                "progress": 28,
+                "status": "En Progreso",
+                "startDate": "2025-02-01",
+                "dueDate": "2025-10-01",
+                "resumenView": "progress",
+                "layoutMode": "libre",
+                "cardType": "proyecto",
+                "autoComplete": false,
+                "image": {
+                    "src": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=80",
+                    "position": "top",
+                    "width": "100%",
+                    "height": 120
+                },
+                "style": { "bg": "#0b0f19", "opacity": 1.0, "borderColor": "#38bdf8" },
+                "tabs": {
+                    "trabajo": [
+                        { "text": "Definición de alcance y requisitos", "checked": true },
+                        { "text": "Diseño conceptual completo", "checked": true },
+                        { "text": "Planos mecánicos y eléctricos", "checked": false },
+                        { "text": "Integración de subsistemas", "checked": false }
+                    ],
+                    "tecnico": { "altura": "2.4m", "ancho": "1.5m", "peso_max": "450kg", "consumo": "2.5kW" },
+                    "economico": { "presupuesto": 60000, "gastado": 17000 },
+                    "reqs": []
+                },
+                "comments": [
+                    { "id": 1, "author": "Leo", "text": "Reunión inicial completada.",
+                        "timestamp": "2025-02-05T10:00:00Z" },
+                ],
+                "canvasSettings": { "currentX": 0, "currentY": 0, "currentScale": 0.55, "globalViewMode": "scada",
+                    "globalZonesOrder": [], "hiddenZones": [], "showMiniPendingBlocks": true, "bookmarks": [] },
+                "cards": [{
+                    "id": "riego-principal",
+                    "title": "Riego Aeropónico de Alta Presión",
+                    "description": "Sistema de riego por aeroponía a 5.5 bar con bombas de diafragma.",
+                    "width": 380,
+                    "height": 280,
+                    "x": 200,
+                    "y": 200,
+                    "parentId": "main",
+                    "collapsed": false,
+                    "compactView": false,
+                    "owner": "Ponce",
+                    "area": "Riego Aeropónico",
+                    "progress": 22,
+                    "status": "En Progreso",
+                    "startDate": "2025-02-15",
+                    "dueDate": "2025-07-30",
+                    "resumenView": "progress",
+                    "layoutMode": "grid",
+                    "cardType": "macro-bloque",
+                    "autoComplete": false,
+                    "image": {
+                        "src": "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=600&q=80",
+                        "position": "right",
+                        "width": 90,
+                        "height": "auto"
+                    },
+                    "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#f97316" },
+                    "tabs": { "trabajo": [{ "text": "Dimensionado de bombas", "checked": true }, { "text": "Circuito alta presión",
+                            "checked": false }
+                        ], "tecnico": { "presion": "5.5 bar", "caudal": "1.2 L/min" },
+                        "economico": { "presupuesto": 9500, "gastado": 2800 }, "reqs": [] },
+                    "comments": [],
+                    "childCards": [{
+                        "id": "riego-bombas",
+                        "title": "Bombas de Diafragma",
+                        "description": "Bombas Seaflo 33-Series 12V.",
+                        "width": 260,
+                        "height": 160,
+                        "x": 40,
+                        "y": 80,
+                        "parentId": "riego-principal",
+                        "collapsed": false,
+                        "compactView": false,
+                        "owner": "Ponce",
+                        "area": "Riego Aeropónico",
+                        "progress": 35,
+                        "status": "En Progreso",
+                        "startDate": "2025-03-01",
+                        "dueDate": "2025-06-15",
+                        "resumenView": "progress",
+                        "layoutMode": "libre",
+                        "cardType": "componente",
+                        "autoComplete": false,
+                        "image": { "src": "", "position": "left", "width": 60, "height": 60 },
+                        "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fb923c" },
+                        "tabs": { "trabajo": [{ "text": "Comparativa modelos", "checked": true }],
+                            "tecnico": { "modelo": "Seaflo 33-Series" }, "economico": { "presupuesto": 1200,
+                                "gastado": 850 }, "reqs": [] },
+                        "comments": [],
+                        "childCards": []
+                    }, {
+                        "id": "riego-acumulador",
+                        "title": "Acumulador de Presión",
+                        "description": "Tanque 2L acero inox.",
+                        "width": 250,
+                        "height": 150,
+                        "x": 320,
+                        "y": 80,
+                        "parentId": "riego-principal",
+                        "collapsed": false,
+                        "compactView": false,
+                        "owner": "Ponce",
+                        "area": "Riego Aeropónico",
+                        "progress": 10,
+                        "status": "Sin Empezar",
+                        "startDate": "2025-04-15",
+                        "dueDate": "2025-07-01",
+                        "resumenView": "progress",
+                        "layoutMode": "libre",
+                        "cardType": "componente",
+                        "autoComplete": false,
+                        "image": { "src": "", "position": "top", "width": "100%", "height": 50 },
+                        "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fbbf24" },
+                        "tabs": { "trabajo": [{ "text": "Cálculo volumen", "checked": true }],
+                            "tecnico": { "volumen": "2L" }, "economico": { "presupuesto": 650, "gastado": 0 },
+                            "reqs": [] },
+                        "comments": [],
+                        "childCards": []
+                    }]
+                }, {
+                    "id": "elec-principal",
+                    "title": "Electrónica y Control",
+                    "description": "Electrónica embebida, sensores, PCB ESP32.",
+                    "width": 360,
+                    "height": 260,
+                    "x": 700,
+                    "y": 200,
+                    "parentId": "main",
+                    "collapsed": false,
+                    "compactView": false,
+                    "owner": "Leo",
+                    "area": "Electrónica y Control",
+                    "progress": 38,
+                    "status": "En Progreso",
+                    "startDate": "2025-02-15",
+                    "dueDate": "2025-06-30",
+                    "resumenView": "progress",
+                    "layoutMode": "grid",
+                    "cardType": "macro-bloque",
+                    "autoComplete": false,
+                    "image": {
+                        "src": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&q=80",
+                        "position": "left",
+                        "width": 80,
+                        "height": 80
+                    },
+                    "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#3b82f6" },
+                    "tabs": { "trabajo": [{ "text": "Selección sensores", "checked": true }, { "text": "Diseño PCB",
+                            "checked": false }
+                        ], "tecnico": { "mcu": "ESP32" }, "economico": { "presupuesto": 12500, "gastado": 4500 },
+                        "reqs": [] },
+                    "comments": [],
+                    "childCards": [{
+                        "id": "elec-leds",
+                        "title": "Sistema Iluminación LED",
+                        "description": "Barras LED espectro optimizado 300W.",
+                        "width": 270,
+                        "height": 170,
+                        "x": 50,
+                        "y": 80,
+                        "parentId": "elec-principal",
+                        "collapsed": false,
+                        "compactView": false,
+                        "owner": "Leo",
+                        "area": "Electrónica y Control",
+                        "progress": 65,
+                        "status": "En Progreso",
+                        "startDate": "2025-03-01",
+                        "dueDate": "2025-05-15",
+                        "resumenView": "progress",
+                        "layoutMode": "libre",
+                        "cardType": "componente",
+                        "autoComplete": false,
+                        "image": {
+                            "src": "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&w=600&q=80",
+                            "position": "top",
+                            "width": "100%",
+                            "height": 60
+                        },
+                        "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fbbf24" },
+                        "tabs": { "trabajo": [{ "text": "Espectro optimizado", "checked": true }],
+                            "tecnico": { "potencia": "300W" }, "economico": { "presupuesto": 2800, "gastado": 1800 },
+                            "reqs": [] },
+                        "comments": [],
+                        "childCards": []
+                    }, {
+                        "id": "elec-sensores",
+                        "title": "Red Sensores Ambientales",
+                        "description": "DHT22, MH-Z19, capacitivos.",
+                        "width": 260,
+                        "height": 160,
+                        "x": 340,
+                        "y": 80,
+                        "parentId": "elec-principal",
+                        "collapsed": false,
+                        "compactView": false,
+                        "owner": "Leo",
+                        "area": "Electrónica y Control",
+                        "progress": 25,
+                        "status": "En Progreso",
+                        "startDate": "2025-03-15",
+                        "dueDate": "2025-06-01",
+                        "resumenView": "progress",
+                        "layoutMode": "libre",
+                        "cardType": "componente",
+                        "autoComplete": false,
+                        "image": { "src": "", "position": "right", "width": 60, "height": 60 },
+                        "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#34d399" },
+                        "tabs": { "trabajo": [{ "text": "Calibración", "checked": false }],
+                            "tecnico": { "tipo": "DHT22, MH-Z19" }, "economico": { "presupuesto": 850, "gastado": 200 },
+                            "reqs": [] },
+                        "comments": [],
+                        "childCards": []
+                    }]
+                }, {
+                    "id": "robotica-principal",
+                    "title": "Brazo Robótico SCARA",
+                    "description": "Brazo SCARA 4 DOF, payload 500g.",
+                    "width": 370,
+                    "height": 270,
+                    "x": 1150,
+                    "y": 200,
+                    "parentId": "main",
+                    "collapsed": false,
+                    "compactView": false,
+                    "owner": "Leo",
+                    "area": "Robótica",
+                    "progress": 18,
+                    "status": "En Progreso",
+                    "startDate": "2025-03-01",
+                    "dueDate": "2025-08-30",
+                    "resumenView": "progress",
+                    "layoutMode": "grid",
+                    "cardType": "macro-bloque",
+                    "autoComplete": false,
+                    "image": {
+                        "src": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80",
+                        "position": "right",
+                        "width": 80,
+                        "height": 80
+                    },
+                    "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#8b5cf6" },
+                    "tabs": { "trabajo": [{ "text": "Diseño cinemático", "checked": true }], "tecnico": { "tipo": "SCARA",
+                            "payload": "500g" }, "economico": { "presupuesto": 15500, "gastado": 2500 }, "reqs": [] },
+                    "comments": [],
+                    "childCards": [{
+                        "id": "robotica-gripper",
+                        "title": "Efector Final Gripper",
+                        "description": "Gripper silicona flexible.",
+                        "width": 260,
+                        "height": 160,
+                        "x": 50,
+                        "y": 80,
+                        "parentId": "robotica-principal",
+                        "collapsed": false,
+                        "compactView": false,
+                        "owner": "Leo",
+                        "area": "Robótica",
+                        "progress": 12,
+                        "status": "Sin Empezar",
+                        "startDate": "2025-04-01",
+                        "dueDate": "2025-07-15",
+                        "resumenView": "progress",
+                        "layoutMode": "libre",
+                        "cardType": "componente",
+                        "autoComplete": false,
+                        "image": { "src": "", "position": "left", "width": 50, "height": 50 },
+                        "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#c084fc" },
+                        "tabs": { "trabajo": [{ "text": "Material flexible", "checked": false }],
+                            "tecnico": { "material": "silicona" }, "economico": { "presupuesto": 650, "gastado": 0 },
+                            "reqs": [] },
+                        "comments": [],
+                        "childCards": []
+                    }, {
+                        "id": "robotica-motores",
+                        "title": "Servomotores NEMA 17",
+                        "description": "4 servomotores con encoders.",
+                        "width": 260,
+                        "height": 160,
+                        "x": 330,
+                        "y": 80,
+                        "parentId": "robotica-principal",
+                        "collapsed": false,
+                        "compactView": false,
+                        "owner": "Leo",
+                        "area": "Robótica",
+                        "progress": 25,
+                        "status": "En Progreso",
+                        "startDate": "2025-03-15",
+                        "dueDate": "2025-06-30",
+                        "resumenView": "progress",
+                        "layoutMode": "libre",
+                        "cardType": "componente",
+                        "autoComplete": false,
+                        "image": { "src": "", "position": "right", "width": 50, "height": 50 },
+                        "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#a78bfa" },
+                        "tabs": { "trabajo": [{ "text": "Selección modelo", "checked": true }],
+                            "tecnico": { "modelo": "NEMA 17" }, "economico": { "presupuesto": 980, "gastado": 480 },
+                            "reqs": [] },
+                        "comments": [],
+                        "childCards": []
+                    }]
+                }, {
+                    "id": "cultivo-biologia",
+                    "title": "Cultivo y Biología",
+                    "description": "Protocolo germinación, solución nutritiva.",
+                    "width": 350,
+                    "height": 260,
+                    "x": 200,
+                    "y": 600,
+                    "parentId": "main",
+                    "collapsed": false,
+                    "compactView": false,
+                    "owner": "Sofía",
+                    "area": "Cultivo y Biología",
+                    "progress": 15,
+                    "status": "En Progreso",
+                    "startDate": "2025-03-01",
+                    "dueDate": "2025-09-01",
+                    "resumenView": "progress",
+                    "layoutMode": "grid",
+                    "cardType": "macro-bloque",
+                    "autoComplete": false,
+                    "image": {
+                        "src": "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&w=600&q=80",
+                        "position": "right",
+                        "width": 80,
+                        "height": 80
+                    },
+                    "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#10b981" },
+                    "tabs": { "trabajo": [{ "text": "Protocolo germinación", "checked": false }],
+                        "tecnico": { "variedad": "Genovesa" }, "economico": { "presupuesto": 3800, "gastado": 500 },
+                        "reqs": [] },
+                    "comments": [],
+                    "childCards": []
+                }, {
+                    "id": "software-principal",
+                    "title": "Software y Programación",
+                    "description": "API monitoreo, frontend panel control.",
+                    "width": 350,
+                    "height": 260,
+                    "x": 700,
+                    "y": 600,
+                    "parentId": "main",
+                    "collapsed": false,
+                    "compactView": false,
+                    "owner": "Christian",
+                    "area": "Software",
+                    "progress": 35,
+                    "status": "En Progreso",
+                    "startDate": "2025-02-01",
+                    "dueDate": "2025-09-01",
+                    "resumenView": "progress",
+                    "layoutMode": "grid",
+                    "cardType": "macro-bloque",
+                    "autoComplete": false,
+                    "image": {
+                        "src": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80",
+                        "position": "left",
+                        "width": 70,
+                        "height": 70
+                    },
+                    "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#ec4899" },
+                    "tabs": { "trabajo": [{ "text": "API monitoreo", "checked": true }], "tecnico": { "stack": "Node.js" },
+                        "economico": { "presupuesto": 8500, "gastado": 3200 }, "reqs": [] },
+                    "comments": [],
+                    "childCards": []
+                }, {
+                    "id": "estructura-principal",
+                    "title": "Estructura y Montaje",
+                    "description": "Chasis modular aluminio anodizado.",
+                    "width": 330,
+                    "height": 220,
+                    "x": 1150,
+                    "y": 600,
+                    "parentId": "main",
+                    "collapsed": false,
+                    "compactView": false,
+                    "owner": "",
+                    "area": "Estructura y Montaje",
+                    "progress": 5,
+                    "status": "Sin Empezar",
+                    "startDate": "2025-06-01",
+                    "dueDate": "2025-09-15",
+                    "resumenView": "progress",
+                    "layoutMode": "grid",
+                    "cardType": "macro-bloque",
+                    "autoComplete": false,
+                    "image": { "src": "", "position": "right", "width": 100, "height": "auto" },
+                    "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#6b7280" },
+                    "tabs": { "trabajo": [{ "text": "Diseño chasis", "checked": false }], "tecnico": { "material": "aluminio" },
+                        "economico": { "presupuesto": 10200, "gastado": 0 }, "reqs": [] },
+                    "comments": [],
+                    "childCards": []
+                }],
+                "connections": [
+                    { "from": "riego-principal", "to": "cultivo-biologia" },
+                    { "from": "cultivo-biologia", "to": "robotica-principal" },
+                    { "from": "elec-principal", "to": "robotica-principal" },
+                    { "from": "elec-principal", "to": "riego-principal" },
+                    { "from": "software-principal", "to": "elec-principal" },
+                    { "from": "estructura-principal", "to": "riego-principal" },
+                    { "from": "estructura-principal", "to": "elec-principal" },
+                    { "from": "estructura-principal", "to": "robotica-principal" }
+                ],
+                "users": [
+                    { "name": "Leo", "role": "admin" },
+                    { "name": "Christian", "role": "write" },
+                    { "name": "Ponce", "role": "write" },
+                    { "name": "Sofía", "role": "write" }
+                ],
+                "notificationRules": [
+                    { "id": 1, "trigger": "status == 'Bloqueado'", "action": "badge" },
+                    { "id": 2, "trigger": "dueDate < 48h", "action": "badge" }
+                ],
+                "zonesOrder": ["A", "B", "C", "E", "D"],
+                "hiddenZones": [],
+                "ideaNotes": []
+            };
+
+            // --- UTILS ---
+            function getAllCards(data) {
+                let all = [data];
+                if (data.cards) data.cards.forEach(c => { all = all.concat(getAllCards(c)); });
+                return all;
+            }
+
+            function findCardById(data, id) {
+                if (data.id === id) return data;
+                if (data.cards)
+                    for (const c of data.cards) { const f = findCardById(c, id); if (f) return f; }
+                return null;
+            }
+
+            function findParentCard(data, childId) {
+                if (data.cards && data.cards.some(c => c.id === childId)) return data;
+                if (data.cards)
+                    for (const c of data.cards) { const p = findParentCard(c, childId); if (p) return p; }
+                return null;
+            }
+
+            function deepClone(obj) { return JSON.parse(JSON.stringify(obj)); }
+
+            function pushUndo() {
+                undoStack.push(deepClone(projectData));
+                if (undoStack.length > 50) undoStack.shift();
+                redoStack = [];
+                saveState();
+            }
+
+            function getProgressColor(pct) {
+                if (pct >= 100) return '#10b981';
+                if (pct >= 60) return '#38bdf8';
+                if (pct >= 30) return '#f59e0b';
+                return '#ef4444';
+            }
+
+            function getStatusColor(status) {
+                const map = { 'Completado': '#10b981', 'En Progreso': '#38bdf8', 'Bloqueado': '#ef4444',
+                    'Sin Empezar': '#6b7280' };
+                return map[status] || '#6b7280';
+            }
+
+            function truncate(str, max) { return str && str.length > max ? str.substring(0, max) + '…' : str || ''; }
+
+            function formatCurrency(n) { return n ? '$' + n.toLocaleString('es-MX') : '$0'; }
+
+            // --- CANVAS TRANSFORM ---
+            function applyCanvasTransform() {
+                const c = document.getElementById('canvas-container');
+                c.style.transform = `translate(${canvasTransform.x}px,${canvasTransform.y}px) scale(${canvasTransform.scale})`;
+                updateConnections();
+                updateMinimap();
+            }
+
+            // --- RENDER ALL CARDS ---
+            function renderAllCards() {
+                const container = document.getElementById('canvas-container');
+                container.innerHTML = '';
+                const allCards = getAllCards(projectData);
+                allCards.forEach(card => {
+                    if (card.id === 'main') return; // main is the canvas itself
+                    const el = createCardElement(card);
+                    container.appendChild(el);
+                });
+                updateConnections();
+                updateMinimap();
+                renderDashboard();
+                if (sidePanelOpen && selectedCardId) renderSidePanel();
+            }
+
+            function createCardElement(card) {
+                const el = document.createElement('div');
+                el.className = 'canvas-card';
+                el.id = 'card-' + card.id;
+                el.dataset.cardId = card.id;
+                el.style.cssText = `
+                    left:${card.x}px;top:${card.y}px;width:${card.width}px;
+                    min-height:${card.height}px;max-height:${card.height + 200}px;
+                    background:${card.style?.bg||'#111827'};border-left:3px solid ${card.style?.borderColor||'#38bdf8'};
+                `;
+                el.setAttribute('draggable', 'true');
+                el.addEventListener('click', (e) => { e.stopPropagation();
+                    selectCard(card.id); });
+                el.addEventListener('dragstart', handleDragStart);
+                el.addEventListener('dragover', handleDragOver);
+                el.addEventListener('drop', handleDrop);
+                el.addEventListener('dragend', handleDragEnd);
+
+                // Zone A
+                const zoneA = document.createElement('div');
+                zoneA.className = 'card-zone-a';
+                zoneA.style.borderLeftColor = card.style?.borderColor || '#38bdf8';
+                zoneA.innerHTML = `
+                    <div class="card-title">${truncate(card.title||card.area||'',40)}</div>
+                    <div style="display:flex;justify-content:flex-end;gap:4px;margin-top:2px;">
+                        <span style="font-size:.6rem;color:#94a3b8;">${card.status||''}</span>
+                    </div>`;
+                el.appendChild(zoneA);
+
+                // Zone A2 progress
+                const zoneA2 = document.createElement('div');
+                zoneA2.className = 'card-zone-a2';
+                const pf = document.createElement('div');
+                pf.className = 'progress-fill';
+                pf.style.width = (card.progress || 0) + '%';
+                pf.style.background = getProgressColor(card.progress || 0);
+                zoneA2.appendChild(pf);
+                el.appendChild(zoneA2);
+
+                // Zone B image
+                if (card.image?.src && !card.collapsed) {
+                    const zoneB = document.createElement('div');
+                    zoneB.className = 'card-zone-b';
+                    const imgH = card.image.position === 'top' ? (card.image.height || 80) : 'auto';
+                    zoneB.style.cssText = `height:${typeof imgH==='number'?imgH+'px':imgH};overflow:hidden;`;
+                    zoneB.innerHTML =
+                        `<img src="${card.image.src}" alt="" style="width:100%;height:${typeof imgH==='number'?imgH+'px':'100%'};object-fit:cover;">`;
+                    el.appendChild(zoneB);
+                }
+
+                // Zone C metadata
+                if (!card.collapsed) {
+                    const zoneC = document.createElement('div');
+                    zoneC.className = 'card-zone-c';
+                    const ownerInitial = (card.owner || '?')[0].toUpperCase();
+                    const avatarColor = card.owner === 'Leo' ? '#38bdf8' : card.owner === 'Ponce' ? '#f97316' : card
+                        .owner === 'Sofía' ? '#10b981' : card.owner === 'Christian' ? '#ec4899' : '#6b7280';
+                    zoneC.innerHTML = `
+                        <span class="avatar-dot" style="background:${avatarColor};color:#000;">${ownerInitial}</span>
+                        <span style="font-size:.65rem;">${card.area||''}</span>
+                        <span style="font-weight:700;color:${getProgressColor(card.progress||0)};">${card.progress||0}%</span>
+                        ${card.status==='Bloqueado'?'<span style="color:#ef4444;font-size:.6rem;" class="badge-pulse">⚠ Bloqueado</span>':''}
+                    `;
+                    el.appendChild(zoneC);
+                }
+
+                // Zone E dropzone for children
+                if (!card.collapsed && card.childCards && card.childCards.length > 0) {
+                    const zoneE = document.createElement('div');
+                    zoneE.className = 'card-zone-e';
+                    zoneE.style.cssText = 'padding:4px;display:flex;flex-wrap:wrap;gap:3px;';
+                    card.childCards.forEach(ch => {
+                        const chip = document.createElement('span');
+                        chip.style.cssText =
+                            'background:#1a2235;padding:3px 7px;border-radius:5px;font-size:.6rem;cursor:pointer;border:1px solid #1e293b;';
+                        chip.textContent = truncate(ch.title || ch.area, 25);
+                        chip.addEventListener('click', (e) => { e.stopPropagation();
+                            selectCard(ch.id); });
+                        zoneE.appendChild(chip);
+                    });
+                    el.appendChild(zoneE);
+                }
+
+                return el;
+            }
+
+            // --- CONNECTIONS SVG ---
+            function updateConnections() {
+                const svg = document.getElementById('connections-svg');
+                const allCards = getAllCards(projectData);
+                const cardMap = {};
+                allCards.forEach(c => cardMap[c.id] = c);
+                const connections = projectData.connections || [];
+                let paths = '';
+                const scale = canvasTransform.scale;
+                const tx = canvasTransform.x;
+                const ty = canvasTransform.y;
+                connections.forEach(conn => {
+                    const from = cardMap[conn.from];
+                    const to = cardMap[conn.to];
+                    if (!from || !to) return;
+                    const fx = (from.x + from.width / 2) * scale + tx;
+                    const fy = (from.y + from.height / 2) * scale + ty;
+                    const tx2 = (to.x + to.width / 2) * scale + tx;
+                    const ty2 = (to.y + to.height / 2) * scale + ty;
+                    const cx1 = fx + (tx2 - fx) * 0.4;
+                    const cx2 = fx + (tx2 - fx) * 0.6;
+                    paths +=
+                        `<path d="M${fx},${fy} C${cx1},${fy},${cx2},${ty2},${tx2},${ty2}" stroke="#38bdf844" stroke-width="2" fill="none" stroke-dasharray="6,3"/>`;
+                });
+                svg.innerHTML = `<g>${paths}</g>`;
+            }
+
+            // --- MINIMAP ---
+            function updateMinimap() {
+                const canvas = document.getElementById('minimap-canvas');
+                const ctx = canvas.getContext('2d');
+                const w = 180,
+                    h = 120;
+                canvas.width = w;
+                canvas.height = h;
+                ctx.fillStyle = '#0d1525';
+                ctx.fillRect(0, 0, w, h);
+                const allCards = getAllCards(projectData);
+                const scaleX = w / (projectData.width || 8000);
+                const scaleY = h / (projectData.height || 5000);
+                allCards.forEach(card => {
+                    if (card.id === 'main') return;
+                    ctx.fillStyle = card.style?.borderColor || '#38bdf8';
+                    ctx.globalAlpha = 0.7;
+                    ctx.fillRect(card.x * scaleX, card.y * scaleY, Math.max(card.width * scaleX, 2), Math.max(card
+                        .height * scaleY, 2));
+                });
+                ctx.globalAlpha = 1;
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 1.5;
+                const vx = (-canvasTransform.x / canvasTransform.scale) * scaleX;
+                const vy = (-canvasTransform.y / canvasTransform.scale) * scaleY;
+                const vw = (window.innerWidth / canvasTransform.scale) * scaleX;
+                const vh = (window.innerHeight / canvasTransform.scale) * scaleY;
+                ctx.strokeRect(Math.max(0, vx), Math.max(0, vy), Math.min(vw, w), Math.min(vh, h));
+            }
+
+            // --- SELECTION ---
+            function selectCard(id) {
+                selectedCardId = id;
+                document.querySelectorAll('.canvas-card.selected').forEach(el => el.classList.remove('selected'));
+                const el = document.getElementById('card-' + id);
+                if (el) el.classList.add('selected');
+                if (sidePanelOpen) renderSidePanel();
+                if (!sidePanelOpen && id) { openSidePanel();
+                    renderSidePanel(); }
+            }
+
+            // --- SIDE PANEL ---
+            function openSidePanel() {
+                sidePanelOpen = true;
+                document.getElementById('side-panel').classList.add('open');
+                document.getElementById('side-panel-toggle').textContent = '▶';
+                document.getElementById('side-panel-toggle').style.right = '340px';
+            }
+
+            function closeSidePanel() {
+                sidePanelOpen = false;
+                document.getElementById('side-panel').classList.remove('open');
+                document.getElementById('side-panel-toggle').textContent = '◀';
+                document.getElementById('side-panel-toggle').style.right = '0px';
+            }
+
+            function toggleSidePanel() {
+                if (sidePanelOpen) closeSidePanel();
+                else openSidePanel();
+                if (sidePanelOpen && selectedCardId) renderSidePanel();
+            }
+
+            function renderSidePanel() {
+                const panel = document.getElementById('side-panel');
+                const card = selectedCardId ? findCardById(projectData, selectedCardId) : null;
+                if (!card) { panel.innerHTML =
+                        '<div style="padding:20px;color:#94a3b8;">Selecciona una tarjeta para ver detalles</div>'; return; }
+                const tabs = card.tabs || {};
+                const trabajo = tabs.trabajo || [];
+                const tecnico = tabs.tecnico || {};
+                const economico = tabs.economico || {};
+                const comments = card.comments || [];
+                panel.innerHTML = `
+                    <div style="padding:16px;">
+                        <h3 style="font-weight:700;font-size:.95rem;margin-bottom:8px;color:#f1f5f9;">${card.title||card.area}</h3>
+                        <p style="font-size:.7rem;color:#94a3b8;margin-bottom:12px;">${card.description||''}</p>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+                            <span style="background:#1a2235;padding:4px 10px;border-radius:6px;font-size:.65rem;">📋 ${card.status}</span>
+                            <span style="background:#1a2235;padding:4px 10px;border-radius:6px;font-size:.65rem;">📅 ${card.startDate||'?'} → ${card.dueDate||'?'}</span>
+                            <span style="background:#1a2235;padding:4px 10px;border-radius:6px;font-size:.65rem;">👤 ${card.owner||'Sin asignar'}</span>
+                        </div>
+                        <div style="margin-bottom:8px;">
+                            <strong style="font-size:.7rem;">Progreso: ${card.progress||0}%</strong>
+                            <div style="height:8px;background:#1e293b;border-radius:4px;margin-top:4px;">
+                                <div style="height:100%;width:${card.progress||0}%;background:${getProgressColor(card.progress||0)};border-radius:4px;"></div>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;">
+                            <span class="tab-mini active" onclick="VizPM.switchSideTab('trabajo',this)">✅ Trabajo</span>
+                            <span class="tab-mini" onclick="VizPM.switchSideTab('tecnico',this)">🔧 Técnico</span>
+                            <span class="tab-mini" onclick="VizPM.switchSideTab('economico',this)">💰 Económico</span>
+                            <span class="tab-mini" onclick="VizPM.switchSideTab('comentarios',this)">💬 Comentarios</span>
+                        </div>
+                        <div id="side-tab-content" style="font-size:.7rem;">
+                            ${renderSideTabContent('trabajo',card)}
+                        </div>
+                        <div style="margin-top:12px;border-top:1px solid #1e293b;padding-top:10px;">
+                            <strong style="font-size:.7rem;">⚙️ Config Avanzada</strong>
+                            <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px;">
+                                <label style="font-size:.65rem;display:flex;align-items:center;gap:6px;">
+                                    <input type="checkbox" ${card.compactView?'checked':''} onchange="VizPM.toggleCardCompact('${card.id}')"> Vista Compacta
+                                </label>
+                                <label style="font-size:.65rem;display:flex;align-items:center;gap:6px;">
+                                    <input type="checkbox" ${card.collapsed?'checked':''} onchange="VizPM.toggleCardCollapse('${card.id}')"> Colapsado
+                                </label>
+                                <button class="header-btn" style="font-size:.6rem;" onclick="VizPM.addIdeaNote('${card.id}')">💡 Agregar Nota IDEA</button>
+                            </div>
+                        </div>
+                        ${(card.ideaNotes&&card.ideaNotes.length>0)?`
+                        <div style="margin-top:8px;border-top:1px solid #1e293b;padding-top:8px;">
+                            <strong style="font-size:.65rem;">💡 Notas IDEA:</strong>
+                            ${card.ideaNotes.map(n=>`<div style="font-size:.6rem;color:#fbbf24;margin:2px 0;">• ${n.text} <span style="color:#64748b;">${new Date(n.timestamp).toLocaleDateString()}</span></div>`).join('')}
+                        </div>`:''}
+                    </div>`;
+            }
+
+            function renderSideTabContent(tab, card) {
+                const tabs = card.tabs || {};
+                if (tab === 'trabajo') {
+                    const items = tabs.trabajo || [];
+                    return items.map((item, i) => `
+                        <div class="checklist-item ${item.checked?'checked':''}" onclick="VizPM.toggleCheckItem('${card.id}',${i})">
+                            <span>${item.checked?'☑':'☐'}</span> ${item.text}
+                        </div>`).join('') || '<span style="color:#64748b;">Sin items</span>';
+                }
+                if (tab === 'tecnico') {
+                    const t = tabs.tecnico || {};
+                    return Object.entries(t).map(([k, v]) =>
+                        `<div style="padding:3px 0;"><strong>${k}:</strong> ${v}</div>`).join('') ||
+                        '<span style="color:#64748b;">Sin datos técnicos</span>';
+                }
+                if (tab === 'economico') {
+                    const e = tabs.economico || {};
+                    return `<div>Presupuesto: ${formatCurrency(e.presupuesto)}</div><div>Gastado: ${formatCurrency(e.gastado)}</div><div>Restante: ${formatCurrency((e.presupuesto||0)-(e.gastado||0))}</div>`;
+                }
+                if (tab === 'comentarios') {
+                    const c = card.comments || [];
+                    return c.map(co => `<div style="padding:3px 0;border-bottom:1px solid #1e293b;"><strong>${co.author}:</strong> ${co.text}<br><span style="font-size:.55rem;color:#64748b;">${co.timestamp}</span></div>`)
+                        .join('') || '<span style="color:#64748b;">Sin comentarios</span>';
+                }
+                return '';
+            }
+
+            // --- DRAG & DROP ---
+            function handleDragStart(e) {
+                const cardId = e.target.closest('.canvas-card')?.dataset?.cardId;
+                if (!cardId) return;
+                dragData = { cardId, startX: e.clientX, startY: e.clientY };
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', cardId);
+                setTimeout(() => { if (e.target.closest('.canvas-card')) e.target.closest('.canvas-card').style
+                        .opacity = '0.5'; }, 0);
+            }
+
+            function handleDragOver(e) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                const target = e.target.closest('.canvas-card');
+                if (target) target.classList.add('drag-over');
+            }
+
+            function handleDrop(e) {
+                e.preventDefault();
+                document.querySelectorAll('.canvas-card.drag-over').forEach(el => el.classList.remove('drag-over'));
+                const targetEl = e.target.closest('.canvas-card');
+                const targetId = targetEl?.dataset?.cardId;
+                const draggedId = e.dataTransfer.getData('text/plain');
+                if (!draggedId || !targetId || draggedId === targetId) return;
+                pushUndo();
+                const draggedCard = findCardById(projectData, draggedId);
+                const targetCard = findCardById(projectData, targetId);
+                if (!draggedCard || !targetCard) return;
+                const oldParent = findParentCard(projectData, draggedId);
+                if (oldParent && oldParent.childCards) {
+                    oldParent.childCards = oldParent.childCards.filter(c => c.id !== draggedId);
+                } else if (projectData.cards) {
+                    projectData.cards = projectData.cards.filter(c => c.id !== draggedId);
+                }
+                if (!targetCard.childCards) targetCard.childCards = [];
+                targetCard.childCards.push(draggedCard);
+                draggedCard.parentId = targetId;
+                draggedCard.x = Math.max(10, Math.random() * 200);
+                draggedCard.y = Math.max(40, targetCard.childCards.length * 50);
+                renderAllCards();
+                saveState();
+            }
+
+            function handleDragEnd(e) {
+                document.querySelectorAll('.canvas-card.drag-over').forEach(el => el.classList.remove('drag-over'));
+                const el = document.getElementById('card-' + (dragData?.cardId || ''));
+                if (el) el.style.opacity = '1';
+                if (dragData) {
+                    const dx = (e.clientX - dragData.startX) / canvasTransform.scale;
+                    const dy = (e.clientY - dragData.startY) / canvasTransform.scale;
+                    if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {
+                        const card = findCardById(projectData, dragData.cardId);
+                        if (card) {
+                            pushUndo();
+                            card.x = Math.round(card.x + dx);
+                            card.y = Math.round(card.y + dy);
+                            renderAllCards();
+                            saveState();
+                        }
+                    }
+                }
+                dragData = null;
+            }
+
+            // --- CANVAS PANNING ---
+            function initCanvasPan() {
+                const workspace = document.getElementById('main-workspace');
+                workspace.addEventListener('mousedown', (e) => {
+                    if (e.target === workspace || e.target.id === 'canvas-container' || e.target.closest(
+                            '#canvas-container') && !e.target.closest('.canvas-card')) {
+                        isPanning = true;
+                        panStart = { x: e.clientX - canvasTransform.x, y: e.clientY - canvasTransform.y };
+                        document.getElementById('canvas-container').classList.add('panning');
+                    }
+                });
+                window.addEventListener('mousemove', (e) => {
+                    if (!isPanning) return;
+                    canvasTransform.x = e.clientX - panStart.x;
+                    canvasTransform.y = e.clientY - panStart.y;
+                    applyCanvasTransform();
+                });
+                window.addEventListener('mouseup', () => {
+                    isPanning = false;
+                    document.getElementById('canvas-container').classList.remove('panning');
+                });
+                workspace.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    const zoomFactor = 1.08;
+                    const oldScale = canvasTransform.scale;
+                    if (e.deltaY < 0) canvasTransform.scale = Math.min(2.5, canvasTransform.scale *
+                        zoomFactor);
+                    else canvasTransform.scale = Math.max(0.15, canvasTransform.scale / zoomFactor);
+                    const ratio = canvasTransform.scale / oldScale;
+                    canvasTransform.x = e.clientX - (e.clientX - canvasTransform.x) * ratio;
+                    canvasTransform.y = e.clientY - (e.clientY - canvasTransform.y) * ratio;
+                    applyCanvasTransform();
+                });
+                document.getElementById('minimap').addEventListener('click', (e) => {
+                    const rect = e.target.getBoundingClientRect();
+                    const mx = (e.clientX - rect.left) / rect.width;
+                    const my = (e.clientY - rect.top) / rect.height;
+                    canvasTransform.x = -mx * (projectData.width || 8000) * canvasTransform.scale + window
+                        .innerWidth / 2;
+                    canvasTransform.y = -my * (projectData.height || 5000) * canvasTransform.scale + window
+                        .innerHeight / 2;
+                    applyCanvasTransform();
+                });
+            }
+
+            // --- VIEW SWITCHING ---
+            function switchView(view, btn) {
+                currentView = view;
+                document.querySelectorAll('#global-header .header-btn[data-view]').forEach(b => b.classList.remove(
+                    'active-view'));
+                if (btn) btn.classList.add('active-view');
+                document.getElementById('canvas-container').style.display = view === 'canvas' ? 'block' : 'none';
+                document.getElementById('connections-svg').style.display = view === 'canvas' ? 'block' : 'none';
+                document.getElementById('minimap').style.display = view === 'canvas' ? 'block' : 'none';
+                document.getElementById('gantt-view').classList.toggle('active', view === 'gantt');
+                document.getElementById('kanban-view').classList.toggle('active', view === 'kanban');
+                document.getElementById('graph-view').classList.toggle('active', view === 'graph');
+                if (view === 'gantt') renderGantt();
+                if (view === 'kanban') renderKanban();
+                if (view === 'graph') renderGraph();
+            }
+
+            function renderGantt() {
+                const container = document.getElementById('gantt-view');
+                const allCards = getAllCards(projectData).filter(c => c.id !== 'main' && c.startDate && c.dueDate);
+                const minDate = new Date(Math.min(...allCards.map(c => new Date(c.startDate))));
+                const maxDate = new Date(Math.max(...allCards.map(c => new Date(c.dueDate))));
+                const totalDays = Math.max(1, (maxDate - minDate) / (1000 * 60 * 60 * 24));
+                const pxPerDay = Math.max(8, 800 / totalDays);
+                const totalWidth = totalDays * pxPerDay + 200;
+                container.innerHTML = `
+                    <div style="min-width:${totalWidth}px;">
+                        <h3 style="font-weight:700;margin-bottom:12px;">📊 Diagrama de Gantt – ${projectData.projectName}</h3>
+                        <div style="display:flex;font-size:.65rem;color:#94a3b8;margin-bottom:4px;padding-left:200px;">
+                            ${Array.from({length:Math.ceil(totalDays/30)},(_,i)=>{
+                                const d=new Date(minDate);d.setDate(d.getDate()+i*30);
+                                return `<span style="position:absolute;left:${200+i*30*pxPerDay}px;">${d.toLocaleDateString('es',{month:'short'})}</span>`;
+                            }).join('')}
+                        </div>
+                        <div id="gantt-chart-area" style="position:relative;min-width:${totalWidth}px;">
+                            ${allCards.map((card,i)=>{
+                                const start=new Date(card.startDate);const end=new Date(card.dueDate);
+                                const left=(start-minDate)/(1000*60*60*24)*pxPerDay;
+                                const width=Math.max(20,(end-start)/(1000*60*60*24)*pxPerDay);
+                                return `<div class="gantt-row" style="position:relative;">
+                                    <span style="position:absolute;left:0;width:190px;font-size:.7rem;text-align:right;padding-right:8px;color:#cbd5e1;">${truncate(card.title||card.area,28)}</span>
+                                    <div class="gantt-bar" style="left:${200+left}px;width:${width}px;background:${getStatusColor(card.status)};"
+                                        title="${card.title} – ${card.progress}%">${card.progress}%</div>
+                                </div>`;
+                            }).join('')}
+                        </div>
+                    </div>`;
+            }
+
+            function renderKanban() {
+                const container = document.getElementById('kanban-view');
+                const statuses = ['Sin Empezar', 'En Progreso', 'Bloqueado', 'Completado'];
+                const allCards = getAllCards(projectData).filter(c => c.id !== 'main');
+                container.innerHTML = statuses.map(status => {
+                    const cards = allCards.filter(c => c.status === status);
+                    return `<div class="kanban-column" data-status="${status}">
+                        <h3 style="color:${getStatusColor(status)};">${status} (${cards.length})</h3>
+                        ${cards.map(c=>`<div class="kanban-card" draggable="true" data-card-id="${c.id}" 
+                            style="border-left:3px solid ${c.style?.borderColor||'#38bdf8'};"
+                            onclick="VizPM.selectCard('${c.id}')">
+                            <strong>${truncate(c.title||c.area,30)}</strong>
+                            <div style="font-size:.65rem;color:#94a3b8;">${c.owner||''} · ${c.progress||0}%</div>
+                        </div>`).join('')}
+                    </div>`;
+                }).join('');
+                document.querySelectorAll('.kanban-card').forEach(el => {
+                    el.addEventListener('dragstart', (e) => {
+                        e.dataTransfer.setData('text/plain', el.dataset.cardId);
+                        el.style.opacity = '0.5';
+                    });
+                    el.addEventListener('dragend', (e) => { el.style.opacity = '1'; });
+                });
+                document.querySelectorAll('.kanban-column').forEach(col => {
+                    col.addEventListener('dragover', (e) => { e.preventDefault();
+                        col.style.borderColor = '#f59e0b'; });
+                    col.addEventListener('dragleave', () => { col.style.borderColor = '#1e293b'; });
+                    col.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        col.style.borderColor = '#1e293b';
+                        const cardId = e.dataTransfer.getData('text/plain');
+                        const newStatus = col.dataset.status;
+                        const card = findCardById(projectData, cardId);
+                        if (card && card.status !== newStatus) {
+                            pushUndo();
+                            card.status = newStatus;
+                            if (newStatus === 'Completado') card.progress = 100;
+                            renderAllCards();
+                            renderKanban();
+                            saveState();
+                        }
+                    });
+                });
+            }
+
+            function renderGraph() {
+                const container = document.getElementById('graph-view');
+                const allCards = getAllCards(projectData).filter(c => c.id !== 'main');
+                const connections = projectData.connections || [];
+                const cardMap = {};
+                allCards.forEach(c => cardMap[c.id] = c);
+                const w = Math.max(800, window.innerWidth - 40);
+                const h = Math.max(500, window.innerHeight - 160);
+                const cols = Math.ceil(Math.sqrt(allCards.length));
+                const spacingX = w / (cols + 1);
+                const spacingY = h / (Math.ceil(allCards.length / cols) + 1);
+                const positions = {};
+                allCards.forEach((card, i) => {
+                    const col = i % cols;
+                    const row = Math.floor(i / cols);
+                    positions[card.id] = { x: spacingX * (col + 1), y: spacingY * (row + 1) };
+                });
+                let edges = connections.filter(c => cardMap[c.from] && cardMap[c.to]).map(c => {
+                    const f = positions[c.from],
+                        t = positions[c.to];
+                    return f && t ?
+                        `<line x1="${f.x}" y1="${f.y}" x2="${t.x}" y2="${t.y}" stroke="#38bdf844" stroke-width="2" stroke-dasharray="5,3"/>` :
+                        '';
+                }).join('');
+                let nodes = allCards.map(card => {
+                    const p = positions[card.id];
+                    return p ?
+                        `<g class="graph-node" onclick="VizPM.selectCard('${card.id}')" transform="translate(${p.x},${p.y})">
+                            <circle r="22" fill="${card.style?.bg||'#111827'}" stroke="${card.style?.borderColor||'#38bdf8'}" stroke-width="3"/>
+                            <text text-anchor="middle" dy="4" fill="#fff" font-size="8" font-weight="700">${truncate(card.title||card.area,10)}</text>
+                            <text text-anchor="middle" dy="18" fill="#94a3b8" font-size="7">${card.progress||0}%</text>
+                        </g>` : '';
+                }).join('');
+                container.innerHTML = `
+                    <div style="width:100%;height:100%;">
+                        <h3 style="font-weight:700;margin-bottom:8px;">🔗 Grafo de Dependencias</h3>
+                        <svg id="graph-svg" viewBox="0 0 ${w} ${h}" style="width:100%;height:calc(100% - 40px);">${edges}${nodes}</svg>
+                    </div>`;
+            }
+
+            // --- DASHBOARD ---
+            function renderDashboard() {
+                const panel = document.getElementById('dashboard-panel');
+                const allCards = getAllCards(projectData).filter(c => c.id !== 'main');
+                const totalBudget = allCards.reduce((s, c) => s + ((c.tabs?.economico?.presupuesto) || 0), 0);
+                const totalSpent = allCards.reduce((s, c) => s + ((c.tabs?.economico?.gastado) || 0), 0);
+                const blockedCount = allCards.filter(c => c.status === 'Bloqueado').length;
+                const avgProgress = allCards.length > 0 ? Math.round(allCards.reduce((s, c) => s + (c.progress || 0), 0) /
+                    allCards.length) : 0;
+                panel.className = dashboardExpanded ? 'expanded' : 'collapsed';
+                panel.innerHTML = `
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 16px;cursor:pointer;background:#111827;border-bottom:1px solid #1e293b;" onclick="VizPM.toggleDashboard()">
+                        <strong style="font-size:.8rem;">📈 Dashboard Ejecutivo</strong>
+                        <span style="font-size:.7rem;">${dashboardExpanded?'▲ Colapsar':'▼ Expandir'}</span>
+                    </div>
+                    <div style="display:flex;gap:20px;padding:10px 16px;flex-wrap:wrap;font-size:.75rem;">
+                        <div><strong>Avance Global:</strong> <span style="color:${getProgressColor(avgProgress)};font-size:1.2rem;">${avgProgress}%</span></div>
+                        <div><strong>Presupuesto:</strong> ${formatCurrency(totalBudget)} | <strong>Gastado:</strong> <span style="color:#f59e0b;">${formatCurrency(totalSpent)}</span></div>
+                        <div><strong>Bloqueos:</strong> <span style="color:#ef4444;">${blockedCount}</span></div>
+                        <div><strong>Próx. Hitos:</strong> ${allCards.filter(c=>c.status==='En Progreso').slice(0,3).map(c=>truncate(c.title,20)).join(', ')||'Ninguno'}</div>
+                    </div>`;
+            }
+
+            function toggleDashboard() {
+                dashboardExpanded = !dashboardExpanded;
+                renderDashboard();
+            }
+
+            // --- MODE TOGGLE ---
+            function toggleMode() {
+                globalSettings.mode = document.getElementById('mode-toggle').checked ? 'advanced' : 'simple';
+                renderAllCards();
+                saveState();
+            }
+
+            // --- CARD TOGGLES ---
+            function toggleCardCompact(id) {
+                const card = findCardById(projectData, id);
+                if (card) { pushUndo();
+                    card.compactView = !card.compactView;
+                    renderAllCards();
+                    saveState(); }
+            }
+
+            function toggleCardCollapse(id) {
+                const card = findCardById(projectData, id);
+                if (card) { pushUndo();
+                    card.collapsed = !card.collapsed;
+                    renderAllCards();
+                    saveState(); }
+            }
+
+            function toggleCheckItem(cardId, index) {
+                const card = findCardById(projectData, cardId);
+                if (card && card.tabs?.trabajo) {
+                    pushUndo();
+                    card.tabs.trabajo[index].checked = !card.tabs.trabajo[index].checked;
+                    const total = card.tabs.trabajo.length;
+                    const done = card.tabs.trabajo.filter(t => t.checked).length;
+                    if (card.autoComplete && total > 0) card.progress = Math.round((done / total) * 100);
+                    renderAllCards();
+                    if (sidePanelOpen) renderSidePanel();
+                    saveState();
+                }
+            }
+
+            function addIdeaNote(cardId) {
+                const card = findCardById(projectData, cardId);
+                if (!card) return;
+                const text = prompt('Nota IDEA:');
+                if (text && text.trim()) {
+                    pushUndo();
+                    if (!card.ideaNotes) card.ideaNotes = [];
+                    card.ideaNotes.push({ text: text.trim(), timestamp: new Date().toISOString() });
+                    renderAllCards();
+                    if (sidePanelOpen) renderSidePanel();
+                    saveState();
+                }
+            }
+
+            function switchSideTab(tab, btn) {
+                document.querySelectorAll('#side-panel .tab-mini').forEach(b => b.classList.remove('active'));
+                if (btn) btn.classList.add('active');
+                const card = selectedCardId ? findCardById(projectData, selectedCardId) : null;
+                if (card) {
+                    document.getElementById('side-tab-content').innerHTML = renderSideTabContent(tab, card);
+                }
+            }
+
+            // --- PERSISTENCE ---
+            function saveState() {
+                try {
+                    localStorage.setItem('vizpm_project', JSON.stringify(projectData));
+                    localStorage.setItem('vizpm_open_windows', JSON.stringify(openWindows));
+                    localStorage.setItem('vizpm_global_settings', JSON.stringify(globalSettings));
+                    localStorage.setItem('vizpm_undo_stack', JSON.stringify(undoStack.slice(-30)));
+                    localStorage.setItem('vizpm_activity_log', JSON.stringify(activityLog.slice(-200)));
+                } catch (e) { console.warn('Storage full, cleaning...');
+                    cleanupStorage(); }
+            }
+
+            function loadState() {
+                try {
+                    const saved = localStorage.getItem('vizpm_project');
+                    if (saved) projectData = JSON.parse(saved);
+                    else projectData = deepClone(aeroVendData);
+                    const ws = localStorage.getItem('vizpm_open_windows');
+                    if (ws) openWindows = JSON.parse(ws);
+                    const gs = localStorage.getItem('vizpm_global_settings');
+                    if (gs) globalSettings = JSON.parse(gs);
+                    const us = localStorage.getItem('vizpm_undo_stack');
+                    if (us) undoStack = JSON.parse(us);
+                    const al = localStorage.getItem('vizpm_activity_log');
+                    if (al) activityLog = JSON.parse(al);
+                    document.getElementById('mode-toggle').checked = globalSettings.mode === 'advanced';
+                    if (projectData.canvasSettings) {
+                        canvasTransform.x = projectData.canvasSettings.currentX || 0;
+                        canvasTransform.y = projectData.canvasSettings.currentY || 0;
+                        canvasTransform.scale = projectData.canvasSettings.currentScale || 0.55;
+                    }
+                } catch (e) {
+                    console.error('Error loading state:', e);
+                    projectData = deepClone(aeroVendData);
+                }
+            }
+
+            function cleanupStorage() {
+                const keys = Object.keys(localStorage).filter(k => k.startsWith('vizpm_'));
+                if (keys.length > 20) {
+                    keys.sort((a, b) => (localStorage.getItem(a + '_ts') || 0) - (localStorage.getItem(b + '_ts') || 0));
+                    for (let i = 0; i < Math.floor(keys.length / 3); i++) localStorage.removeItem(keys[i]);
+                }
+            }
+
+            function saveDraft() {
+                const name = prompt('Nombre del borrador:', 'Borrador ' + new Date().toLocaleDateString());
+                if (name) {
+                    const drafts = JSON.parse(localStorage.getItem('vizpm_drafts') || '{}');
+                    drafts[name] = { data: deepClone(projectData), timestamp: new Date().toISOString() };
+                    localStorage.setItem('vizpm_drafts', JSON.stringify(drafts));
+                    alert('✅ Borrador guardado: ' + name);
+                }
+            }
+
+            function loadVersion() {
+                const drafts = JSON.parse(localStorage.getItem('vizpm_drafts') || '{}');
+                const names = Object.keys(drafts);
+                if (names.length === 0) { alert('No hay borradores guardados.'); return; }
+                const name = prompt('Borradores disponibles:\n' + names.map((n, i) => `${i+1}. ${n} (${drafts[n].timestamp})`)
+                    .join('\n') + '\n\nEscribe el nombre exacto:');
+                if (name && drafts[name]) {
+                    if (confirm('¿Cargar borrador "' + name + '"? Se perderán cambios no guardados.')) {
+                        pushUndo();
+                        projectData = deepClone(drafts[name].data);
+                        renderAllCards();
+                        saveState();
+                        alert('✅ Borrador cargado.');
+                    }
+                }
+            }
+
+            function newProject() {
+                if (confirm('¿Crear nuevo proyecto? Se guardará el actual como borrador.')) {
+                    saveDraft();
+                    projectData = {
+                        id: 'main',
+                        projectName: 'Nuevo Proyecto',
+                        description: '',
+                        width: 8000,
+                        height: 5000,
+                        x: 0,
+                        y: 0,
+                        parentId: null,
+                        collapsed: false,
+                        compactView: false,
+                        owner: '',
+                        area: 'General',
+                        progress: 0,
+                        status: 'Sin Empezar',
+                        startDate: new Date().toISOString().split('T')[0],
+                        dueDate: new Date(Date.now() + 90 * 86400000).toISOString().split('T')[0],
+                        resumenView: 'progress',
+                        layoutMode: 'libre',
+                        cardType: 'proyecto',
+                        autoComplete: false,
+                        image: { src: '', position: 'top', width: '100%', height: 80 },
+                        style: { bg: '#0b0f19', opacity: 1.0, borderColor: '#38bdf8' },
+                        tabs: { trabajo: [], tecnico: {}, economico: { presupuesto: 0, gastado: 0 }, reqs: [] },
+                        comments: [],
+                        cards: [],
+                        connections: [],
+                        users: [],
+                        notificationRules: [],
+                        zonesOrder: ['A', 'B', 'C', 'E', 'D'],
+                        hiddenZones: [],
+                        ideaNotes: [],
+                        canvasSettings: { currentX: 0, currentY: 0, currentScale: 0.55 }
+                    };
+                    canvasTransform = { x: 0, y: 0, scale: 0.55 };
+                    selectedCardId = null;
+                    closeSidePanel();
+                    renderAllCards();
+                    saveState();
+                }
+            }
+
+            // --- KEYBOARD SHORTCUTS ---
+            function initShortcuts() {
+                window.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey && e.key === 'z') { e.preventDefault();
+                        undo(); }
+                    if (e.ctrlKey && e.key === 'y') { e.preventDefault();
+                        redo(); }
+                    if (e.ctrlKey && e.key === 's') { e.preventDefault();
+                        saveDraft(); }
+                    if (e.key === 'Delete' && selectedCardId && selectedCardId !== 'main') {
+                        if (confirm('¿Eliminar tarjeta seleccionada?')) {
+                            pushUndo();
+                            const parent = findParentCard(projectData, selectedCardId);
+                            if (parent && parent.childCards) parent.childCards = parent.childCards.filter(c => c
+                                .id !== selectedCardId);
+                            else if (projectData.cards) projectData.cards = projectData.cards.filter(c => c.id !==
+                                selectedCardId);
+                            projectData.connections = (projectData.connections || []).filter(c => c.from !==
+                                selectedCardId && c.to !== selectedCardId);
+                            selectedCardId = null;
+                            closeSidePanel();
+                            renderAllCards();
+                            saveState();
+                        }
+                    }
+                });
+            }
+
+            function undo() {
+                if (undoStack.length === 0) return;
+                redoStack.push(deepClone(projectData));
+                projectData = undoStack.pop();
+                renderAllCards();
+                saveState();
+            }
+
+            function redo() {
+                if (redoStack.length === 0) return;
+                undoStack.push(deepClone(projectData));
+                projectData = redoStack.pop();
+                renderAllCards();
+                saveState();
+            }
+
+            // --- AUTO SAVE ---
+            function initAutoSave() {
+                setInterval(() => {
+                    saveState();
+                    activityLog.push({ action: 'auto-save', timestamp: new Date().toISOString() });
+                    if (activityLog.length > 500) activityLog = activityLog.slice(-300);
+                }, globalSettings.autoSaveInterval || 300000);
+                let debounceTimer;
+                const debounceSave = () => {
+                    clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(saveState, 2000);
+                };
+                ['click', 'dragend', 'drop', 'input'].forEach(evt => {
+                    document.addEventListener(evt, debounceSave, { passive: true });
+                });
+            }
+
+            // --- INIT ---
+            function init() {
+                loadState();
+                renderAllCards();
+                applyCanvasTransform();
+                initCanvasPan();
+                initShortcuts();
+                initAutoSave();
+                renderDashboard();
+                document.getElementById('mode-toggle').checked = globalSettings.mode === 'advanced';
+                console.log('⚡ VizPM v2.0 inicializado – Proyecto:', projectData.projectName);
+                console.log('   Tarjetas:', getAllCards(projectData).length, '| Conexiones:', (projectData.connections || [])
+                    .length);
+                console.log('   Modo:', globalSettings.mode, '| Vista:', currentView);
+                console.log('   🗺️ Canvas | 📊 Gantt | 📋 Kanban | 🔗 Grafo – Todos sincronizados');
+            }
+
+            // --- PUBLIC API ---
+            return {
+                init,
+                switchView,
+                selectCard,
+                toggleSidePanel,
+                toggleDashboard,
+                toggleMode,
+                toggleCardCompact,
+                toggleCardCollapse,
+                toggleCheckItem,
+                addIdeaNote,
+                switchSideTab,
+                saveDraft,
+                loadVersion,
+                newProject,
+                undo,
+                redo,
+                renderAllCards,
+                renderGantt,
+                renderKanban,
+                renderGraph,
+                get projectData() { return projectData; },
+                get selectedCardId() { return selectedCardId; },
+            };
+        })();
+
+        // --- BOOT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            VizPM.init();
+            // Exponer para uso global en onclick handlers
+            window.VizPM = VizPM;
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (VizPM.renderAllCards) VizPM.renderAllCards();
+        });
+    </script>
+</body>
+</html>
