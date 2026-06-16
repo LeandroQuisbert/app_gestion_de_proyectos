@@ -1,195 +1,249 @@
+# DEFINITIVE PROMPT – AeroVend 1.0 (Visual Project Manager with Project Creation, Saving, and Loading)
 
+**Act as a Principal Full‑Stack Software Engineer, Advanced Design System Designer, and Graphical Interface Architect with extensive experience in CAD environments, spatial diagramming (Figma/Miro), high‑density industrial HMI/SCADA systems, directed‑graph engines, and workflow automation (Trello/Butler).**
 
-# PROMPT – AeroVend 1.0 (Gestor Visual de Proyectos con Fotos, Rollups, Selección Múltiple y Ruta Crítica)
+Build an interactive web application for **project management and visual presentation** that combines Trello (Kanban), Miro (infinite canvas + multi‑selection), SCADA (industrial monitoring), **directed‑graph diagrams** (Graph View), and **intelligent automation**. The application must allow **creating, saving, loading, and exporting projects**, whether starting from scratch or from a predefined template. The goal is to **explain a complex project to new people at a glance, with maximum clarity, control, and automatic reaction capability**, as well as to **build a project step by step from scratch**.
 
-**Actúa como un Ingeniero de Software Full‑Stack Principal, Diseñador de Sistemas de Diseño Avanzados y Arquitecto de Interfaces Gráficas con amplia experiencia en entornos CAD, diagramación espacial (Figma/Miro), sistemas HMI/SCADA industriales de alta densidad, y motores de grafos dirigidos.**
+The pre‑loaded example project is **"AeroVend 1.0"**: a giant vending machine for fresh basil grown with high‑pressure aeroponics, a robotic harvesting arm, and an automated LED lighting system. The CEO **Leo** handles electronics, LEDs, robotic arm, and automation; **Christian** handles programming; **Ponce** handles fluid mechanics; **Sofía** handles basil, nutrients, and growth. Other unassigned areas appear as “Sin asignar”.
 
-Construye una aplicación web interactiva de **gestión y presentación visual de proyectos** que combine lo mejor de Trello (Kanban), Miro (lienzo infinito + selección múltiple), SCADA (monitorización industrial) y **diagramas de grafo dirigidos** (Graph View con layout automático). El objetivo principal es poder **explicar un proyecto complejo a personas nuevas (inversores, colaboradores) de un vistazo**, alternando entre múltiples representaciones complementarias, y con capacidades avanzadas de agregación de datos, selección múltiple, historial de cambios y cálculo de ruta crítica.
-
-El proyecto de ejemplo es **"AeroVend 1.0"**: una máquina expendedora gigante de albahaca viva cultivada con aeroponía de alta presión, brazo robótico de cosecha y sistema de iluminación LED automatizado. El CEO **Leo** se encarga de electrónica, LEDs, brazo robótico y automatización; **Christian** de la programación; **Ponce** de la mecánica de fluidos; **Sofía** de las albahacas y nutrientes. Otras áreas sin dueño aparecerán como "Sin asignar".
-
-La estética será **modo oscuro premium estilo Vercel / Shadcn** (fondos `#0b0f19`, tarjetas `#111827`, texto blanco nítido, acentos en azul, morado y verde) y un diseño UI/UX impecable sin amontonamiento.
+The aesthetic will be a **premium dark mode in the style of Vercel/Shadcn** (backgrounds `#0b0f19`, cards `#111827`, crisp white text, accents in blue, purple, and green), with an impeccable UI/UX layout where nothing feels cluttered. **FontAwesome** (or a similar icon library) will be used for interface icons, while emojis remain an option for the `icon` field of each card.
 
 ---
 
-## 📁 1. PROYECTO DE EJEMPLO Y JSON INICIAL (data.json)
+## 📁 1. PROJECT MANAGEMENT (NEW, SAVE, LOAD, EXPORT/IMPORT)
 
-El archivo `data.json` debe contener exactamente la estructura siguiente, reflejando el estado actual simulado del proyecto. Todas las tarjetas poseen los campos obligatorios: `status`, `startDate`, `dueDate`, `owner`, `area`, `progress`, **y los nuevos campos `icon`, `description`, `image`**. Las notas personales (botón IDEA) NO se guardan aquí, sino en `localStorage` aparte.
+### 1.1 Default initial project
+When the application opens for the first time, it automatically loads the **"AeroVend 1.0"** project from the JSON provided in the ANNEX. If the user already has a project saved in `localStorage`, that project will be loaded instead.
 
-**El JSON completo actualizado se adjunta como ANEXO al final de este prompt.** La IA debe utilizarlo como plantilla base sin modificaciones salvo que la implementación de la web requiera algún ajuste estructural menor (por ejemplo, para soportar las nuevas funcionalidades de rollup o polimorfismo). En ese caso, la IA tiene criterio para adaptarlo justificando los cambios.
+### 1.2 New project (from scratch)
+- A **“New project”** button will be available in the top bar.
+- On click, the user will be asked whether to **save the current project** before continuing (see 1.3). After confirming, a new empty project will be created with:
+  - `projectName`: “Untitled project”
+  - Default `canvasSettings` (canvas 8000×5000, zoom 1, no hidden zones, etc.)
+  - `cards`: []
+  - `connections`: []
+- The user can then begin adding root cards using the **“+ Root Node”** button and freely connecting them.
 
----
+### 1.3 Save project
+- A **“Save”** button (floppy‑disk icon) will be available in the top bar.
+- On click, a `.json` file with the complete state of the current project (equivalent to Export) will automatically download.
+- **Additionally**, the project will be saved to `localStorage` under the key `currentProject`, so that the last saved state is restored when the page is reloaded (without needing to manually export). This action also updates the key `lastSavedProjectName` with the project’s name.
+- If the project has never been saved and the user tries to create a new one or close the tab, a warning should be shown (can be implemented with `beforeunload`).
 
-## 🧩 2. ANATOMÍA MODULAR DE LA TARJETA (ZONAS A-E) CON MEJORAS
+### 1.4 Load project
+- An **“Open project”** button will be available in the top bar.
+- It will allow selecting a `.json` file from the local file system and loading it, replacing the current state (with a warning if there are unsaved changes).
+- A dropdown option will also allow **loading the example project** (the AeroVend 1.0 template), in case the user wants to return to the initial demo.
 
-Cada tarjeta se renderiza con 5 zonas visuales estrictas, **con soporte para icono, descripción e imagen configurables** y la reubicación del WBS.
-
-### Zone A – Header principal
-- **Icono** (campo `icon`): emoji, clase CSS o ruta de imagen pequeña, a la izquierda del título. Si no se define, se asigna automáticamente un icono por defecto según el `area`.
-- **Título** de la tarjeta, con `flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis`. **Prohibido mostrar el porcentaje aquí.**
-- **Descripción** (campo `description`): se muestra opcionalmente como un texto secundario debajo del título, con un estilo más pequeño (`font-size: 0.8rem; color: #94a3b8;`). En vistas compactas puede ocultarse o mostrarse solo al hacer hover.
-- **Botón de colapso** (chevron) a la derecha.
-- **El código WBS ya no se muestra aquí** (movido a Zone C).
-
-### Zone B – Línea de progreso
-- Barra de progreso nativa estilizada, 100% ancho.
-
-### Zone C – Fila de metadatos y control local
-- Avatar/nombre del `owner`.
-- Etiqueta del `area`.
-- **Píldora con el código WBS** jerárquico (hasta 10 niveles) con estilo sutil (fondo semi-transparente, texto pequeño).
-- Texto explícito de porcentaje (ej: "65%").
-- Icono de **engranaje** (menú de configuración local).
-- **Botón "IDEA"** (bombilla): abre un panel flotante con textarea para notas personales (`localStorage` con clave `userNotes_{cardId}`).
-- **Mini-bloques pendientes**: si la tarjeta está colapsada y `showMiniPendingBlocks = true`, se inyectan aquí pequeñas píldoras con el WBS de hijos no completados.
-
-### Zone D – Panel de pestañas multidimensionales
-- Pestañas: "Trabajo" (checklist + botón `+ Tarea`), "Técnico", "Económico", "Reqs" (alertas de requerimientos).
-- **NUEVO – Polimorfismo de tarjetas (opcional, simplificado)**: El JSON puede incluir un campo `cardType` que determina qué pestañas se muestran. Si no existe, se muestran las 4 por defecto. Tipos sugeridos:
-  - `"hito"`: solo muestra fechas (startDate, dueDate) y descripción. Sin pestañas de trabajo/técnico/económico/reqs.
-  - `"dispositivo"`: prioriza la pestaña Técnico.
-  - `"subcontrata"`: prioriza la pestaña Económico.
-  - `"estandar"` (por defecto): las 4 pestañas.
-- La IA puede implementar esto de forma progresiva; si añade demasiada complejidad, puede omitirlo, pero se valora positivamente.
-
-### Zone E – Contenedor dropzone de sub-bloques
-- Espacio para tarjetas hijas anidadas. Si está vacío, muestra un texto guía tenue.
-- **Soporte de imagen (campo `image`)**: Si el campo `image` existe y tiene `src` no vacío, se renderiza en la tarjeta según su `position`:
-  - `"left"`: columna lateral izquierda, ocupando todo el alto disponible.
-  - `"right"`: columna lateral derecha, ocupando todo el alto disponible.
-  - `"top"`: franja superior (debajo de Zone A, o reorganizando).
-- Las dimensiones de la imagen se configuran con `width` y `height` (en píxeles o `"auto"`). Se usa `object-fit: cover` por defecto. Las zonas restantes se redistribuyen sin romperse.
-- La imagen **no afecta** al punto de anclaje de coordenadas (que sigue siendo la esquina superior izquierda de la tarjeta completa).
-- El usuario puede editar la imagen y la descripción desde el modal de configuración (engranaje en Zone C).
+### 1.5 Export / Import
+- The **Export JSON** (download current state) and **Import JSON** (load from file) buttons are kept as a complement to Save/Open.
+- All states (including undo/redo history and personal notes) are cleared when creating a new project or loading one from a file.
 
 ---
 
-## 🖱️ 3. INTERACCIONES DE ARRASTRE, SELECCIÓN MÚLTIPLE Y REDIMENSIÓN (CANVAS Y GRAPH VIEW)
+## 📄 2. INITIAL JSON (data.json)
 
-### 3.1 Selección múltiple por arrastre (Marquee / Box Selection) – NUEVO
-- **Canvas Mode y Graph View**: Al hacer clic en el fondo del lienzo y arrastrar sin soltar, se dibuja un rectángulo de selección azul semitransparente.
-- Al soltar, todas las tarjetas cuyos centros geométricos (o `getBoundingClientRect`) intersecten con el rectángulo quedan seleccionadas (borde resaltado en cian/blanco).
-- **Acciones en lote** sobre las tarjetas seleccionadas:
-  - **Mover**: Al arrastrar cualquiera de las tarjetas seleccionadas, todas se mueven en bloque manteniendo sus posiciones relativas.
-  - **Cambiar owner/status/área**: Desde un panel contextual o menú, se puede asignar un mismo valor a todas.
-  - **Eliminar en lote** (con confirmación).
-  - **Colapsar/expandir en lote**.
-- Se sale de la selección múltiple haciendo clic en el fondo o presionando Escape.
-- La selección múltiple debe convivir con el arrastre individual: si se empieza a arrastrar sobre una tarjeta, se mueve solo esa; si se empieza sobre el fondo, se activa el marquee.
-
-### 3.2 Arrastre individual (sin cambios respecto al prompt anterior)
-- Solo desde Zone A, movimiento 1:1 dividiendo deltas por `transform.scale`.
-- **Ghost Box visual**: silueta fantasma en la posición/snap futura.
-- Snap post-soltada: posición → múltiplo de 40px; tamaño → múltiplo de 5px.
-- Colisión para anidar: al soltar sobre otra tarjeta, se asigna `parentId` y coordenadas relativas. Si se suelta en el fondo, `parentId = null` y coordenadas absolutas.
-
-### 3.3 Redimensión (sin cambios)
-- Tirador inferior derecha. Ghost box con snap a 5px. Autofit con doble clic.
+The “AeroVend 1.0” project is defined in the ANNEX as the base template. This JSON contains all cards with the new fields (`icon`, `description`, `image`, `compactView`, `autoComplete`, `cardType`, etc.) and example images from Unsplash. The AI must use it without modifications, unless a minor structural adjustment is required for implementation (which must then be justified).
 
 ---
 
-## 🧭 4. MODOS DE VISUALIZACIÓN GLOBAL (4 VISTAS PRINCIPALES)
+## 🧩 3. MODULAR CARD ANATOMY (ZONES A–E) + ENHANCEMENTS
 
-### 🗺️ Modo 1 – Espacial / Diagrama de Bloques (SCADA Canvas)
-*(Misma definición que en prompts anteriores: lienzo infinito con GPU, rejilla, arrastre, ghost box, snap, capa SVG de tuberías animadas, culling, debounce.)*
+Each card is rendered with 5 strict visual zones, enriched with an icon, description, configurable image, adaptive internal scroll, compact view, and new intelligent indicators.
 
-### 📊 Modo 2 – Cronograma / Gantt con Ruta Crítica – MEJORADO
-- Además de lo ya definido (barras proporcionales, arrastre de fechas, virtualización):
-- **Dependencias reales**: Las conexiones entre tarjetas definidas en `connections` se interpretan como dependencias **Fin-a-Inicio** (la tarjeta destino no puede empezar hasta que termine la origen).
-- **Cálculo de Ruta Crítica**: Al cargar la vista Gantt, se calcula automáticamente la ruta crítica del proyecto (el camino más largo de dependencias que determina la fecha mínima de finalización). Las barras que pertenecen a la ruta crítica se resaltan con un borde rojo o un gradiente distintivo.
-- **Propagación de retrasos**: Si el usuario arrastra una barra y cambia su `dueDate`, todas las tarjetas dependientes aguas abajo se desplazan automáticamente en el calendario para mantener la restricción Fin-a-Inicio. Se actualizan sus `startDate` y `dueDate` en el modelo.
-- Esta funcionalidad solo aplica a tarjetas con `parentId === null` (nodos raíz) para mantener la complejidad acotada.
+### Zone A – Main Header
+- **Icon** (`icon`): emoji or CSS class, to the left of the title. If not defined, one is assigned automatically per area.
+- **Title** with forced ellipsis (`white-space: nowrap; overflow: hidden; text-overflow: ellipsis`).
+- **Description** (`description`): secondary text below the title (small font, color `#94a3b8`). In compact views it may be hidden or shown on hover. **Supports clickable links** in simple Markdown format (`[text](url)`) that open in a new tab.
+- **Propagated alert indicator**: if the card (or any descendant) has `status: 'Bloqueado'` or `reqs` with `status: 'pending'`, a small red/orange flashing badge (using `pulse-border` animation) is displayed in the header, similar to an industrial alarm light.
+- **Collapse button** (chevron) on the right.
+- **“Quick view” toggle**: allows switching the card between detailed mode (zones A–E) and a **compact postcard‑like mode**, which shows the cover image (`image.src`) as background, the title, and the progress, hiding zones D and E. Ideal for rapid presentations or Focus mode. The state is stored per card (`compactView: boolean`).
+- **The percentage must not be shown here.**
 
-### 📋 Modo 3 – Tablero Kanban
-*(Misma definición: columnas por estado, tarjetas compactas, arrastre para cambiar `status`, orden interno por fecha o manual.)*
+### Zone B – Progress Bar
+- Styled native progress bar, 100% width.
 
-### 🕸️ Modo 4 – Diagrama de Sistema (Graph View) – NUEVO
-- **Descripción**: Vista automática de nodos y conexiones jerárquicas como un grafo dirigido.
-- Layout automático (algoritmo simple de fuerzas o capas) que organiza todas las tarjetas raíz y sus hijos.
-- Las conexiones se dibujan como flechas curvas.
-- Cada nodo muestra icono, título y progreso. Al hacer clic, se expande para ver descripción e hijos.
-- Zoom y paneo similares al Canvas. La selección múltiple por marquee también funciona aquí.
-- No requiere persistencia de coordenadas propias; se regenera al cambiar a este modo.
+### Zone C – Metadata and Local Control Row
+- Avatar/name of `owner`.
+- `area` label.
+- **WBS code pill** (hierarchical, up to 10 levels) with subtle style (semi‑transparent background, small text).
+- Explicit percentage text (e.g., “65%”).
+- **Gear icon** (local configuration).
+- **“IDEA” button** (lightbulb): opens a floating panel with a textarea for personal notes (`localStorage` key `userNotes_{cardId}`).
+- **Mini pending blocks**: if `collapsed = true` and `showMiniPendingBlocks = true`, pills with the WBS of children with progress < 100% are injected, along with any child alerts (blockages, pending requirements).
 
----
+### Zone D – Multi‑Dimensional Tab Panel
+- Tabs: “Trabajo” (Checklist + `+ Tarea`), “Técnico”, “Económico”, “Reqs”.
+- **Optional automatic flow rule (Auto‑complete)**:
+  - In the “Trabajo” tab, a small toggle “Auto‑complete on finish” is shown next to the checklist.
+  - If enabled, when the last pending task is checked as done, the card’s `status` automatically changes to `"Completado"`.
+  - The toggle is stored in the card (`autoComplete: boolean`, default `false`).
+- **Card polymorphism** (`cardType`): `"hito"`, `"dispositivo"`, `"subcontrata"`, `"estandar"`. Controls which tabs are displayed. If absent, `"estandar"` is assumed.
 
-## ⚙️ 5. MOTOR DE MODOS DE ENFOQUE Y CONFIGURADOR DE ZONAS (SIN CAMBIOS)
-
-- Modos: Trabajo (oculta E, expande D), Bloques (oculta D, maximiza E), Híbrido (todo visible).
-- Configurador global de zonas: reordenar y ocultar/mostrar A-E.
-
----
-
-## 🔢 6. WBS, BUSCADOR, TELEPORT Y GLOW
-
-- WBS recursivo hasta 10 niveles, mostrado en Zone C.
-- Buscador global con teleport y glow (funciona en los 4 modos).
-
----
-
-## 📊 7. INTELIGENCIA DE DATOS JERÁRQUICA (ROLLUP) – NUEVO
-
-- **Agregación automática de valores**:
-  - **Económico**: El `presupuesto` y `gastado` de una tarjeta padre se calculan como la suma de los valores de todas sus tarjetas hijas (recursivamente, hasta cualquier profundidad). Si una tarjeta tiene valor propio definido, se suma al rollup de los hijos.
-  - **Progreso**: El `progress` de una tarjeta padre se calcula como el **promedio ponderado** del progreso de sus hijos directos. Si no tiene hijos, mantiene su valor manual.
-- Los valores calculados se muestran en la interfaz con un estilo ligeramente diferente (ej: texto en cursiva o con un pequeño icono de "calculado") para distinguirlos de los valores introducidos manualmente.
-- El rollup se actualiza automáticamente cada vez que cambia cualquier valor en la jerarquía.
-- Si el usuario edita manualmente el valor de un padre que tiene hijos, se muestra una advertencia de que está sobrescribiendo el valor agregado (y se rompe la agregación para ese campo en ese nodo).
+### Zone E – Dropzone Container for Sub‑blocks
+- Space for child cards. Faint guide text when empty.
+- **Image support** (`image`):
+  - If `image.src` is not empty, it is rendered according to `image.position` (`"left"`, `"right"`, `"top"`).
+  - Dimensions are configurable (`width`, `height` in px or `"auto"`). Use `object-fit: cover`.
+  - **Optional auto‑adjustment**: when adding an image, the card may slightly expand its height (multiple of 5px) to avoid overflow, respecting the anchor point. This behavior can be disabled in the card’s configuration.
+- **Adaptive internal scroll**: If a card is resized below the visible content, its interior must show **automatic vertical scroll** (with a minimalistic or hidden scrollbar, similar to a `no-scrollbar` class). This allows shrinking without losing access to information.
 
 ---
 
-## 🔗 8. CAPA SVG DE CONEXIONES (SCADA y Graph View)
+## 🖱️ 4. DRAG, MULTI‑SELECTION, RESIZE, AND KEYBOARD DELETE INTERACTIONS
 
-- Canvas: tuberías Bézier animadas entre tarjetas raíz.
-- Graph View: flechas curvas entre nodos según `connections` y jerarquía.
-- En Gantt, las conexiones se usan para las dependencias y el cálculo de ruta crítica (no se dibujan necesariamente, pero afectan al comportamiento).
+### 4.1 Multi‑selection by drag (Marquee / Box Selection)
+- Clicking on the background and dragging draws a semi‑transparent blue selection rectangle.
+- On release, cards whose geometric centers intersect the rectangle become selected (highlighted border).
+- **Batch actions**: move all together, change `owner`/`status`/`area`, **delete with Delete key** (see 4.4), collapse/expand.
+- Exit selection with Escape or a click on empty space.
 
----
+### 4.2 Individual drag
+- Only from Zone A. 1:1 movement dividing deltas by `transform.scale`.
+- **Ghost Box**: phantom silhouette at the future position/size.
+- Snap on release: position → nearest multiple of 40px; size → nearest multiple of 5px.
+- Collision: when dropping on another card, assign `parentId` and relative coordinates to the parent’s Zone E container. When dropping on the background, `parentId = null`.
+- **Confirmation for destructive actions**: when deleting a card with children, or moving a card out of its parent, a confirmation dialog is shown.
 
-## ↩️ 9. HISTORIAL DE CAMBIOS COMPLETO (UNDO/REDO) – REFORZADO
+### 4.3 Resize
+- Bottom‑right handle. Ghost box with snap to 5px. Double‑click for Autofit (optimal height rounded to 5px).
+- **ResizeObserver**: a `ResizeObserver` on each card will automatically redraw SVG connections and recalculate child layout when the card size changes for any reason (resize, autofit, collapse, image adjustment).
 
-- Pila de hasta 50 snapshots del estado completo (`cards`, `connections`, `canvasSettings`, etc.).
-- **Cada acción atómica** (arrastrar una tarjeta, redimensionar, cambiar un campo en una pestaña, modificar dueño, mover en lote, eliminar, etc.) empuja un nuevo snapshot.
-- Ctrl+Z deshace, Ctrl+Y rehace. Se restaura el estado completo y se re-renderiza la vista actual.
-- El historial se persiste en `localStorage` junto con el estado.
-- Se debe evitar empujar snapshots durante acciones en curso (solo al finalizar, en `pointerup` o al confirmar un cambio).
-
----
-
-## 💾 10. PERSISTENCIA, COPIAR/PEGAR Y NOTAS IDEA (SIN CAMBIOS SUSTANCIALES)
-
-- `localStorage` guarda `appState`, `undoStack`, `redoStack`, `userNotes`.
-- Copiar/Pegar con Ctrl+C/V: duplica tarjeta seleccionada con ID único y offset +20px.
-- Botón IDEA guarda en `userNotes_{cardId}`, no se exporta.
-- Exportar JSON (descarga `data.json` con estado actual, sin notas personales).
-- Importar JSON (reemplaza estado, resetea historial).
+### 4.4 Keyboard delete (Suprimir)
+- With one or more cards selected, pressing the **Delete** key will remove the selected cards after a confirmation dialog.
+- There will be no visible delete button on the card to avoid cluttering the interface, but the keyboard action is fully functional (includes cleaning up connections, promoting orphan children or removing them based on user choice).
 
 ---
 
-## 🎨 11. ESTILOS VISUALES Y RESTRICCIONES (SIN CAMBIOS)
+## 🧭 5. GLOBAL VISUALIZATION MODES (4 MAIN VIEWS) + PRESENTATION MODE
 
-- Ancho mínimo de tarjeta: 240px.
-- Título con elipsis forzada.
-- Botones internos con `border-radius: 8px`, fondo `#1e293b`, transiciones 0.2s.
-- Modo oscuro premium en todas las vistas.
-- Barras de Gantt con gradiente y tooltips; ruta crítica con borde rojo o gradiente especial.
-- Columnas Kanban con fondo `#1e293b`.
-- Imágenes con `object-fit: cover`.
-- Descripción con estilo sutil.
+### 🗺️ Mode 1 – Spatial / Block Diagram (SCADA Canvas)
+- Infinite canvas with GPU‑accelerated zoom/pan, background grid.
+- All zones A–E visible according to configuration.
+- SVG layer with animated Bézier pipeline connections between root cards.
+- **Connection tooltips**: hovering over a pipe shows “Fin‑a‑Inicio: {from} → {to}” (using card titles).
+- **Canvas minimap**: a small thumbnail in the bottom‑left corner showing the entire canvas with rectangles representing the cards. Clickable/draggable to move the camera.
+- Optimizations: culling, `will-change: transform`, SVG isolation, debounce.
+- **Quick filter by `owner`**: a selector in the top bar dims (reduces opacity) cards whose owner doesn’t match, to highlight one person’s cards during meetings.
+
+### 📊 Mode 2 – Timeline / Gantt with Critical Path
+- Bars proportional to duration, drag and resize to change dates.
+- Real Finish‑to‑Start dependencies according to `connections`.
+- **Critical Path calculation**: bars on the longest path are highlighted.
+- **Delay propagation**: when a bar is moved, dependent cards shift accordingly.
+- Virtualization, no Zone E.
+
+### 📋 Mode 3 – Kanban Board
+- Columns by `status`. Compact cards (icon, title, progress). Drag between columns to change `status`.
+- Internal order by `startDate` or manual.
+- No Zone E.
+
+### 🕸️ Mode 4 – System Diagram (Graph View)
+- Automatic layout (force‑directed or layered) of all root cards and children.
+- Curved arrows between nodes according to `connections` and hierarchy.
+- Zoom/pan, multi‑selection, owner filter.
+- Each node shows icon, title, and progress; expandable on click.
+
+### 🎥 Presentation Mode (Slide Show)
+- “Present” button in the top bar.
+- Automatically cycles through root cards (or selected ones) centering the camera one by one with smooth transitions (duration configurable, default 5s).
+- Can be paused, advanced/rewound manually with arrow keys.
+- Exit with Escape.
+
+### ⭐ Camera Bookmarks
+- In Canvas and Graph View, the user can save the current camera position + zoom with a name (e.g., “General View”, “Brazo Detail”).
+- Bookmarks are stored in `localStorage` (within `canvasSettings`) and shown in a dropdown in the top bar to jump between them with one click.
 
 ---
 
-## 📦 12. ENTREGABLES FINALES
+## ⚙️ 6. FOCUS MODES AND GLOBAL ZONE CONFIGURATOR
 
-Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
-
-1. **`data.json`**: Debe usar la plantilla proporcionada en el ANEXO de este prompt. Si la IA considera que la estructura original no requiere modificaciones para soportar la web, **no debe reescribir el archivo**; simplemente indicará que se utiliza el mismo. Si, por el contrario, necesita adaptarlo (por ejemplo, para añadir el campo `cardType` o ajustar la estructura de `image`), lo hará justificando los cambios. La plantilla base es la del ANEXO.
-
-2. **`index.html`**: Código HTML/CSS/JS (Vanilla ES6+) que implementa **todos** los requisitos descritos en este prompt.
+- Focus modes: Work (hides E, expands D), Blocks (hides D, maximizes E), Hybrid (all visible).
+- Global zone configurator: reorder and show/hide zones A–E individually, applied in real time.
 
 ---
 
-## 📎 ANEXO – JSON COMPLETO ACTUALIZADO (PROYECTO AEROVEND 1.0)
+## 🔢 7. WBS, SEARCH, TELEPORT, AND GLOW
+
+- Recursive WBS calculation up to 10 levels, displayed in Zone C.
+- Global search: teleport and glow in any mode.
+
+---
+
+## 📊 8. HIERARCHICAL DATA INTELLIGENCE (ROLLUP) + CASCADING ALERTS
+
+### 8.1 Value rollup
+- **Economic**: `presupuesto` and `gastado` of a parent = sum of all children (recursive). If the parent has its own value, it adds to the rollup.
+- **Progress**: weighted average of direct children’s progress. If no children, manual value is kept.
+- Calculated values are shown with a small “∑” icon and a distinct style (italic). If the user manually edits them, a warning is shown and the aggregation for that node is broken (the field becomes manual).
+
+### 8.2 Cascading alert propagation (Upwards)
+- **The system monitors** each card and its descendants for:
+  - `status: 'Bloqueado'`
+  - `reqs` with `status: 'pending'`
+- If any card (at any depth) meets these conditions, its direct parent receives an incident counter, and so on up to the root.
+- **Display**:
+  - In collapsed cards, the alert indicator (red/orange flashing badge) in Zone A shows the total number of incidents under that subtree.
+  - In Zone C, next to the mini pending blocks, active alerts are listed (e.g., “⚠️ 2 bloqueos, 1 req pendiente”).
+- Thus, even with all cards collapsed, you know exactly where problems are.
+
+---
+
+## 🔗 9. SVG CONNECTION LAYER (SCADA and Graph View) with ResizeObserver
+
+- Canvas: animated Bézier curves with tooltips.
+- Graph View: curved arrows.
+- Gantt: connections define temporal dependencies (critical path).
+- **Automatic redrawing**: thanks to the `ResizeObserver`, any change in a card’s size triggers the update of connections, without waiting for drag events.
+
+---
+
+## ↩️ 10. FULL CHANGE HISTORY (UNDO/REDO)
+
+- Stack of 50 snapshots. Each atomic action pushes a new state.
+- Ctrl+Z / Ctrl+Y restore and re‑render.
+- Persisted in `localStorage`.
+
+---
+
+## 💾 11. PERSISTENCE, COPY/PASTE, IDEA NOTES, AND DIALOGS
+
+- `localStorage` stores:
+  - `currentProject`: the complete project (cards, connections, canvasSettings, etc.) to restore on reload.
+  - `lastSavedProjectName`: name of the last saved project.
+  - `undoStack` and `redoStack` (max 50).
+  - `userNotes`: personal notes per card.
+- When creating a new project or loading one from file, `undoStack`, `redoStack`, and `userNotes` are cleared (unless the user chooses to keep notes).
+- Copy/Paste with Ctrl+C/V, IDEA button, confirmation dialogs for destructive actions (including before creating a new project without saving).
+
+---
+
+## 🎨 12. VISUAL STYLES AND CONSTRAINTS
+
+- Minimum card width: 240px.
+- Title with forced ellipsis.
+- Internal buttons: `border-radius: 8px`, background `#1e293b`, 0.2s transitions.
+- Premium dark mode in all views.
+- Gantt bars with gradient; critical path highlighted.
+- Images with `object-fit: cover`; optional auto‑adjust.
+- Description and links: subtle style, links in light blue with underline on hover.
+- Minimap in Canvas with border and semi‑transparent background.
+- **Alert animation**: cards with problems will have an animated `pulse-border` (flashing red border) in addition to the badge in Zone A.
+- **Internal scroll**: cards with `overflow-y: auto` and hidden scrollbar (class `no-scrollbar`) when content exceeds size.
+- **Quick view (postcard)**: compact mode shows the background image and a gradient overlay with title and progress.
+
+---
+
+## 📦 13. FINAL DELIVERABLES
+
+Generate **two complete, functional files** without placeholders or markers:
+
+1. **`data.json`**: Template of the “AeroVend 1.0” project (ANNEX). The AI should not modify it unless strictly necessary for implementation; if changes are required, they must be justified.
+2. **`index.html`**: HTML/CSS/JS code (Vanilla ES6+) that implements **all** the requirements described in this prompt, including project management (new, save, load, export/import) and all previous functionalities.
+
+---
+
+## 📎 ANNEX – COMPLETE JSON OF THE “AEROVEND 1.0” PROJECT (WITH UNSPLASH IMAGES)
 
 ```json
 {
@@ -203,20 +257,22 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
     "globalViewMode": "scada",
     "globalZonesOrder": ["Sistema General", "Electrónica y Control", "Robótica", "Mecánica de Fluidos", "Cultivo y Biología", "Software", "Estructura y Montaje"],
     "hiddenZones": [],
-    "showMiniPendingBlocks": true
+    "showMiniPendingBlocks": true,
+    "bookmarks": []
   },
   "cards": [
     {
       "id": "raiz-general",
       "title": "AeroVend 1.0 – Sistema Completo",
       "icon": "🟢",
-      "description": "Máquina expendedora automatizada para el cultivo y cosecha de albahaca viva. Integra aeroponía de alta presión, brazo robótico SCARA, iluminación LED y monitoreo IoT.",
+      "description": "Máquina expendedora automatizada para el cultivo y cosecha de albahaca viva. Integra aeroponía de alta presión, brazo robótico SCARA, iluminación LED y monitoreo IoT. [Documentación técnica](https://docs.aerovend.com)",
       "width": 400,
       "height": 300,
       "x": 400,
       "y": 200,
       "parentId": null,
       "collapsed": false,
+      "compactView": false,
       "owner": "Leo",
       "area": "Sistema General",
       "progress": 25,
@@ -226,8 +282,9 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
       "resumenView": "progress",
       "layoutMode": "libre",
       "cardType": "estandar",
+      "autoComplete": false,
       "image": {
-        "src": "img/aerovend_overview.png",
+        "src": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=600&q=80",
         "position": "right",
         "width": 100,
         "height": "auto"
@@ -254,6 +311,7 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
       "y": 150,
       "parentId": null,
       "collapsed": false,
+      "compactView": false,
       "owner": "Leo",
       "area": "Electrónica y Control",
       "progress": 35,
@@ -263,7 +321,13 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
       "resumenView": "progress",
       "layoutMode": "libre",
       "cardType": "dispositivo",
-      "image": { "src": "", "position": "left", "width": 80, "height": 80 },
+      "autoComplete": false,
+      "image": {
+        "src": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&q=80",
+        "position": "left",
+        "width": 80,
+        "height": 80
+      },
       "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#3b82f6" },
       "tabs": {
         "trabajo": [
@@ -288,6 +352,7 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
           "y": 80,
           "parentId": "elec-principal",
           "collapsed": false,
+          "compactView": false,
           "owner": "Leo",
           "area": "Electrónica y Control",
           "progress": 60,
@@ -297,7 +362,13 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
           "resumenView": "progress",
           "layoutMode": "libre",
           "cardType": "dispositivo",
-          "image": { "src": "", "position": "top", "width": "100%", "height": 60 },
+          "autoComplete": false,
+          "image": {
+            "src": "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&w=600&q=80",
+            "position": "top",
+            "width": "100%",
+            "height": 60
+          },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fbbf24" },
           "tabs": {
             "trabajo": [
@@ -320,6 +391,7 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
           "y": 260,
           "parentId": "elec-principal",
           "collapsed": true,
+          "compactView": false,
           "owner": "Leo",
           "area": "Electrónica y Control",
           "progress": 20,
@@ -329,6 +401,7 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
           "resumenView": "progress",
           "layoutMode": "libre",
           "cardType": "dispositivo",
+          "autoComplete": false,
           "image": { "src": "", "position": "right", "width": 60, "height": 60 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#34d399" },
           "tabs": {
@@ -353,6 +426,7 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
       "y": 140,
       "parentId": null,
       "collapsed": false,
+      "compactView": false,
       "owner": "Leo",
       "area": "Robótica",
       "progress": 15,
@@ -362,7 +436,13 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
       "resumenView": "progress",
       "layoutMode": "libre",
       "cardType": "dispositivo",
-      "image": { "src": "", "position": "right", "width": 80, "height": 80 },
+      "autoComplete": false,
+      "image": {
+        "src": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80",
+        "position": "right",
+        "width": 80,
+        "height": 80
+      },
       "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#8b5cf6" },
       "tabs": {
         "trabajo": [
@@ -385,6 +465,7 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
           "y": 80,
           "parentId": "robotica-principal",
           "collapsed": false,
+          "compactView": false,
           "owner": "Leo",
           "area": "Robótica",
           "progress": 10,
@@ -394,6 +475,7 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
           "resumenView": "progress",
           "layoutMode": "libre",
           "cardType": "dispositivo",
+          "autoComplete": false,
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#c084fc" },
           "tabs": {
@@ -418,6 +500,7 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
       "y": 600,
       "parentId": null,
       "collapsed": false,
+      "compactView": false,
       "owner": "Ponce",
       "area": "Mecánica de Fluidos",
       "progress": 20,
@@ -427,7 +510,13 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
       "resumenView": "progress",
       "layoutMode": "libre",
       "cardType": "dispositivo",
-      "image": { "src": "", "position": "right", "width": 90, "height": "auto" },
+      "autoComplete": false,
+      "image": {
+        "src": "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=600&q=80",
+        "position": "right",
+        "width": 90,
+        "height": "auto"
+      },
       "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#f97316" },
       "tabs": {
         "trabajo": [
@@ -450,6 +539,7 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
           "y": 90,
           "parentId": "mec-fluidos",
           "collapsed": false,
+          "compactView": false,
           "owner": "Ponce",
           "area": "Mecánica de Fluidos",
           "progress": 30,
@@ -459,7 +549,13 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
           "resumenView": "progress",
           "layoutMode": "libre",
           "cardType": "subcontrata",
-          "image": { "src": "", "position": "left", "width": 60, "height": 60 },
+          "autoComplete": false,
+          "image": {
+            "src": "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=600&q=80",
+            "position": "left",
+            "width": 60,
+            "height": 60
+          },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fb923c" },
           "tabs": {
             "trabajo": [
@@ -481,6 +577,7 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
           "y": 250,
           "parentId": "mec-fluidos",
           "collapsed": true,
+          "compactView": false,
           "owner": "Ponce",
           "area": "Mecánica de Fluidos",
           "progress": 0,
@@ -490,6 +587,7 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
           "resumenView": "progress",
           "layoutMode": "libre",
           "cardType": "dispositivo",
+          "autoComplete": false,
           "image": { "src": "", "position": "top", "width": "100%", "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fbbf24" },
           "tabs": {
@@ -512,6 +610,7 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
       "y": 650,
       "parentId": null,
       "collapsed": false,
+      "compactView": false,
       "owner": "Sofía",
       "area": "Cultivo y Biología",
       "progress": 10,
@@ -521,7 +620,13 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
       "resumenView": "progress",
       "layoutMode": "libre",
       "cardType": "estandar",
-      "image": { "src": "", "position": "right", "width": 80, "height": 80 },
+      "autoComplete": false,
+      "image": {
+        "src": "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&w=600&q=80",
+        "position": "right",
+        "width": 80,
+        "height": 80
+      },
       "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#10b981" },
       "tabs": {
         "trabajo": [
@@ -544,6 +649,7 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
           "y": 80,
           "parentId": "cultivo-biologia",
           "collapsed": false,
+          "compactView": false,
           "owner": "Sofía",
           "area": "Cultivo y Biología",
           "progress": 5,
@@ -553,6 +659,7 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
           "resumenView": "progress",
           "layoutMode": "libre",
           "cardType": "estandar",
+          "autoComplete": false,
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#34d399" },
           "tabs": {
@@ -577,6 +684,7 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
       "y": 650,
       "parentId": null,
       "collapsed": false,
+      "compactView": false,
       "owner": "Christian",
       "area": "Software",
       "progress": 30,
@@ -586,7 +694,13 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
       "resumenView": "progress",
       "layoutMode": "libre",
       "cardType": "estandar",
-      "image": { "src": "", "position": "left", "width": 70, "height": 70 },
+      "autoComplete": false,
+      "image": {
+        "src": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80",
+        "position": "left",
+        "width": 70,
+        "height": 70
+      },
       "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#ec4899" },
       "tabs": {
         "trabajo": [
@@ -611,6 +725,7 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
       "y": 1000,
       "parentId": null,
       "collapsed": false,
+      "compactView": false,
       "owner": "",
       "area": "Estructura y Montaje",
       "progress": 0,
@@ -620,6 +735,7 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
       "resumenView": "progress",
       "layoutMode": "libre",
       "cardType": "estandar",
+      "autoComplete": false,
       "image": { "src": "", "position": "right", "width": 100, "height": "auto" },
       "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#6b7280" },
       "tabs": {
@@ -644,3 +760,7 @@ Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
   ]
 }
 ```
+
+---
+
+*The AI must use this JSON as the base template. If no changes are required, it will remain as is.*
