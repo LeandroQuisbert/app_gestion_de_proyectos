@@ -1,0 +1,145 @@
+Actúa como un Ingeniero de Software Full-Stack Principal, Diseñador de Sistemas de Diseño Avanzados y Arquitecto de Interfaces Gráficas con amplia experiencia en entornos CAD, diagramación espacial (Figma/Miro) y sistemas HMI/SCADA industriales.
+
+Debes construir una aplicación web interactiva de gestión espacial de proyectos basada en dos entregables específicos que residirán en la misma carpeta local. La estética general debe ser un modo oscuro premium estilo Vercel o Shadcn (fondos `#0b0f19`, tarjetas `#111827`, texto blanco nítido, acentos en azul, morado y verde) con un diseño UI/UX impecable donde ningún elemento se amontone.
+
+A continuación, se detallan las especificaciones rigurosas para ambos entregables:
+
+=========================================
+ENTREGABLE PARTE 1: ARCHIVO `data.json` (PLANTILLA ESTRUCTURAL BASE)
+=========================================
+Este archivo actuará exclusivamente como una plantilla limpia que defina la estructura de campos obligatoria para la aplicación. Debe modelar un array plano de nodos independientes vinculados por ID:
+1. Una tarjeta raíz ("card-raiz-completa") con sus campos y pestañas llenas.
+2. Una tarjeta raíz vacía ("card-raiz-vacia") para demostrar las conexiones SVG.
+3. Una tarjeta anidada ("card-hija-anidada") vinculada a la primera para demostrar la herencia jerárquica de hasta 10 niveles.
+
+Estructura exacta del JSON:
+{
+  "projectName": "Plantilla Base SCADA Canvas",
+  "canvasSettings": {
+    "currentX": 0,
+    "currentY": 0,
+    "currentScale": 1.0,
+    "canvasWidth": 5000,
+    "canvasHeight": 5000,
+    "globalViewMode": "hybrid", 
+    "globalZonesOrder": ["Zone A", "Zone B", "Zone C", "Zone D", "Zone E"],
+    "hiddenZones": []
+  },
+  "cards": [
+    {
+      "id": "card-raiz-completa",
+      "title": "Título de la Tarjeta Completa",
+      "width": 320,
+      "height": 280,
+      "x": 120,
+      "y": 120,
+      "parentId": null,
+      "collapsed": false,
+      "owner": "Álvaro",
+      "area": "Ing. Mecánica",
+      "progress": 65,
+      "resumenView": "progress",
+      "layoutMode": "libre",
+      "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#38bdf8" },
+      "tabs": {
+        "trabajo": [{ "text": "Tarea de ejemplo checklist", "checked": false }],
+        "tecnico": { "param1": "valor" },
+        "economico": { "presupuesto": 1000, "gastado": 400 },
+        "reqs": [{ "id": 1, "from": "Logística", "text": "Requerimiento pendiente", "status": "pending" }]
+      }
+    },
+    {
+      "id": "card-raiz-vacia",
+      "title": "Tarjeta Vacía Conectada",
+      "width": 250,
+      "height": 150,
+      "x": 640,
+      "y": 120,
+      "parentId": null,
+      "collapsed": false,
+      "owner": "",
+      "area": "",
+      "progress": 0,
+      "resumenView": "progress",
+      "layoutMode": "libre",
+      "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#374151" },
+      "tabs": { "trabajo": [], "tecnico": {}, "economico": { "presupuesto": 0, "gastado": 0 }, "reqs": [] }
+    },
+    {
+      "id": "card-hija-anidada",
+      "title": "Sub-Tarjeta Anidada Nivel 2",
+      "width": 240,
+      "height": 160,
+      "x": 40,
+      "y": 80,
+      "parentId": "card-raiz-completa",
+      "collapsed": false,
+      "owner": "",
+      "area": "",
+      "progress": 0,
+      "resumenView": "progress",
+      "layoutMode": "libre",
+      "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#818cf8" },
+      "tabs": { "trabajo": [], "tecnico": {}, "economico": { "presupuesto": 0, "gastado": 0 }, "reqs": [] }
+    }
+  ],
+  "connections": [
+    { "from": "card-raiz-completa", "to": "card-raiz-vacia" }
+  ]
+}
+
+=========================================
+ENTREGABLE PARTE 2: ARCHIVO `index.html`
+=========================================
+Debe contener toda la interfaz HTML5, los estilos CSS3 encapsulados y la lógica en Vanilla JavaScript (ES6+).
+
+MÓDULOS DE ARQUITECTURA Y DISEÑO OBLIGATORIOS:
+
+1. ANATOMÍA MODULAR E IDENTIFICADA DE LA TARJETA (<proyecto-card>):
+Cada tarjeta debe renderizar su estructura interna dividida estrictamente en las siguientes 5 filas visuales independientes, identificadas semánticamente en el código:
+- [Zone A: Header Principal]: Contiene únicamente el Badge con el Número Jerárquico (WBS), el Texto del Título del bloque y el Botón de Flecha (Chevron) para colapsar. Queda terminantemente PROHIBIDO mostrar texto de porcentaje (`%`) aquí, ya que está duplicado.
+- [Zone B: Línea de Progreso]: Una barra de progreso nativa estilizada que ocupa el 100% del ancho horizontal, reflejando el porcentaje visualmente.
+- [Zone C: Fila de Metadatos y Control Local]: Fila horizontal limpia con: Avatar/Nombre del Responsable (`owner`), Etiqueta del Área/Departamento, Texto explícito de Porcentaje (ej: "65%") y el Icono de Engranaje para configuraciones estéticas y de layout locales.
+- [Zone D: Panel de Pestañas Multidimensionales]: Contenedor interactivo que commuta entre las pestañas "Trabajo" (Checklist y botón `+ Tarea`), "Técnico" (Parámetros), "Económico" y "Reqs" (Módulo de alertas).
+- [Zone E: Contenedor Dropzone de Sub-Bloques]: Espacio reservado para albergar físicamente las sub-tarjetas hijas anidadas. Debe incluir un texto guía tenue en el fondo que actúe como marcador de posición cuando esté vacío.
+
+2. CONFIGURACIÓN GENERAL DE LA WEB Y MOTOR DE MODOS DE ENFOQUE FLUIDO:
+- En la barra de herramientas superior global, añade un botón o selector de "Ajustes del Sistema / Modos de Vista".
+- Este selector permitirá cambiar dinámicamente entre tres macro-modos de visualización que alterarán todas las tarjetas de manera reactiva:
+  * "Modo Trabajo (Focus Tareas)": Oculta la `Zone E` por completo y prioriza la expansión de la `Zone D` para gestionar checklists de manera masiva.
+  * "Modo Bloques (Focus Espacial)": Oculta la `Zone D` por completo, forzando a las tarjetas a comportarse como contenedores puros de ingeniería HMI, expandiendo al máximo la `Zone E` para visualizar subtarjetas anidadas.
+  * "Modo Híbrido (Por defecto)": Muestra todas las zonas visibles.
+- CONFIGURADOR DE ORDEN VISUAL GENERAL: El panel debe permitir al usuario alterar el array `globalZonesOrder` de la configuración. La aplicación debe leer este array y reordenar físicamente los elementos del DOM de las tarjetas en tiempo real (por ejemplo, permitiendo colocar la fila de metadatos `Zone C` antes o después de las pestañas `Zone D`). También permitirá ocultar o mostrar cualquiera de las 5 zonas individualmente a nivel global.
+
+3. CONFIGURACIÓN DEL ANCLAJE Y SISTEMA DE COORDENADAS:
+- El punto de referencia absoluto para la posición de cualquier tarjeta en el espacio (valores 'x' e 'y') se sitúa ESTRICTAMENTE en su ESQUINA SUPERIOR IZQUIERDA. 
+- Si una tarjeta tiene un `parentId` activo, sus coordenadas de esquina superior izquierda (x, y) se calculan de manera relativa al contenedor interno de la tarjeta madre (`Zone E`). El motor debe recalcular las coordenadas del DOM al arrastrarla hacia adentro o hacia afuera del padre para evitar que el elemento se desvanezca o se teletransporte erráticamente fuera de los límites de la pantalla.
+
+4. REDIMENSIÓN DISCRETA DE ALTA PRECISIÓN (INTERVALOS DE 5PX):
+- Cada tarjeta contará con un tirador visual de redimensión en su esquina inferior derecha.
+- Al arrastrar este tirador, modificará el `width` y `height` basándose en la esquina superior izquierda como punto fijo inamovible.
+- REGLA MATEMÁTICA: Los deltas de movimiento del ratón se dividen por la escala de zoom actual (`transform.scale`) para una respuesta simétrica.
+- REGLA DE DISCRETIZACIÓN (SNAP EVERY 5PX): Tanto en tiempo real como al ejecutar el `mouseup`, las dimensiones físicas finales de la tarjeta se redondearán obligatoriamente a múltiplos exactos de 5 píxeles (ej: 30x30px, 35x35px, 240x245px). Jamás se permitirán valores decimales o que no encajen en saltos de 5px.
+
+5. MOVIMIENTO DISCRETO SNAP-TO-GRID A 40PX Y ALGORITMO DE COLISIÓN SEGURO:
+- El arrastre se realiza exclusivamente desde la barra de la cabecera (`Zone A`). Al soltar el click, las coordenadas X e Y de la esquina superior izquierda se ajustarán mediante Snap-to-Grid a múltiplos exactos de 40px.
+- ALGORITMO DE COLISIÓN EFECTIVO: Durante el arrastre, la tarjeta activa recibe `pointer-events: none;`. Al soltarla (`pointerup`), se calcula por intersección geométrica (`getBoundingClientRect`) sobre qué tarjeta fue soltada para inyectarla en su contenedor `Zone E` asignando el nuevo `parentId`, o restablecerlo a `null` si se suelta en el lienzo de fondo.
+
+6. LIENZO MÁXIMO AMPLIABLE MANUALMENTE:
+- El lienzo se iniciará con las dimensiones del JSON (`canvasWidth` y `canvasHeight` a 5000px). El movimiento (Pan) se ejecuta con CLICK DERECHO o RUEDA CENTRAL presionada, y el zoom dinámico se enfoca en el puntero.
+- El panel de ajustes global permitirá al usuario expandir manualmente el tamaño del lienzo ingresando nuevos valores (ej. de 5000px a 20000px), redimensionando inmediatamente la superficie virtual y su rejilla CSS de fondo.
+
+7. INDEXACIÓN DE HASTA 10 NIVELES DE PROFUNDIDAD (WBS MULTIFUNCIONAL):
+- Una función recursiva calculará automáticamente códigos numéricos jerárquicos WBS capaces de soportar HASTA 10 NIVELES DE ANIDACIÓN CONTINUA (ej: 1.1.2.1.1.1.1.1.1.1). Este código se inyectará en la `Zone A`.
+- El buscador superior global permitirá mapear estos códigos profundos para ejecutar una traslación suave de cámara (teleport) centrando perfectamente la tarjeta buscada y aplicando un destello luminoso (*glow*).
+
+8. DISEÑO TIPOGRÁFICO ANTI-APLASTAMIENTO Y ESTILO PREMIUM:
+- Queda prohibido que el título se fracture letra por letra en vertical. Ancho mínimo absoluto de tarjeta: 240px. El texto del título en la `Zone A` implementará obligatoriamente: `flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;`.
+- Todos los botones interactivos internos (`+ Tarea`, selectores de pestañas) deben lucir profesionales, con bordes redondeados limpios, fondos oscuros semi-transparentes y transiciones suaves, eliminando por completo los estilos estéticos por defecto del sistema operativo.
+
+9. REGLAS DE CONTENEDORES INTERNOS (LAYOUTS) Y CAPA SVG:
+- El botón de engranaje (`Zone C`) permitirá alternar el layout de la `Zone E` entre "Libre" (posicionamiento absoluto snap) o modos automáticos ("Fila", "Columna" o "Grid"), donde las tarjetas hijas ignoran temporalmente sus coordenadas X/Y para alinearse de forma fluida bajo las reglas CSS del padre.
+- Una capa SVG trasera dibujará curvas de Bézier animadas (`stroke-dasharray`) que unirán las tarjetas raíz principales según el array `connections`, actualizándose de forma reactiva ante movimientos, cambios de layout globales o colapsados de nodos.
+- Persistencia total y transparente de los estados mediante `localStorage`, incluyendo botones de exportación e importación de archivos JSON.
+
+Genera ambos archivos con código de producción limpio, modular, completamente articulado y libre de elipsis o marcadores de posición incompletos.
