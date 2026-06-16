@@ -1,40 +1,35 @@
- **PROMPT DEFINITIVO v1.9**, estructurado de forma exhaustiva y explicativa para eliminar cualquier ambigüedad en la generación del código. Se ha profundizado críticamente en la estructura interna variable de las tarjetas y se ha verificado que no se haya perdido ninguna funcionalidad de las versiones 1.7 y 1.8.
 
-*(Nota: El JSON no se incluye aquí como pediste, pero el prompt instruye explícitamente a la IA a utilizar la estructura definitiva de AeroVend 1.0 v1.8 que ya tenemos acordada).*
+# PROMPT – VizPM v1.91 (Visual Project Manager OS)
 
----
-
-# DEFINITIVE PROMPT – VizPM v1.9 (Visual Project Manager OS)
-
-**Act as a Principal Full‑Stack Software Engineer, Advanced Design System Designer, and Graphical Interface Architect.** You have extensive experience in CAD environments, spatial diagramming (Figma/Miro), high‑density industrial HMI/SCADA systems, directed‑graph engines, and workflow automation.
+**Act as a Principal Full‑Stack Software Engineer, Advanced Design System Designer, and Graphical Interface Architect.** You have extensive experience in CAD environments, spatial diagramming, high‑density industrial HMI/SCADA systems, directed‑graph engines, and workflow automation.
 
 Build a highly performant, OS-like web application called **VizPM** (Visual Project Manager). It combines an infinite canvas, Kanban, Gantt, directed graphs, and SCADA-like monitoring. The goal is to explain complex projects at a glance, build them step-by-step, and ensure a **Single Source of Truth**: a change in any view instantly propagates to all others.
 
 ---
 
 ## 1. ARQUITECTURA GLOBAL (APP SHELL)
-La aplicación no es una página web simple, sino un "Sistema Operativo" en el navegador:
-- **Header Global Superior**: Logo "VizPM" (izquierda), Menú "Archivo" (Nuevo, Abrir, Guardar, Guardar borrador, Cargar versión), Selectores de Vista Global (Canvas, Gantt, Kanban, Grafo), Toggle "Modo Simple/Avanzado", y Avatar de usuario (simulado como "Leo", admin).
+La aplicación funciona como un "Sistema Operativo" en el navegador:
+- **Header Global Superior**: Logo "VizPM" (izquierda), Menú "Archivo" (Nuevo, Abrir, Guardar, Guardar borrador, Cargar versión), Selectores de Vista Global (Canvas, Gantt, Kanban, Grafo), **Toggle Switch (interruptor) claro y visible** para "Modo Simple/Avanzado", y Avatar de usuario (simulado como "Leo", admin).
 - **Taskbar Inferior**: Muestra íconos de las ventanas de proyecto abiertas. Permite cambiar entre proyectos, minimizar o cerrar ventanas.
 - **Persistencia Global**: `localStorage` guarda configuraciones globales, ventanas abiertas y el log de actividad.
 
 ## 2. VENTANA DE PROYECTO (CANVAS COMO `main`)
-- Cada proyecto se abre como una **Ventana flotante** dentro del App Shell, con barra de título: `[Nombre del Proyecto] [—] [□] [X]`.
-- **Comportamiento OS**: Se puede mover (arrastrando la barra de título), redimensionar (desde las esquinas), minimizar a la taskbar, maximizar al área de trabajo o cerrar (con diálogo de guardado).
-- **El Canvas es la tarjeta `main`**: El lienzo infinito no es un fondo vacío. Es técnicamente la tarjeta raíz (`id: "main"`, `parentId: null`). Tiene todas las propiedades de una tarjeta (título, descripción, tabs, owner, progreso, fechas) y contiene a todos los macro-bloques como hijos directos. Su tamaño inicial es generoso (ej. 8000x5000px) y configurable.
+- Cada proyecto se abre como una **Ventana flotante** dentro del App Shell.
+- **Barra de Título de Ventana**: Debe tener explícitamente los **tres botones de control estándar**: Minimizar (—), Maximizar (□) y Cerrar (X), con su funcionalidad real (minimizar a taskbar, maximizar al área de trabajo, cerrar con diálogo de guardado).
+- **El Canvas es la tarjeta `main`**: El lienzo infinito es técnicamente la tarjeta raíz (`id: "main"`, `parentId: null`). Tiene todas las propiedades de una tarjeta y contiene a todos los macro-bloques como hijos directos. Su tamaño inicial es generoso (ej. 8000x5000px) y configurable desde el panel lateral.
 
 ## 3. ANATOMÍA Y ESTRUCTURA INTERNA DE TARJETAS (CRÍTICO)
-Las tarjetas tienen una **jerarquía de 3 niveles**: Macro-bloque (hijo de `main`) → Componente (hijo de macro-bloque) → Sub-componente (hijo de componente). Su disposición interna es **variable, configurable y adaptable**.
+Las tarjetas tienen una **jerarquía de 3 niveles**: Macro-bloque → Componente → Sub-componente. Su disposición interna es **variable, configurable y adaptable**.
 
 ### 3.1 Modos de Visualización
 - **Modo Detallado (`compactView: false`)**: Apila 6 zonas verticales.
-- **Modo Compacto (`compactView: true`)**: Ratio 4:3 fijo. Imagen de fondo a pantalla completa con degradado oscuro. Solo muestra: título (max 30 chars), avatares pequeños, mini barra de progreso y botón para volver a detallado.
+- **Modo Compacto (`compactView: true`)**: Ratio 4:3 fijo. Imagen de fondo a pantalla completa con degradado oscuro. Solo muestra: título (máx. 30 chars), avatares pequeños, mini barra de progreso y botón para volver a detallado.
 
 ### 3.2 Zonas del Modo Detallado (De arriba a abajo)
-- **Zona A (Título)**: Fondo oscuro con una línea de acento a la izquierda (`borderColor`). Título alineado a la izquierda (máx. 50 caracteres, truncado con `...`). A la derecha: ícono de colapsar/expandir y botón "Vista rápida" (ojo). **Prohibido mostrar íconos, códigos WBS o porcentajes aquí**.
+- **Zona A (Título)**: Fondo oscuro con línea de acento a la izquierda (`borderColor`). Título alineado a la izquierda (máx. 50 caracteres, truncado con `...`). A la derecha: ícono de colapsar/expandir y botón "Vista rápida" (ojo). **Prohibido mostrar íconos, códigos WBS o porcentajes aquí**.
 - **Zona B (Progreso)**: Barra de progreso delgada a lo ancho de la tarjeta.
-- **Zona C (Metadatos)**: Fila horizontal con: Avatares de owner (círculos con iniciales, estilo Google, máx. 3 + "+N"), etiqueta de Área (pill), texto de porcentaje (ej. "65%"), ícono de engranaje (abre panel lateral), botón "IDEA" (nota personal en localStorage). Si está colapsada y `showMiniPendingBlocks` es true, muestra pills con códigos WBS de hijos con progreso < 100% e indicadores de alerta.
-- **Zona D (Pestañas)**: Tabs: **"Trabajo"** (checklist con toggle "Auto-completar al finalizar" que cambia el status a "Completado"), **"Técnico"**, **"Económico"**, **"Reqs"** y **"Comentarios"** (thread público con avatar, timestamp y texto).
+- **Zona C (Metadatos)**: Fila horizontal con: Avatares de owner (círculos con iniciales, máx. 3 + "+N"), etiqueta de Área (pill), texto de porcentaje, ícono de engranaje (abre panel lateral), botón "IDEA" (nota personal en localStorage). Si está colapsada y `showMiniPendingBlocks` es true, muestra pills con códigos WBS de hijos con progreso < 100% e indicadores de alerta.
+- **Zona D (Pestañas)**: Tabs: **"Trabajo"** (checklist con toggle "Auto-completar al finalizar"), **"Técnico"**, **"Económico"**, **"Reqs"** y **"Comentarios"** (thread público con avatar, timestamp y texto).
 - **Zona E (Dropzone de Sub-bloques)**: Contenedor para tarjetas hijas. Muestra texto guía si está vacío. Se oculta si la tarjeta está colapsada.
 
 ### 3.3 Configuración de Layout Interno (`layoutMode`)
@@ -50,55 +45,60 @@ Si la tarjeta se redimensiona y el contenido excede la altura, las **Zonas C, D 
 ## 4. PANEL LATERAL INTELIGENTE (TRIÁNGULO)
 - Un botón de **triángulo (▶/◀)** está *siempre visible* en el borde derecho de la Ventana de Proyecto.
 - **Auto-expansión**: Al hacer clic en cualquier tarjeta del canvas, el panel se desliza hacia afuera automáticamente, mostrando las propiedades editables de esa tarjeta específica.
-- **Contenido**: Título/descripción editables, todas las Pestañas (Trabajo, Técnico, etc.), reglas de notificación, permisos, historial de cambios de esa tarjeta y conexiones detalladas.
-- **Propósito**: Mantener el canvas extremadamente limpio. Toda la edición profunda ocurre aquí, no en pop-ups flotantes desordenados.
+- **Contenido**: Título/descripción editables, todas las Pestañas, reglas de notificación, permisos, historial de cambios de esa tarjeta y conexiones detalladas. Mantiene el canvas extremadamente limpio.
 
 ## 5. VISTAS FUNCIONALES (SINGLE SOURCE OF TRUTH)
-Todas las vistas leen y escriben en el mismo estado JSON. Los cambios son reactivos e instantáneos:
-- **Canvas (SCADA)**: Lienzo infinito, transformaciones GPU, grilla de fondo, conexiones SVG Bézier animadas, minimapa, filtro rápido por owner (atenúa las no coincidentes).
-- **Gantt**: Tarjetas raíz como barras horizontales en un calendario. Arrastrar/redimensionar actualiza `startDate`/`dueDate` en todas partes. Las conexiones definen dependencias Finish-to-Start y resaltan la ruta crítica en rojo.
-- **Kanban**: Columnas (Sin Empezar, En Progreso, Bloqueado, Completado). Tarjetas compactas. Arrastrar entre columnas cambia el `status` globalmente.
+Todas las vistas leen y escriben en el mismo estado. Los cambios son reactivos e instantáneos:
+- **Canvas (SCADA)**: Lienzo infinito, transformaciones GPU, grilla de fondo, conexiones SVG Bézier animadas, minimapa, filtro rápido por owner.
+- **Gantt**: Tarjetas raíz como barras horizontales. Arrastrar/redimensionar actualiza fechas en todas partes. Las conexiones definen dependencias Finish-to-Start y resaltan la ruta crítica en rojo.
+- **Kanban**: Columnas (Sin Empezar, En Progreso, Bloqueado, Completado). Arrastrar entre columnas cambia el `status` globalmente.
 - **Grafo**: Layout force-directed o jerárquico de todas las tarjetas y conexiones. Nodos expandibles.
-- **Modo Presentación**: Transiciones suaves de cámara entre tarjetas seleccionadas o raíz.
+- **Modo Presentación**: Transiciones suaves de cámara entre tarjetas seleccionadas.
 
-## 6. DASHBOARD EJECUTIVO
-- Panel colapsable en la parte superior de la Ventana de Proyecto (debajo de la barra de título de la ventana).
-- Muestra KPIs en tiempo real: % de avance global (promedio ponderado), Presupuesto vs Gastado (gráfico de donut), Lista de bloqueos activos, Nodos de ruta crítica y Próximos 5 hitos.
+## 6. DASHBOARD EJECUTIVO (COLAPSABLE)
+- Panel ubicado en la parte superior de la Ventana de Proyecto (debajo de la barra de título de la ventana).
+- **Debe ser completamente colapsable/desplegable** mediante un botón de toggle, permitiendo al usuario ocultarlo para ganar espacio vertical en la ventana cuando no se necesita.
+- Muestra KPIs en tiempo real: % de avance global, Presupuesto vs Gastado (gráfico de donut), Lista de bloqueos activos, Nodos de ruta crítica y Próximos 5 hitos.
 
 ## 7. INTELIGENCIA DE DATOS (ROLLUP Y ALERTAS)
-- **Rollup Jerárquico**: El `presupuesto` y `gastado` de un padre es la suma de todos sus descendientes. El `progress` es el promedio ponderado de los hijos directos. Los valores agregados se muestran con un ícono "∑" y estilo itálico. Editar manualmente un valor de padre rompe la agregación (muestra advertencia).
+- **Rollup Jerárquico**: El `presupuesto` y `gastado` de un padre es la suma de todos sus descendientes. El `progress` es el promedio ponderado de los hijos directos. Los valores agregados se muestran con un ícono "∑". Editar manualmente un valor de padre rompe la agregación (muestra advertencia).
 - **Alertas en Cascada**: Monitorea subtrees en busca de `status: 'Bloqueado'` o `reqs` con `status: 'pending'`. Los incidentes burbujean hasta la raíz, mostrando un badge rojo parpadeante (CSS `pulse-border`) en la Zona C, incluso si la tarjeta está colapsada.
-- **Notificaciones Inteligentes**: Motor de reglas en el JSON (`notificationRules`). Ej: `trigger: "dueDate < 48h"`, `action: "badge + webhook"`.
+- **Notificaciones Inteligentes**: Motor de reglas en el estado (`notificationRules`). Ej: `trigger: "dueDate < 48h"`, `action: "badge + webhook"`.
 
 ## 8. INTERACCIONES Y PERFORMANCE (AGILIDAD)
 - **Drag Optimizado**: Usa un "fantasma" (proxy) ligero acelerado por GPU durante el arrastre. El DOM real solo se actualiza en el evento `drop`.
 - **Resize Optimizado**: Usa `transform: scale` y `will-change: transform`. El `ResizeObserver` *solo* recalcula las rutas de las conexiones SVG, **nunca** re-renderiza el DOM interno de la tarjeta.
 - **Marquee (Multi-selección)**: Rectángulo semitransparente. Usa `requestAnimationFrame` y culling de viewport para evaluar solo tarjetas visibles.
 - **Drop Zones Inteligentes**: Al arrastrar sobre otra tarjeta, se iluminan 3 zonas: Borde superior (hermano anterior), Centro (hijo), Borde inferior (hermano posterior).
-- **Atajos**: Ctrl+Z/Y (Undo/Redo, 50 pasos), Ctrl+C/V (Duplicar con nuevo ID y offset), Suprimir (con diálogo de confirmación para hijos).
+- **Atajos**: Ctrl+Z/Y (Undo/Redo, 50 pasos), Ctrl+C/V (Duplicar con nuevo ID y offset), Suprimir (con diálogo de confirmación).
 
 ## 9. PERSISTENCIA Y CONTROL DE VERSIONES
-- **Claves localStorage**: `vizpm_projects` (array de estados), `vizpm_open_windows`, `vizpm_global_settings`, `vizpm_activity_log`, `undoStack`/`redoStack` (por ventana), `userNotes`.
-- **Auto-save**: Cada 5 minutos y con debounce de 2s tras acciones significativas (drop, resize end, status change).
-- **Versiones**: "Guardar como borrador" crea un snapshot nombrado en `projectVersions`. "Cargar versión" restaura con confirmación.
+- **Claves localStorage**: `vizpm_projects`, `vizpm_open_windows`, `vizpm_global_settings`, `vizpm_activity_log`, `undoStack`/`redoStack`, `userNotes`.
+- **Auto-save**: Cada 5 minutos y con debounce de 2s tras acciones significativas.
+- **Versiones**: "Guardar como borrador" crea un snapshot nombrado. "Cargar versión" restaura con confirmación.
 
 ## 10. COLABORACIÓN Y ROLES (PREPARACIÓN)
 - El modelo de datos incluye `users: [{name, role: "admin"|"write"|"read"}]` y campo opcional `permissions` por tarjeta.
 - Las mutaciones de estado están estructuradas como operaciones `{ userId, timestamp, targetId, field, value }`, listas para futura integración con Yjs/CRDT y cola offline-first.
 
 ## 11. MODOS DE VISUALIZACIÓN
-- **Simple / Avanzado**: Toggle global. "Simple" oculta códigos WBS, matemáticas de rollup, vista de Grafo y pestañas técnicas. Ideal para clientes o nuevos miembros. "Avanzado" muestra todo.
+- **Simple / Avanzado**: Toggle switch global. "Simple" oculta códigos WBS, matemáticas de rollup, vista de Grafo y pestañas técnicas. "Avanzado" muestra todo.
 - **Focus Modes**: "Trabajo" (oculta hijos, expande tabs), "Bloques" (oculta tabs, expande hijos), "Híbrido" (todo visible).
 
-## 12. ESTILOS Y RESTRICCIONES VISUALES
+## 12. ESTILOS Y RESTRICCIONES VISUALES (TAILWIND + DAISYUI)
+- **Stack Tecnológico**: HTML5, Vanilla ES6+ JavaScript, **Tailwind CSS y DaisyUI cargados vía CDN**. Esto es obligatorio para reducir el código CSS y garantizar componentes premium (cards, tabs, progress bars, avatars, toggles, modals) con modo oscuro nativo (`data-theme="dark"`).
 - **Tema**: Dark mode premium estilo Vercel/Shadcn. Fondos `#0b0f19`, tarjetas `#111827`, texto blanco nítido, acentos en azul, púrpura y verde.
-- **Tipografía y UI**: `border-radius: 8px`, fondos de inputs `#1e293b`, transiciones de 0.2s.
+- **Tipografía y UI**: `border-radius` consistente, transiciones de 0.2s.
 - **Imágenes**: `object-fit: cover`, esquinas redondeadas.
-- **Animaciones**: Todos los paneles nuevos (lateral, dashboard, activity feed) usan animaciones de slide-in/slide-out.
-- **Librerías**: Vanilla ES6+ HTML/CSS/JS. FontAwesome (o similar) para íconos. Sin frameworks pesados.
+- **Animaciones**: Todos los paneles nuevos (lateral, dashboard, activity feed) usan animaciones de slide-in/slide-out suaves.
 
 ## 13. ENTREGABLES
-Genera **dos archivos completos y funcionales** sin placeholders:
-1. **`index.html`**: Contiene todo el HTML, CSS y JS (Vanilla ES6+) implementando **cada uno de los 12 puntos anteriores** con precisión milimétrica.
-2. **`data.json`**: Utiliza la **estructura definitiva de AeroVend 1.0 (v1.8)** acordada previamente, que demuestra la jerarquía de 3 niveles, la tarjeta `main`, las reglas de notificación, los comentarios, los usuarios y las conexiones de flujo del sistema.
+Genera **UN ÚNICO archivo completo y funcional** sin placeholders:
+1. **`index.html`**: Contiene todo el HTML, CSS (Tailwind/DaisyUI CDN) y JS (Vanilla ES6+) implementando **cada uno de los 12 puntos anteriores** con precisión milimétrica. 
+- **Nota sobre el JSON**: No generes un archivo `data.json` separado. El estado inicial de la aplicación en `index.html` debe cargarse utilizando la estructura del JSON de "AeroVend 1.0" (proporcionada en el Annex como guía base), incrustada directamente como el estado inicial del store de JavaScript.
+
+---
+
+## 📎 ANNEX – BASE STRUCTURE GUIDE (AeroVend 1.0)
+*(La IA debe usar esta estructura jerárquica de 3 niveles, con la tarjeta `main` como raíz, macro-bloques, componentes, sub-componentes, `notificationRules`, `canvasSettings`, comentarios y usuarios, como el estado inicial incrustado en el JS del `index.html`)*.
 
