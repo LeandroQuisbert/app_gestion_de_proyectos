@@ -1,6 +1,4 @@
-Perfecto. Aquí tienes el **PROMPT DEFINITIVO VizPM v1.7**, completo, con el nombre de la aplicación integrado, la distinción clara entre app y proyecto, y todas las funcionalidades anteriores. No ha sido necesario modificar el JSON (el nombre del proyecto sigue siendo “AeroVend 1.0 – Máquina Expendedora de Albahaca Viva”). Todo listo para copiar y pegar.
 
----
 
 # DEFINITIVE PROMPT – VizPM v1.7 (Visual Project Manager)
 
@@ -825,6 +823,4 @@ Generate **two complete, functional files** without placeholders:
 }
 ```
 
----
 
-*This VizPM v1.7 prompt is ready for implementation.*
