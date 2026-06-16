@@ -1,4 +1,5 @@
-AeroVend 1.0 (Visual Project Manager with Auto‑save, Version Control, Comments, Activity Feed and Collaboration‑ready Structure)
+APP V1.5 
+(Visual Project Manager with Auto‑save, Version Control, Comments, Activity Feed and Collaboration‑ready Structure)
 Act as a Principal Full‑Stack Software Engineer, Advanced Design System Designer, and Graphical Interface Architect with extensive experience in CAD environments, spatial diagramming (Figma/Miro), high‑density industrial HMI/SCADA systems, directed‑graph engines, and workflow automation (Trello/Butler).
 
 Build an interactive web application for project management and visual presentation that combines Trello (Kanban), Miro (infinite canvas + multi‑selection), SCADA (industrial monitoring), directed‑graph diagrams (Graph View), and intelligent automation. The application must allow creating, saving, loading, and versioning projects, whether starting from scratch or from a predefined template. The goal is to explain a complex project to new people at a glance, with maximum clarity, control, and automatic reaction capability, as well as to build a project step by step from scratch.
