@@ -1,7 +1,7 @@
 {
   "id": "main",
   "projectName": "AeroVend 1.0 – Máquina Expendedora de Albahaca Viva",
-  "description": "Sistema automatizado de cultivo aeropónico, cosecha robótica y distribución de albahaca fresca en máquina expendedora. Integra IoT, robótica SCARA, iluminación LED de espectro específico y monitoreo en tiempo real.",
+  "description": "Sistema automatizado de cultivo aeropónico, cosecha robótica y distribución de albahaca fresca. Integra IoT, robótica SCARA, iluminación LED de espectro específico y monitoreo en tiempo real.",
   "width": 8000,
   "height": 5000,
   "x": 0,
@@ -17,8 +17,11 @@
   "dueDate": "2025-10-01",
   "resumenView": "progress",
   "layoutMode": "libre",
+  "layoutOrientation": "default",
   "cardType": "proyecto",
   "autoComplete": false,
+  "zonesOrder": ["A", "B", "C", "D", "E"],
+  "hiddenZones": [],
   "image": {
     "src": "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=80",
     "position": "top",
@@ -41,6 +44,9 @@
     { "id": 1, "author": "Leo", "text": "Reunión inicial completada. Todos los equipos alineados.", "timestamp": "2025-02-05T10:00:00Z" },
     { "id": 2, "author": "Sofía", "text": "Protocolo de germinación en revisión.", "timestamp": "2025-02-10T14:30:00Z" }
   ],
+  "ideaNotes": [
+    { "text": "Recordar revisar la normativa sanitaria local para máquinas expendedoras de alimentos frescos antes del despliegie.", "timestamp": "2025-02-05T09:00:00Z" }
+  ],
   "canvasSettings": {
     "currentX": 0,
     "currentY": 0,
@@ -51,11 +57,11 @@
     "showMiniPendingBlocks": true,
     "bookmarks": []
   },
-  "cards": [
+  "childCards": [
     {
       "id": "riego-principal",
       "title": "Riego Aeropónico de Alta Presión",
-      "description": "Sistema de riego por aeroponía a 5.5 bar con bombas de diafragma, acumulador de presión, filtros y boquillas de spray fino para nebulización de nutrientes.",
+      "description": "Sistema de riego por aeroponía a 5.5 bar con bombas de diafragma, acumulador, filtros y boquillas de spray fino.",
       "width": 380,
       "height": 280,
       "x": 200,
@@ -71,8 +77,11 @@
       "dueDate": "2025-07-30",
       "resumenView": "progress",
       "layoutMode": "grid",
+      "layoutOrientation": "default",
       "cardType": "macro-bloque",
       "autoComplete": false,
+      "zonesOrder": ["A", "B", "C", "D", "E"],
+      "hiddenZones": [],
       "image": {
         "src": "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=600&q=80",
         "position": "right",
@@ -93,11 +102,12 @@
       "comments": [
         { "id": 1, "author": "Ponce", "text": "Bombas Seaflo seleccionadas. Pendiente acumulador.", "timestamp": "2025-03-05T09:15:00Z" }
       ],
+      "ideaNotes": [],
       "childCards": [
         {
           "id": "riego-bombas",
           "title": "Bombas de Diafragma",
-          "description": "Bombas Seaflo 33-Series de 12V, caudal 1.2 L/min, presión máxima 5.5 bar. Incluye interruptor de presión.",
+          "description": "Bombas Seaflo 33-Series de 12V, caudal 1.2 L/min, presión máxima 5.5 bar.",
           "width": 260,
           "height": 160,
           "x": 40,
@@ -113,8 +123,11 @@
           "dueDate": "2025-06-15",
           "resumenView": "progress",
           "layoutMode": "libre",
+          "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "zonesOrder": ["A", "B", "C", "D", "E"],
+          "hiddenZones": [],
           "image": {
             "src": "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=600&q=80",
             "position": "left",
@@ -125,14 +138,14 @@
           "tabs": {
             "trabajo": [
               { "text": "Comparativa de modelos", "checked": true },
-              { "text": "Pruebas de caudal", "checked": false },
-              { "text": "Instalación en chasis", "checked": false }
+              { "text": "Pruebas de caudal", "checked": false }
             ],
-            "tecnico": { "modelo": "Seaflo 33-Series", "voltaje": "12V", "presion_max": "5.5 bar" },
+            "tecnico": { "modelo": "Seaflo 33-Series", "voltaje": "12V" },
             "economico": { "presupuesto": 1200, "gastado": 850 },
             "reqs": []
           },
           "comments": [],
+          "ideaNotes": [],
           "childCards": [
             {
               "id": "riego-bomba-motor",
@@ -153,26 +166,27 @@
               "dueDate": "2025-05-20",
               "resumenView": "progress",
               "layoutMode": "libre",
+              "layoutOrientation": "default",
               "cardType": "sub-componente",
               "autoComplete": false,
+              "zonesOrder": ["A", "C", "D"],
+              "hiddenZones": ["B", "E"],
               "image": { "src": "", "position": "right", "width": 40, "height": 40 },
               "style": { "bg": "#1e1b4b", "opacity": 0.85, "borderColor": "#fdba74" },
               "tabs": {
-                "trabajo": [
-                  { "text": "Especificaciones técnicas", "checked": true },
-                  { "text": "Pruebas de rendimiento", "checked": false }
-                ],
+                "trabajo": [{ "text": "Especificaciones técnicas", "checked": true }],
                 "tecnico": { "potencia": "60W", "corriente": "5.5A" },
                 "economico": { "presupuesto": 180, "gastado": 180 },
                 "reqs": []
               },
               "comments": [],
+              "ideaNotes": [],
               "childCards": []
             },
             {
               "id": "riego-bomba-interruptor",
               "title": "Interruptor de Presión",
-              "description": "Switch automático que activa/desactiva la bomba según presión del sistema.",
+              "description": "Switch automático que activa/desactiva la bomba según presión.",
               "width": 200,
               "height": 120,
               "x": 20,
@@ -188,19 +202,21 @@
               "dueDate": "2025-06-01",
               "resumenView": "progress",
               "layoutMode": "libre",
+              "layoutOrientation": "default",
               "cardType": "sub-componente",
               "autoComplete": false,
+              "zonesOrder": ["A", "C", "D"],
+              "hiddenZones": ["B", "E"],
               "image": { "src": "", "position": "left", "width": 40, "height": 40 },
               "style": { "bg": "#1e1b4b", "opacity": 0.85, "borderColor": "#fdba74" },
               "tabs": {
-                "trabajo": [
-                  { "text": "Selección de modelo", "checked": false }
-                ],
+                "trabajo": [{ "text": "Selección de modelo", "checked": false }],
                 "tecnico": { "rango": "2.5-5.5 bar" },
                 "economico": { "presupuesto": 45, "gastado": 0 },
                 "reqs": []
               },
               "comments": [],
+              "ideaNotes": [],
               "childCards": []
             }
           ]
@@ -208,7 +224,7 @@
         {
           "id": "riego-acumulador",
           "title": "Acumulador de Presión",
-          "description": "Tanque de 2L en acero inoxidable para estabilizar la presión y reducir ciclos de la bomba.",
+          "description": "Tanque de 2L en acero inoxidable para estabilizar la presión.",
           "width": 250,
           "height": 150,
           "x": 320,
@@ -224,27 +240,27 @@
           "dueDate": "2025-07-01",
           "resumenView": "progress",
           "layoutMode": "libre",
+          "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "zonesOrder": ["A", "B", "C", "D", "E"],
+          "hiddenZones": [],
           "image": { "src": "", "position": "top", "width": "100%", "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fbbf24" },
           "tabs": {
-            "trabajo": [
-              { "text": "Cálculo de volumen", "checked": true },
-              { "text": "Selección de material", "checked": false },
-              { "text": "Instalación y pruebas", "checked": false }
-            ],
-            "tecnico": { "volumen": "2L", "material": "acero inox 316", "presion_max": "7 bar" },
+            "trabajo": [{ "text": "Cálculo de volumen", "checked": true }],
+            "tecnico": { "volumen": "2L", "material": "acero inox 316" },
             "economico": { "presupuesto": 650, "gastado": 0 },
             "reqs": []
           },
           "comments": [],
+          "ideaNotes": [],
           "childCards": []
         },
         {
           "id": "riego-filtros",
           "title": "Sistema de Filtrado",
-          "description": "Filtros de 150 micras para proteger boquillas de obstrucciones. Incluye filtro de malla y filtro de disco.",
+          "description": "Filtros de 150 micras para proteger boquillas de obstrucciones.",
           "width": 250,
           "height": 150,
           "x": 40,
@@ -260,25 +276,27 @@
           "dueDate": "2025-06-15",
           "resumenView": "progress",
           "layoutMode": "libre",
+          "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "zonesOrder": ["A", "C", "D", "E"],
+          "hiddenZones": ["B"],
           "image": { "src": "", "position": "right", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#a3e635" },
           "tabs": {
-            "trabajo": [
-              { "text": "Selección de micronaje", "checked": false }
-            ],
+            "trabajo": [{ "text": "Selección de micronaje", "checked": false }],
             "tecnico": { "micras": "150", "tipo": "malla + disco" },
             "economico": { "presupuesto": 280, "gastado": 0 },
             "reqs": []
           },
           "comments": [],
+          "ideaNotes": [],
           "childCards": []
         },
         {
           "id": "riego-boquillas",
           "title": "Boquillas de Spray",
-          "description": "Boquillas de cono hueco para nebulización fina. Ángulo 80°, caudal 0.8 L/min a 5 bar.",
+          "description": "Boquillas de cono hueco para nebulización fina. Ángulo 80°.",
           "width": 250,
           "height": 150,
           "x": 320,
@@ -294,19 +312,21 @@
           "dueDate": "2025-07-15",
           "resumenView": "progress",
           "layoutMode": "libre",
+          "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "zonesOrder": ["A", "C", "D", "E"],
+          "hiddenZones": ["B"],
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#22d3ee" },
           "tabs": {
-            "trabajo": [
-              { "text": "Pruebas de patrón de spray", "checked": false }
-            ],
-            "tecnico": { "angulo": "80°", "caudal": "0.8 L/min", "material": "acero inox" },
+            "trabajo": [{ "text": "Pruebas de patrón de spray", "checked": false }],
+            "tecnico": { "angulo": "80°", "caudal": "0.8 L/min" },
             "economico": { "presupuesto": 420, "gastado": 0 },
             "reqs": []
           },
           "comments": [],
+          "ideaNotes": [],
           "childCards": []
         }
       ]
@@ -314,7 +334,7 @@
     {
       "id": "elec-principal",
       "title": "Electrónica y Control",
-      "description": "Toda la electrónica embebida, sensores, actuadores y PCB controladora basada en ESP32 con conectividad WiFi + CAN.",
+      "description": "Electrónica embebida, sensores, actuadores y PCB controladora basada en ESP32 con WiFi + CAN.",
       "width": 360,
       "height": 260,
       "x": 700,
@@ -330,8 +350,11 @@
       "dueDate": "2025-06-30",
       "resumenView": "progress",
       "layoutMode": "grid",
+      "layoutOrientation": "default",
       "cardType": "macro-bloque",
       "autoComplete": false,
+      "zonesOrder": ["A", "B", "C", "D", "E"],
+      "hiddenZones": [],
       "image": {
         "src": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&q=80",
         "position": "left",
@@ -342,10 +365,9 @@
       "tabs": {
         "trabajo": [
           { "text": "Selección de sensores (T°, HR, CO2)", "checked": true },
-          { "text": "Diseño PCB controladora", "checked": false },
-          { "text": "Integración con software", "checked": false }
+          { "text": "Diseño PCB controladora", "checked": false }
         ],
-        "tecnico": { "mcu": "ESP32", "comunicacion": "WiFi + CAN", "voltaje": "12V/5V/3.3V" },
+        "tecnico": { "mcu": "ESP32", "comunicacion": "WiFi + CAN" },
         "economico": { "presupuesto": 12500, "gastado": 4500 },
         "reqs": [
           { "id": 1, "from": "Software", "text": "Protocolo MQTT estable", "status": "pending" }
@@ -354,11 +376,14 @@
       "comments": [
         { "id": 1, "author": "Leo", "text": "ESP32 seleccionado. PCB en diseño.", "timestamp": "2025-03-01T11:00:00Z" }
       ],
+      "ideaNotes": [
+        { "text": "Evaluar usar ESP32-S3 por la mayor cantidad de pines GPIO para futuros sensores.", "timestamp": "2025-03-02T15:30:00Z" }
+      ],
       "childCards": [
         {
           "id": "elec-leds",
           "title": "Sistema de Iluminación LED",
-          "description": "Barras LED de espectro optimizado para fotosíntesis de albahaca. Potencia total 300W, espectro 450-660nm.",
+          "description": "Barras LED de espectro optimizado para fotosíntesis. Potencia total 300W.",
           "width": 270,
           "height": 170,
           "x": 50,
@@ -374,8 +399,11 @@
           "dueDate": "2025-05-15",
           "resumenView": "progress",
           "layoutMode": "libre",
+          "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "zonesOrder": ["A", "B", "C", "D", "E"],
+          "hiddenZones": [],
           "image": {
             "src": "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&w=600&q=80",
             "position": "top",
@@ -384,16 +412,13 @@
           },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fbbf24" },
           "tabs": {
-            "trabajo": [
-              { "text": "Espectro lumínico optimizado", "checked": true },
-              { "text": "Montaje de barras LED", "checked": false },
-              { "text": "Control de intensidad (PWM)", "checked": false }
-            ],
-            "tecnico": { "potencia": "300W", "espectro": "450-660nm", "eficiencia": "2.5 µmol/J" },
+            "trabajo": [{ "text": "Espectro lumínico optimizado", "checked": true }],
+            "tecnico": { "potencia": "300W", "espectro": "450-660nm" },
             "economico": { "presupuesto": 2800, "gastado": 1800 },
             "reqs": []
           },
           "comments": [],
+          "ideaNotes": [],
           "childCards": [
             {
               "id": "elec-leds-barras",
@@ -414,20 +439,21 @@
               "dueDate": "2025-04-30",
               "resumenView": "progress",
               "layoutMode": "libre",
+              "layoutOrientation": "default",
               "cardType": "sub-componente",
               "autoComplete": false,
+              "zonesOrder": ["A", "C", "D"],
+              "hiddenZones": ["B", "E"],
               "image": { "src": "", "position": "right", "width": 40, "height": 40 },
               "style": { "bg": "#1e1b4b", "opacity": 0.85, "borderColor": "#fde047" },
               "tabs": {
-                "trabajo": [
-                  { "text": "Pedido de muestras", "checked": true },
-                  { "text": "Pruebas de PPFD", "checked": false }
-                ],
-                "tecnico": { "modelo": "LM301H", "longitud": "60cm" },
+                "trabajo": [{ "text": "Pedido de muestras", "checked": true }],
+                "tecnico": { "modelo": "LM301H" },
                 "economico": { "presupuesto": 1800, "gastado": 1400 },
                 "reqs": []
               },
               "comments": [],
+              "ideaNotes": [],
               "childCards": []
             },
             {
@@ -449,19 +475,21 @@
               "dueDate": "2025-05-05",
               "resumenView": "progress",
               "layoutMode": "libre",
+              "layoutOrientation": "default",
               "cardType": "sub-componente",
               "autoComplete": false,
+              "zonesOrder": ["A", "C", "D"],
+              "hiddenZones": ["B", "E"],
               "image": { "src": "", "position": "left", "width": 40, "height": 40 },
               "style": { "bg": "#1e1b4b", "opacity": 0.85, "borderColor": "#fde047" },
               "tabs": {
-                "trabajo": [
-                  { "text": "Configuración de corriente", "checked": false }
-                ],
-                "tecnico": { "modelo": "HLG-320H-48A", "potencia": "320W" },
+                "trabajo": [{ "text": "Configuración de corriente", "checked": false }],
+                "tecnico": { "modelo": "HLG-320H-48A" },
                 "economico": { "presupuesto": 420, "gastado": 280 },
                 "reqs": []
               },
               "comments": [],
+              "ideaNotes": [],
               "childCards": []
             }
           ]
@@ -469,7 +497,7 @@
         {
           "id": "elec-sensores",
           "title": "Red de Sensores Ambientales",
-          "description": "Sensores DHT22 (T°/HR), MH-Z19 (CO2) y capacitivos de nivel para monitoreo en tiempo real.",
+          "description": "Sensores DHT22, MH-Z19 y capacitivos de nivel para monitoreo en tiempo real.",
           "width": 260,
           "height": 160,
           "x": 340,
@@ -485,26 +513,27 @@
           "dueDate": "2025-06-01",
           "resumenView": "progress",
           "layoutMode": "libre",
+          "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "zonesOrder": ["A", "C", "D", "E"],
+          "hiddenZones": ["B"],
           "image": { "src": "", "position": "right", "width": 60, "height": 60 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#34d399" },
           "tabs": {
-            "trabajo": [
-              { "text": "Calibración de sensores", "checked": false },
-              { "text": "Integración con ESP32", "checked": false }
-            ],
+            "trabajo": [{ "text": "Calibración de sensores", "checked": false }],
             "tecnico": { "tipo": "DHT22, MH-Z19, capacitivo" },
             "economico": { "presupuesto": 850, "gastado": 200 },
             "reqs": []
           },
           "comments": [],
+          "ideaNotes": [],
           "childCards": []
         },
         {
           "id": "elec-pcb",
           "title": "PCB Controladora ESP32",
-          "description": "PCB personalizada con ESP32-WROOM-32, drivers de potencia, interfaces I2C/SPI y conectores CAN.",
+          "description": "PCB personalizada con ESP32-WROOM-32, drivers de potencia y conectores CAN.",
           "width": 260,
           "height": 160,
           "x": 50,
@@ -520,21 +549,21 @@
           "dueDate": "2025-06-20",
           "resumenView": "progress",
           "layoutMode": "libre",
+          "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "zonesOrder": ["A", "B", "C", "D", "E"],
+          "hiddenZones": [],
           "image": { "src": "", "position": "left", "width": 60, "height": 60 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#60a5fa" },
           "tabs": {
-            "trabajo": [
-              { "text": "Diseño esquemático", "checked": false },
-              { "text": "Layout PCB", "checked": false },
-              { "text": "Fabricación y pruebas", "checked": false }
-            ],
-            "tecnico": { "mcu": "ESP32-WROOM-32", "interfaces": "I2C, SPI, CAN" },
+            "trabajo": [{ "text": "Diseño esquemático", "checked": false }],
+            "tecnico": { "mcu": "ESP32-WROOM-32" },
             "economico": { "presupuesto": 1200, "gastado": 0 },
             "reqs": []
           },
           "comments": [],
+          "ideaNotes": [],
           "childCards": []
         }
       ]
@@ -542,7 +571,7 @@
     {
       "id": "robotica-principal",
       "title": "Brazo Robótico SCARA",
-      "description": "Brazo SCARA de 4 DOF con payload de 500g para cosecha automatizada de albahaca. Incluye gripper flexible y visión artificial.",
+      "description": "Brazo SCARA de 4 DOF con payload de 500g para cosecha automatizada. Incluye gripper y visión.",
       "width": 370,
       "height": 270,
       "x": 1150,
@@ -558,8 +587,11 @@
       "dueDate": "2025-08-30",
       "resumenView": "progress",
       "layoutMode": "grid",
+      "layoutOrientation": "default",
       "cardType": "macro-bloque",
       "autoComplete": false,
+      "zonesOrder": ["A", "B", "C", "D", "E"],
+      "hiddenZones": [],
       "image": {
         "src": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80",
         "position": "right",
@@ -568,11 +600,7 @@
       },
       "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#8b5cf6" },
       "tabs": {
-        "trabajo": [
-          { "text": "Diseño cinemático del brazo (4 DOF)", "checked": true },
-          { "text": "Simulación de movimientos", "checked": false },
-          { "text": "Pruebas de repetibilidad", "checked": false }
-        ],
+        "trabajo": [{ "text": "Diseño cinemático del brazo (4 DOF)", "checked": true }],
         "tecnico": { "tipo": "SCARA", "payload": "500g", "alcance": "600mm" },
         "economico": { "presupuesto": 15500, "gastado": 2500 },
         "reqs": []
@@ -580,11 +608,12 @@
       "comments": [
         { "id": 1, "author": "Leo", "text": "Cinemática validada en MATLAB. Pendiente prototipo.", "timestamp": "2025-03-15T16:00:00Z" }
       ],
+      "ideaNotes": [],
       "childCards": [
         {
           "id": "robotica-gripper",
           "title": "Efector Final (Gripper)",
-          "description": "Gripper flexible de silicona para cosecha sin dañar las hojas de albahaca. Actuador neumático.",
+          "description": "Gripper flexible de silicona para cosecha sin dañar las hojas.",
           "width": 260,
           "height": 160,
           "x": 50,
@@ -600,20 +629,21 @@
           "dueDate": "2025-07-15",
           "resumenView": "progress",
           "layoutMode": "libre",
+          "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "zonesOrder": ["A", "C", "D", "E"],
+          "hiddenZones": ["B"],
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#c084fc" },
           "tabs": {
-            "trabajo": [
-              { "text": "Seleccionar material flexible", "checked": false },
-              { "text": "Diseño de dedos", "checked": false }
-            ],
-            "tecnico": { "material": "silicona alimentaria", "actuador": "neumático" },
+            "trabajo": [{ "text": "Seleccionar material flexible", "checked": false }],
+            "tecnico": { "material": "silicona alimentaria" },
             "economico": { "presupuesto": 650, "gastado": 0 },
             "reqs": []
           },
           "comments": [],
+          "ideaNotes": [],
           "childCards": []
         },
         {
@@ -635,26 +665,27 @@
           "dueDate": "2025-06-30",
           "resumenView": "progress",
           "layoutMode": "libre",
+          "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "zonesOrder": ["A", "C", "D", "E"],
+          "hiddenZones": ["B"],
           "image": { "src": "", "position": "right", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#a78bfa" },
           "tabs": {
-            "trabajo": [
-              { "text": "Selección de modelo", "checked": true },
-              { "text": "Pruebas de torque", "checked": false }
-            ],
-            "tecnico": { "modelo": "NEMA 17", "torque": "0.55 Nm", "encoder": "1000 PPR" },
+            "trabajo": [{ "text": "Selección de modelo", "checked": true }],
+            "tecnico": { "modelo": "NEMA 17", "torque": "0.55 Nm" },
             "economico": { "presupuesto": 980, "gastado": 480 },
             "reqs": []
           },
           "comments": [],
+          "ideaNotes": [],
           "childCards": []
         },
         {
           "id": "robotica-vision",
           "title": "Visión Artificial",
-          "description": "Cámara Intel RealSense D435 para detección de plantas y guía del brazo robótico.",
+          "description": "Cámara Intel RealSense D435 para detección de plantas y guía del brazo.",
           "width": 260,
           "height": 160,
           "x": 50,
@@ -670,19 +701,21 @@
           "dueDate": "2025-08-15",
           "resumenView": "progress",
           "layoutMode": "libre",
+          "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "zonesOrder": ["A", "C", "D", "E"],
+          "hiddenZones": ["B"],
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#e879f9" },
           "tabs": {
-            "trabajo": [
-              { "text": "Entrenamiento de modelo YOLO", "checked": false }
-            ],
+            "trabajo": [{ "text": "Entrenamiento de modelo YOLO", "checked": false }],
             "tecnico": { "camara": "Intel RealSense D435", "modelo": "YOLOv8" },
             "economico": { "presupuesto": 450, "gastado": 0 },
             "reqs": []
           },
           "comments": [],
+          "ideaNotes": [],
           "childCards": []
         }
       ]
@@ -690,7 +723,7 @@
     {
       "id": "cultivo-biologia",
       "title": "Cultivo y Biología",
-      "description": "Protocolo de germinación y solución nutritiva para albahaca genovesa. Densidad objetivo: 40 plantas/m². Ciclo de 21 días.",
+      "description": "Protocolo de germinación y solución nutritiva para albahaca genovesa. Densidad: 40 plantas/m².",
       "width": 350,
       "height": 260,
       "x": 200,
@@ -706,8 +739,11 @@
       "dueDate": "2025-09-01",
       "resumenView": "progress",
       "layoutMode": "grid",
+      "layoutOrientation": "default",
       "cardType": "macro-bloque",
       "autoComplete": false,
+      "zonesOrder": ["A", "B", "C", "D", "E"],
+      "hiddenZones": [],
       "image": {
         "src": "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&w=600&q=80",
         "position": "right",
@@ -716,23 +752,20 @@
       },
       "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#10b981" },
       "tabs": {
-        "trabajo": [
-          { "text": "Protocolo de germinación", "checked": false },
-          { "text": "Solución nutritiva óptima", "checked": false },
-          { "text": "Pruebas de crecimiento", "checked": false }
-        ],
-        "tecnico": { "variedad": "Albahaca Genovesa", "densidad": "40 plantas/m²", "ciclo": "21 días" },
+        "trabajo": [{ "text": "Protocolo de germinación", "checked": false }],
+        "tecnico": { "variedad": "Albahaca Genovesa", "densidad": "40 plantas/m²" },
         "economico": { "presupuesto": 3800, "gastado": 500 },
         "reqs": []
       },
       "comments": [
         { "id": 1, "author": "Sofía", "text": "Germinación en prueba. 85% de éxito.", "timestamp": "2025-03-20T10:30:00Z" }
       ],
+      "ideaNotes": [],
       "childCards": [
         {
           "id": "cultivo-nutrientes",
           "title": "Nutrientes y pH",
-          "description": "Preparación de solución stock A y B con EC 1.8 mS/cm y pH 5.8. Incluye sistema de dosificación automática.",
+          "description": "Preparación de solución stock A y B con EC 1.8 mS/cm y pH 5.8.",
           "width": 260,
           "height": 160,
           "x": 50,
@@ -748,26 +781,27 @@
           "dueDate": "2025-08-15",
           "resumenView": "progress",
           "layoutMode": "libre",
+          "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "zonesOrder": ["A", "C", "D", "E"],
+          "hiddenZones": ["B"],
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#34d399" },
           "tabs": {
-            "trabajo": [
-              { "text": "Preparar solución stock A y B", "checked": false },
-              { "text": "Calibrar sensores pH/EC", "checked": false }
-            ],
-            "tecnico": { "ec": "1.8 mS/cm", "ph": "5.8", "temperatura": "20°C" },
+            "trabajo": [{ "text": "Preparar solución stock A y B", "checked": false }],
+            "tecnico": { "ec": "1.8 mS/cm", "ph": "5.8" },
             "economico": { "presupuesto": 750, "gastado": 80 },
             "reqs": []
           },
           "comments": [],
+          "ideaNotes": [],
           "childCards": []
         },
         {
           "id": "cultivo-bandejas",
           "title": "Bandejas de Cultivo",
-          "description": "Bandejas de 60x40cm con 40 cavidades. Material plástico alimentario reutilizable.",
+          "description": "Bandejas de 60x40cm con 40 cavidades. Plástico alimentario reutilizable.",
           "width": 260,
           "height": 160,
           "x": 330,
@@ -783,26 +817,27 @@
           "dueDate": "2025-07-01",
           "resumenView": "progress",
           "layoutMode": "libre",
+          "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "zonesOrder": ["A", "C", "D", "E"],
+          "hiddenZones": ["B"],
           "image": { "src": "", "position": "right", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#6ee7b7" },
           "tabs": {
-            "trabajo": [
-              { "text": "Diseño de cavidades", "checked": true },
-              { "text": "Pruebas de drenaje", "checked": false }
-            ],
-            "tecnico": { "dimensiones": "60x40cm", "cavidades": "40", "material": "PP alimentario" },
+            "trabajo": [{ "text": "Diseño de cavidades", "checked": true }],
+            "tecnico": { "dimensiones": "60x40cm", "material": "PP alimentario" },
             "economico": { "presupuesto": 480, "gastado": 180 },
             "reqs": []
           },
           "comments": [],
+          "ideaNotes": [],
           "childCards": []
         },
         {
           "id": "cultivo-semillas",
           "title": "Selección de Semillas",
-          "description": "Semillas de albahaca genovesa certificadas orgánicas. Germinación en cubos de lana de roca.",
+          "description": "Semillas de albahaca genovesa certificadas orgánicas. Germinación en lana de roca.",
           "width": 260,
           "height": 160,
           "x": 50,
@@ -818,20 +853,21 @@
           "dueDate": "2025-06-15",
           "resumenView": "progress",
           "layoutMode": "libre",
+          "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "zonesOrder": ["A", "C", "D", "E"],
+          "hiddenZones": ["B"],
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#a7f3d0" },
           "tabs": {
-            "trabajo": [
-              { "text": "Pruebas de germinación", "checked": true },
-              { "text": "Optimización de sustrato", "checked": false }
-            ],
+            "trabajo": [{ "text": "Pruebas de germinación", "checked": true }],
             "tecnico": { "sustrato": "lana de roca", "germinacion": "85%" },
             "economico": { "presupuesto": 320, "gastado": 150 },
             "reqs": []
           },
           "comments": [],
+          "ideaNotes": [],
           "childCards": []
         }
       ]
@@ -839,7 +875,7 @@
     {
       "id": "software-principal",
       "title": "Software y Programación",
-      "description": "API de monitoreo en tiempo real, frontend de panel de control y sistema de notificaciones. Stack: Node.js, React, MQTT, PostgreSQL.",
+      "description": "API de monitoreo en tiempo real, frontend de panel de control y sistema de notificaciones.",
       "width": 350,
       "height": 260,
       "x": 700,
@@ -855,8 +891,11 @@
       "dueDate": "2025-09-01",
       "resumenView": "progress",
       "layoutMode": "grid",
+      "layoutOrientation": "default",
       "cardType": "macro-bloque",
       "autoComplete": false,
+      "zonesOrder": ["A", "B", "C", "D", "E"],
+      "hiddenZones": [],
       "image": {
         "src": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80",
         "position": "left",
@@ -865,12 +904,8 @@
       },
       "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#ec4899" },
       "tabs": {
-        "trabajo": [
-          { "text": "API de monitoreo en tiempo real", "checked": true },
-          { "text": "Frontend panel de control", "checked": false },
-          { "text": "Sistema de notificaciones", "checked": false }
-        ],
-        "tecnico": { "stack": "Node.js, React, MQTT", "db": "PostgreSQL", "auth": "JWT" },
+        "trabajo": [{ "text": "API de monitoreo en tiempo real", "checked": true }],
+        "tecnico": { "stack": "Node.js, React, MQTT", "db": "PostgreSQL" },
         "economico": { "presupuesto": 8500, "gastado": 3200 },
         "reqs": [
           { "id": 2, "from": "Electrónica y Control", "text": "Esquema de tópicos MQTT", "status": "done" }
@@ -879,11 +914,12 @@
       "comments": [
         { "id": 1, "author": "Christian", "text": "API base funcionando. Pendiente frontend.", "timestamp": "2025-03-10T14:00:00Z" }
       ],
+      "ideaNotes": [],
       "childCards": [
         {
           "id": "software-api",
           "title": "Backend API REST",
-          "description": "API REST con Node.js + Express. Endpoints para CRUD de plantas, sensores y configuración.",
+          "description": "API REST con Node.js + Express. Endpoints para CRUD de plantas y sensores.",
           "width": 260,
           "height": 160,
           "x": 50,
@@ -899,26 +935,27 @@
           "dueDate": "2025-06-30",
           "resumenView": "progress",
           "layoutMode": "libre",
+          "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "zonesOrder": ["A", "C", "D", "E"],
+          "hiddenZones": ["B"],
           "image": { "src": "", "position": "right", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#f472b6" },
           "tabs": {
-            "trabajo": [
-              { "text": "Diseño de endpoints", "checked": true },
-              { "text": "Implementación CRUD", "checked": false }
-            ],
+            "trabajo": [{ "text": "Diseño de endpoints", "checked": true }],
             "tecnico": { "framework": "Express", "orm": "Sequelize" },
             "economico": { "presupuesto": 2800, "gastado": 1800 },
             "reqs": []
           },
           "comments": [],
+          "ideaNotes": [],
           "childCards": []
         },
         {
           "id": "software-frontend",
           "title": "Frontend React",
-          "description": "Panel de control con React + TypeScript. Dashboard, gráficos en tiempo real, configuración de alertas.",
+          "description": "Panel de control con React + TypeScript. Dashboard y gráficos en tiempo real.",
           "width": 260,
           "height": 160,
           "x": 330,
@@ -934,26 +971,27 @@
           "dueDate": "2025-08-15",
           "resumenView": "progress",
           "layoutMode": "libre",
+          "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "zonesOrder": ["A", "C", "D", "E"],
+          "hiddenZones": ["B"],
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fb7185" },
           "tabs": {
-            "trabajo": [
-              { "text": "Diseño de UI/UX", "checked": false },
-              { "text": "Implementación de componentes", "checked": false }
-            ],
+            "trabajo": [{ "text": "Diseño de UI/UX", "checked": false }],
             "tecnico": { "framework": "React 18", "estado": "Redux Toolkit" },
             "economico": { "presupuesto": 3200, "gastado": 800 },
             "reqs": []
           },
           "comments": [],
+          "ideaNotes": [],
           "childCards": []
         },
         {
           "id": "software-mqtt",
           "title": "Broker MQTT",
-          "description": "Broker Mosquitto para comunicación en tiempo real entre ESP32 y backend. Tópicos organizados por subsistema.",
+          "description": "Broker Mosquitto para comunicación en tiempo real entre ESP32 y backend.",
           "width": 260,
           "height": 160,
           "x": 50,
@@ -969,20 +1007,21 @@
           "dueDate": "2025-07-15",
           "resumenView": "progress",
           "layoutMode": "libre",
+          "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "zonesOrder": ["A", "C", "D", "E"],
+          "hiddenZones": ["B"],
           "image": { "src": "", "position": "right", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#f9a8d4" },
           "tabs": {
-            "trabajo": [
-              { "text": "Configuración de Mosquitto", "checked": true },
-              { "text": "Definición de tópicos", "checked": false }
-            ],
+            "trabajo": [{ "text": "Configuración de Mosquitto", "checked": true }],
             "tecnico": { "broker": "Mosquitto", "protocolo": "MQTT 5.0" },
             "economico": { "presupuesto": 450, "gastado": 200 },
             "reqs": []
           },
           "comments": [],
+          "ideaNotes": [],
           "childCards": []
         }
       ]
@@ -990,7 +1029,7 @@
     {
       "id": "estructura-principal",
       "title": "Estructura y Montaje",
-      "description": "Diseño del chasis modular para la máquina expendedora. Altura total 2.4m, ancho 1.5m. Material: aluminio anodizado + acero inoxidable.",
+      "description": "Diseño del chasis modular para la máquina expendedora. Altura 2.4m, ancho 1.5m.",
       "width": 330,
       "height": 220,
       "x": 1150,
@@ -1006,21 +1045,21 @@
       "dueDate": "2025-09-15",
       "resumenView": "progress",
       "layoutMode": "grid",
+      "layoutOrientation": "default",
       "cardType": "macro-bloque",
       "autoComplete": false,
+      "zonesOrder": ["A", "C", "D", "E"],
+      "hiddenZones": ["B"],
       "image": { "src": "", "position": "right", "width": 100, "height": "auto" },
       "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#6b7280" },
       "tabs": {
-        "trabajo": [
-          { "text": "Diseño del chasis modular", "checked": false },
-          { "text": "Corte y soldadura", "checked": false },
-          { "text": "Montaje final", "checked": false }
-        ],
+        "trabajo": [{ "text": "Diseño del chasis modular", "checked": false }],
         "tecnico": { "material": "aluminio 6063", "acabado": "anodizado" },
         "economico": { "presupuesto": 10200, "gastado": 0 },
         "reqs": []
       },
       "comments": [],
+      "ideaNotes": [],
       "childCards": []
     }
   ],
