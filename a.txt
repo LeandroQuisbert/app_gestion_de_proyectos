@@ -1,251 +1,366 @@
-# DEFINITIVE PROMPT – AeroVend 1.0 (Visual Project Manager with Project Creation, Saving, and Loading)
+AeroVend 1.0 (Visual Project Manager with Auto‑save, Version Control, Comments, Activity Feed and Collaboration‑ready Structure)
+Act as a Principal Full‑Stack Software Engineer, Advanced Design System Designer, and Graphical Interface Architect with extensive experience in CAD environments, spatial diagramming (Figma/Miro), high‑density industrial HMI/SCADA systems, directed‑graph engines, and workflow automation (Trello/Butler).
 
-**Act as a Principal Full‑Stack Software Engineer, Advanced Design System Designer, and Graphical Interface Architect with extensive experience in CAD environments, spatial diagramming (Figma/Miro), high‑density industrial HMI/SCADA systems, directed‑graph engines, and workflow automation (Trello/Butler).**
+Build an interactive web application for project management and visual presentation that combines Trello (Kanban), Miro (infinite canvas + multi‑selection), SCADA (industrial monitoring), directed‑graph diagrams (Graph View), and intelligent automation. The application must allow creating, saving, loading, and versioning projects, whether starting from scratch or from a predefined template. The goal is to explain a complex project to new people at a glance, with maximum clarity, control, and automatic reaction capability, as well as to build a project step by step from scratch.
 
-Build an interactive web application for **project management and visual presentation** that combines Trello (Kanban), Miro (infinite canvas + multi‑selection), SCADA (industrial monitoring), **directed‑graph diagrams** (Graph View), and **intelligent automation**. The application must allow **creating, saving, loading, and exporting projects**, whether starting from scratch or from a predefined template. The goal is to **explain a complex project to new people at a glance, with maximum clarity, control, and automatic reaction capability**, as well as to **build a project step by step from scratch**.
-
-The pre‑loaded example project is **"AeroVend 1.0"**: a giant vending machine for fresh basil grown with high‑pressure aeroponics, a robotic harvesting arm, and an automated LED lighting system. The CEO **Leo** handles electronics, LEDs, robotic arm, and automation; **Christian** handles programming; **Ponce** handles fluid mechanics; **Sofía** handles basil, nutrients, and growth. Other unassigned areas appear as “Sin asignar”.
+The pre‑loaded example project is "AeroVend 1.0": a giant vending machine for fresh basil grown with high‑pressure aeroponics, a robotic harvesting arm, and an automated LED lighting system. The CEO Leo handles electronics, LEDs, robotic arm, and automation; Christian handles programming; Ponce handles fluid mechanics; Sofía handles basil, nutrients, and growth. Other unassigned areas appear as “Sin asignar”.
 
-The aesthetic will be a **premium dark mode in the style of Vercel/Shadcn** (backgrounds `#0b0f19`, cards `#111827`, crisp white text, accents in blue, purple, and green), with an impeccable UI/UX layout where nothing feels cluttered. **FontAwesome** (or a similar icon library) will be used for interface icons, while emojis remain an option for the `icon` field of each card.
-
----
+The aesthetic will be a premium dark mode in the style of Vercel/Shadcn (backgrounds #0b0f19, cards #111827, crisp white text, accents in blue, purple, and green), with an impeccable UI/UX layout where nothing feels cluttered. FontAwesome (or a similar icon library) will be used for interface icons.
 
-## 📁 1. PROJECT MANAGEMENT (NEW, SAVE, LOAD, EXPORT/IMPORT)
-
-### 1.1 Default initial project
-When the application opens for the first time, it automatically loads the **"AeroVend 1.0"** project from the JSON provided in the ANNEX. If the user already has a project saved in `localStorage`, that project will be loaded instead.
+📁 1. PROJECT MANAGEMENT (NEW, SAVE, LOAD, VERSIONING, AUTO‑SAVE)
+1.1 Application header and File menu
+The top bar contains a minimal set of controls to avoid wasting space:
 
-### 1.2 New project (from scratch)
-- A **“New project”** button will be available in the top bar.
-- On click, the user will be asked whether to **save the current project** before continuing (see 1.3). After confirming, a new empty project will be created with:
-  - `projectName`: “Untitled project”
-  - Default `canvasSettings` (canvas 8000×5000, zoom 1, no hidden zones, etc.)
-  - `cards`: []
-  - `connections`: []
-- The user can then begin adding root cards using the **“+ Root Node”** button and freely connecting them.
-
-### 1.3 Save project
-- A **“Save”** button (floppy‑disk icon) will be available in the top bar.
-- On click, a `.json` file with the complete state of the current project (equivalent to Export) will automatically download.
-- **Additionally**, the project will be saved to `localStorage` under the key `currentProject`, so that the last saved state is restored when the page is reloaded (without needing to manually export). This action also updates the key `lastSavedProjectName` with the project’s name.
-- If the project has never been saved and the user tries to create a new one or close the tab, a warning should be shown (can be implemented with `beforeunload`).
-
-### 1.4 Load project
-- An **“Open project”** button will be available in the top bar.
-- It will allow selecting a `.json` file from the local file system and loading it, replacing the current state (with a warning if there are unsaved changes).
-- A dropdown option will also allow **loading the example project** (the AeroVend 1.0 template), in case the user wants to return to the initial demo.
-
-### 1.5 Export / Import
-- The **Export JSON** (download current state) and **Import JSON** (load from file) buttons are kept as a complement to Save/Open.
-- All states (including undo/redo history and personal notes) are cleared when creating a new project or loading one from a file.
-
----
-
-## 📄 2. INITIAL JSON (data.json)
-
-The “AeroVend 1.0” project is defined in the ANNEX as the base template. This JSON contains all cards with the new fields (`icon`, `description`, `image`, `compactView`, `autoComplete`, `cardType`, etc.) and example images from Unsplash. The AI must use it without modifications, unless a minor structural adjustment is required for implementation (which must then be justified).
-
----
-
-## 🧩 3. MODULAR CARD ANATOMY (ZONES A–E) + ENHANCEMENTS
-
-Each card is rendered with 5 strict visual zones, enriched with an icon, description, configurable image, adaptive internal scroll, compact view, and new intelligent indicators.
-
-### Zone A – Main Header
-- **Icon** (`icon`): emoji or CSS class, to the left of the title. If not defined, one is assigned automatically per area.
-- **Title** with forced ellipsis (`white-space: nowrap; overflow: hidden; text-overflow: ellipsis`).
-- **Description** (`description`): secondary text below the title (small font, color `#94a3b8`). In compact views it may be hidden or shown on hover. **Supports clickable links** in simple Markdown format (`[text](url)`) that open in a new tab.
-- **Propagated alert indicator**: if the card (or any descendant) has `status: 'Bloqueado'` or `reqs` with `status: 'pending'`, a small red/orange flashing badge (using `pulse-border` animation) is displayed in the header, similar to an industrial alarm light.
-- **Collapse button** (chevron) on the right.
-- **“Quick view” toggle**: allows switching the card between detailed mode (zones A–E) and a **compact postcard‑like mode**, which shows the cover image (`image.src`) as background, the title, and the progress, hiding zones D and E. Ideal for rapid presentations or Focus mode. The state is stored per card (`compactView: boolean`).
-- **The percentage must not be shown here.**
-
-### Zone B – Progress Bar
-- Styled native progress bar, 100% width.
-
-### Zone C – Metadata and Local Control Row
-- Avatar/name of `owner`.
-- `area` label.
-- **WBS code pill** (hierarchical, up to 10 levels) with subtle style (semi‑transparent background, small text).
-- Explicit percentage text (e.g., “65%”).
-- **Gear icon** (local configuration).
-- **“IDEA” button** (lightbulb): opens a floating panel with a textarea for personal notes (`localStorage` key `userNotes_{cardId}`).
-- **Mini pending blocks**: if `collapsed = true` and `showMiniPendingBlocks = true`, pills with the WBS of children with progress < 100% are injected, along with any child alerts (blockages, pending requirements).
+A “File” dropdown menu with options: New project, Open project, Save project, Save version as draft, Load version.
 
-### Zone D – Multi‑Dimensional Tab Panel
-- Tabs: “Trabajo” (Checklist + `+ Tarea`), “Técnico”, “Económico”, “Reqs”.
-- **Optional automatic flow rule (Auto‑complete)**:
-  - In the “Trabajo” tab, a small toggle “Auto‑complete on finish” is shown next to the checklist.
-  - If enabled, when the last pending task is checked as done, the card’s `status` automatically changes to `"Completado"`.
-  - The toggle is stored in the card (`autoComplete: boolean`, default `false`).
-- **Card polymorphism** (`cardType`): `"hito"`, `"dispositivo"`, `"subcontrata"`, `"estandar"`. Controls which tabs are displayed. If absent, `"estandar"` is assumed.
+To the right, view mode selectors, undo/redo, search, and a toggle for the Activity Feed (see section 14).
 
-### Zone E – Dropzone Container for Sub‑blocks
-- Space for child cards. Faint guide text when empty.
-- **Image support** (`image`):
-  - If `image.src` is not empty, it is rendered according to `image.position` (`"left"`, `"right"`, `"top"`).
-  - Dimensions are configurable (`width`, `height` in px or `"auto"`). Use `object-fit: cover`.
-  - **Optional auto‑adjustment**: when adding an image, the card may slightly expand its height (multiple of 5px) to avoid overflow, respecting the anchor point. This behavior can be disabled in the card’s configuration.
-- **Adaptive internal scroll**: If a card is resized below the visible content, its interior must show **automatic vertical scroll** (with a minimalistic or hidden scrollbar, similar to a `no-scrollbar` class). This allows shrinking without losing access to information.
-
----
+There are no standalone Export/Import buttons; saving always downloads a JSON file (see 1.3), and opening loads a JSON file (see 1.4).
 
-## 🖱️ 4. DRAG, MULTI‑SELECTION, RESIZE, AND KEYBOARD DELETE INTERACTIONS
+1.2 Default initial project
+When the application opens for the first time, it automatically loads the "AeroVend 1.0" project from the JSON provided in the ANNEX. If the user already has a project saved in localStorage (via auto‑save or manual save), that project will be loaded instead.
 
-### 4.1 Multi‑selection by drag (Marquee / Box Selection)
-- Clicking on the background and dragging draws a semi‑transparent blue selection rectangle.
-- On release, cards whose geometric centers intersect the rectangle become selected (highlighted border).
-- **Batch actions**: move all together, change `owner`/`status`/`area`, **delete with Delete key** (see 4.4), collapse/expand.
-- Exit selection with Escape or a click on empty space.
+1.3 Save project
+“Save” from the File menu performs two actions:
 
-### 4.2 Individual drag
-- Only from Zone A. 1:1 movement dividing deltas by `transform.scale`.
-- **Ghost Box**: phantom silhouette at the future position/size.
-- Snap on release: position → nearest multiple of 40px; size → nearest multiple of 5px.
-- Collision: when dropping on another card, assign `parentId` and relative coordinates to the parent’s Zone E container. When dropping on the background, `parentId = null`.
-- **Confirmation for destructive actions**: when deleting a card with children, or moving a card out of its parent, a confirmation dialog is shown.
+Downloads a .json file with the complete current state (equivalent to old Export).
+Saves the project to localStorage under the key currentProject (for auto‑restore on reload). The project name is stored in lastSavedProjectName.
+If the project has never been saved and the user tries to create a new one or close the tab, a warning dialog appears (can be implemented with beforeunload).
 
-### 4.3 Resize
-- Bottom‑right handle. Ghost box with snap to 5px. Double‑click for Autofit (optimal height rounded to 5px).
-- **ResizeObserver**: a `ResizeObserver` on each card will automatically redraw SVG connections and recalculate child layout when the card size changes for any reason (resize, autofit, collapse, image adjustment).
+1.4 Open project (Load)
+“Open project” from the File menu opens a file picker to load a .json file, replacing the current state (with a warning if there are unsaved changes).
 
-### 4.4 Keyboard delete (Suprimir)
-- With one or more cards selected, pressing the **Delete** key will remove the selected cards after a confirmation dialog.
-- There will be no visible delete button on the card to avoid cluttering the interface, but the keyboard action is fully functional (includes cleaning up connections, promoting orphan children or removing them based on user choice).
+A sub‑option “Load example project” restores the original AeroVend 1.0 template.
 
----
+When loading, the undo/redo stacks and activity log are cleared (user can optionally keep personal notes).
 
-## 🧭 5. GLOBAL VISUALIZATION MODES (4 MAIN VIEWS) + PRESENTATION MODE
+1.5 Auto‑save
+Auto‑save is enabled by default. Every 5 minutes, the application silently saves the current state to localStorage (key currentProjectAutoSave) without downloading a file. The interval can be changed in the settings (via a small gear icon in the File menu).
 
-### 🗺️ Mode 1 – Spatial / Block Diagram (SCADA Canvas)
-- Infinite canvas with GPU‑accelerated zoom/pan, background grid.
-- All zones A–E visible according to configuration.
-- SVG layer with animated Bézier pipeline connections between root cards.
-- **Connection tooltips**: hovering over a pipe shows “Fin‑a‑Inicio: {from} → {to}” (using card titles).
-- **Canvas minimap**: a small thumbnail in the bottom‑left corner showing the entire canvas with rectangles representing the cards. Clickable/draggable to move the camera.
-- Optimizations: culling, `will-change: transform`, SVG isolation, debounce.
-- **Quick filter by `owner`**: a selector in the top bar dims (reduces opacity) cards whose owner doesn’t match, to highlight one person’s cards during meetings.
+Additionally, auto‑save triggers on significant actions (card drop, resize end, status change) after a 2‑second debounce to avoid excessive writes.
 
-### 📊 Mode 2 – Timeline / Gantt with Critical Path
-- Bars proportional to duration, drag and resize to change dates.
-- Real Finish‑to‑Start dependencies according to `connections`.
-- **Critical Path calculation**: bars on the longest path are highlighted.
-- **Delay propagation**: when a bar is moved, dependent cards shift accordingly.
-- Virtualization, no Zone E.
-
-### 📋 Mode 3 – Kanban Board
-- Columns by `status`. Compact cards (icon, title, progress). Drag between columns to change `status`.
-- Internal order by `startDate` or manual.
-- No Zone E.
+📄 2. INITIAL JSON (data.json)
+The “AeroVend 1.0” project is defined in the ANNEX as the base template. This JSON contains all cards with fields such as description, image, compactView, autoComplete, cardType, and the icon field is present but not displayed on the card header (to keep the header clean; the icon may be used internally for future features like search filters). The AI must use it without modifications, unless a minor structural adjustment is required for implementation (which must then be justified).
 
-### 🕸️ Mode 4 – System Diagram (Graph View)
-- Automatic layout (force‑directed or layered) of all root cards and children.
-- Curved arrows between nodes according to `connections` and hierarchy.
-- Zoom/pan, multi‑selection, owner filter.
-- Each node shows icon, title, and progress; expandable on click.
+🧩 3. CLEAN CARD ANATOMY (WITHOUT DISPLAYING ICON) – TWO CLEAR DISPLAY MODES
+Each card has two visual modes, toggled by the “Quick view” button in the header (toggle saved as compactView boolean). The card structure is a vertical stack of distinct rows. The icon field is never rendered in the title bar; the header remains minimal.
 
-### 🎥 Presentation Mode (Slide Show)
-- “Present” button in the top bar.
-- Automatically cycles through root cards (or selected ones) centering the camera one by one with smooth transitions (duration configurable, default 5s).
-- Can be paused, advanced/rewound manually with arrow keys.
-- Exit with Escape.
+3.1 Detailed mode (default, compactView: false)
+The card renders these rows from top to bottom:
 
-### ⭐ Camera Bookmarks
-- In Canvas and Graph View, the user can save the current camera position + zoom with a name (e.g., “General View”, “Brazo Detail”).
-- Bookmarks are stored in `localStorage` (within `canvasSettings`) and shown in a dropdown in the top bar to jump between them with one click.
+Row 1 – Zone A: Title bar
 
----
+Only the card title, left‑aligned.
 
-## ⚙️ 6. FOCUS MODES AND GLOBAL ZONE CONFIGURATOR
+Title limited to 50 characters; longer text truncated with ellipsis.
 
-- Focus modes: Work (hides E, expands D), Blocks (hides D, maximizes E), Hybrid (all visible).
-- Global zone configurator: reorder and show/hide zones A–E individually, applied in real time.
+Background: dark, with the card’s borderColor as a thin left accent stripe.
 
----
+At the right end: collapse/expand chevron and “Quick view” toggle button (eye icon).
 
-## 🔢 7. WBS, SEARCH, TELEPORT, AND GLOW
+No WBS code, no percentage, no icon.
 
-- Recursive WBS calculation up to 10 levels, displayed in Zone C.
-- Global search: teleport and glow in any mode.
+Row 2 – Zone B: Progress bar
 
----
+Thin, styled progress bar (full width), reflecting progress percentage.
 
-## 📊 8. HIERARCHICAL DATA INTELLIGENCE (ROLLUP) + CASCADING ALERTS
+Row 3 – Zone C: Metadata & controls
 
-### 8.1 Value rollup
-- **Economic**: `presupuesto` and `gastado` of a parent = sum of all children (recursive). If the parent has its own value, it adds to the rollup.
-- **Progress**: weighted average of direct children’s progress. If no children, manual value is kept.
-- Calculated values are shown with a small “∑” icon and a distinct style (italic). If the user manually edits them, a warning is shown and the aggregation for that node is broken (the field becomes manual).
+Horizontal row containing:
 
-### 8.2 Cascading alert propagation (Upwards)
-- **The system monitors** each card and its descendants for:
-  - `status: 'Bloqueado'`
-  - `reqs` with `status: 'pending'`
-- If any card (at any depth) meets these conditions, its direct parent receives an incident counter, and so on up to the root.
-- **Display**:
-  - In collapsed cards, the alert indicator (red/orange flashing badge) in Zone A shows the total number of incidents under that subtree.
-  - In Zone C, next to the mini pending blocks, active alerts are listed (e.g., “⚠️ 2 bloqueos, 1 req pendiente”).
-- Thus, even with all cards collapsed, you know exactly where problems are.
+Owner avatars (circle with initials, Google‑style). If owner is a single name, show one circle with the first 3 letters; if multiple (comma‑separated), up to 3 circles and “+N” if more. Click opens owner assignment modal.
 
----
+Area tag (small pill with truncated area name).
 
-## 🔗 9. SVG CONNECTION LAYER (SCADA and Graph View) with ResizeObserver
+Percentage text (e.g., “65%”).
 
-- Canvas: animated Bézier curves with tooltips.
-- Graph View: curved arrows.
-- Gantt: connections define temporal dependencies (critical path).
-- **Automatic redrawing**: thanks to the `ResizeObserver`, any change in a card’s size triggers the update of connections, without waiting for drag events.
+Gear icon (opens local configuration panel).
 
----
+“IDEA” lightbulb button (opens personal note panel, saved in localStorage).
 
-## ↩️ 10. FULL CHANGE HISTORY (UNDO/REDO)
+Mini pending blocks (if card is collapsed and showMiniPendingBlocks is true): small pills with WBS codes of children with progress < 100%, plus any alert indicators.
 
-- Stack of 50 snapshots. Each atomic action pushes a new state.
-- Ctrl+Z / Ctrl+Y restore and re‑render.
-- Persisted in `localStorage`.
+Row 4 – Image display (if image.src is not empty)
 
----
+Full‑width image according to image.position:
 
-## 💾 11. PERSISTENCE, COPY/PASTE, IDEA NOTES, AND DIALOGS
+"top": banner between Zone C and Zone D.
 
-- `localStorage` stores:
-  - `currentProject`: the complete project (cards, connections, canvasSettings, etc.) to restore on reload.
-  - `lastSavedProjectName`: name of the last saved project.
-  - `undoStack` and `redoStack` (max 50).
-  - `userNotes`: personal notes per card.
-- When creating a new project or loading one from file, `undoStack`, `redoStack`, and `userNotes` are cleared (unless the user chooses to keep notes).
-- Copy/Paste with Ctrl+C/V, IDEA button, confirmation dialogs for destructive actions (including before creating a new project without saving).
+"left" / "right": the image becomes a column on the respective side; the remaining rows flow beside it.
 
----
+The image respects width/height and uses object-fit: cover.
 
-## 🎨 12. VISUAL STYLES AND CONSTRAINTS
+Row 5 – Zone D: Tab panel
 
-- Minimum card width: 240px.
-- Title with forced ellipsis.
-- Internal buttons: `border-radius: 8px`, background `#1e293b`, 0.2s transitions.
-- Premium dark mode in all views.
-- Gantt bars with gradient; critical path highlighted.
-- Images with `object-fit: cover`; optional auto‑adjust.
-- Description and links: subtle style, links in light blue with underline on hover.
-- Minimap in Canvas with border and semi‑transparent background.
-- **Alert animation**: cards with problems will have an animated `pulse-border` (flashing red border) in addition to the badge in Zone A.
-- **Internal scroll**: cards with `overflow-y: auto` and hidden scrollbar (class `no-scrollbar`) when content exceeds size.
-- **Quick view (postcard)**: compact mode shows the background image and a gradient overlay with title and progress.
+Tabs: “Trabajo” (checklist + add task), “Técnico”, “Económico”, “Reqs”, and “Comentarios” (new, see section 12).
 
----
+Auto‑complete toggle: In “Trabajo” tab, a switch “Auto‑completar al finalizar”. When on and all tasks are checked, the card’s status automatically becomes "Completado". Stored in autoComplete field.
 
-## 📦 13. FINAL DELIVERABLES
+Row 6 – Zone E: Sub‑block dropzone
 
-Generate **two complete, functional files** without placeholders or markers:
+Container for nested child cards. Faint guide text when empty.
 
-1. **`data.json`**: Template of the “AeroVend 1.0” project (ANNEX). The AI should not modify it unless strictly necessary for implementation; if changes are required, they must be justified.
-2. **`index.html`**: HTML/CSS/JS code (Vanilla ES6+) that implements **all** the requirements described in this prompt, including project management (new, save, load, export/import) and all previous functionalities.
+Hidden when card is collapsed.
 
----
+Child cards arranged according to parent’s layoutMode ("libre", "fila", "columna", "grid").
 
-## 📎 ANNEX – COMPLETE JSON OF THE “AEROVEND 1.0” PROJECT (WITH UNSPLASH IMAGES)
+Adaptive internal scroll: If a card is resized so that not all rows fit, rows 3‑6 get overflow-y: auto with a hidden scrollbar (class no-scrollbar), while rows 1‑2 remain fixed.
 
-```json
+3.2 Compact mode (compactView: true)
+Postcard style:
+
+Full‑cover background from image.src (or dark gradient if no image).
+
+Dark gradient overlay for text readability.
+
+Overlaid content:
+
+Top‑left: card title (truncated to 30 chars).
+
+Bottom‑left: owner avatars (small) and mini progress bar.
+
+Top‑right: Quick view toggle to go back.
+
+The card snaps to a fixed 4:3 aspect ratio; no other rows are visible.
+
+🖱️ 4. CANVAS PAN & ZOOM (EXCALIDRAW STYLE)
+Middle‑mouse‑button drag on canvas background pans the entire viewport (cursor changes to grabbing hand). This is the primary pan method.
+
+Right‑click drag also pans (secondary method).
+
+Scroll wheel zooms in/out, centered on cursor (zoom range 0.1x – 3x).
+
+All card‑level interactions (drag, resize, marquee) coexist without conflict.
+
+🖱️ 5. INTERACTIONS: MULTI‑SELECTION, DRAG, RESIZE, DELETE
+5.1 Multi‑selection (Marquee)
+Click on empty canvas and drag → semi‑transparent blue rectangle.
+
+On release, cards whose centers intersect the rectangle are selected (highlighted).
+
+Batch actions: move, change owner/status/area via right‑click menu, delete with Suprimir key (see 5.4), collapse/expand.
+
+Escape or click on empty space clears selection.
+
+5.2 Individual card drag
+Only from Zone A (title bar). 1:1 movement dividing deltas by transform.scale.
+
+Ghost Box: phantom silhouette at the future snap position (multiple of 40px) and size (multiple of 5px).
+
+On drop: position snaps to 40px grid; size snaps to 5px if resizing.
+
+Collision detection: dropping on another card’s Zone E makes it a child (coordinates become relative). Dropping on canvas makes it root.
+
+Confirmation dialogs for destructive actions.
+
+5.3 Resize
+Bottom‑right handle. Ghost box with snap to 5px. Double‑click handle → autofit (optimal height rounded to 5px).
+
+ResizeObserver on each card automatically redraws SVG connections and recalculates child layout whenever card size changes.
+
+5.4 Keyboard delete
+With cards selected, pressing Delete removes them after confirmation. Connections cleaned, orphan children promoted or deleted per user choice.
+
+🧭 6. FOUR FULLY FUNCTIONAL VIEWS + PRESENTATION MODE
+Every view must be fully developed (not stubs). All interactive elements (drag, resize, tabs) work identically across views; only the graphical representation changes. The shared state is always the single project.
+
+🗺️ Mode 1 – Spatial / Block Diagram (SCADA Canvas)
+Infinite canvas with GPU transforms, background grid, SVG connections.
+
+All card rows visible as described in section 3.
+
+Connection tooltips, minimap, owner filter, culling, debounce.
+
+Quick filter by owner: dims non‑matching cards.
+
+📊 Mode 2 – Timeline / Gantt (fully functional)
+Root cards become horizontal bars on a calendar (days/weeks).
+
+Bar length = duration; drag/resize to change dates.
+
+Connections define Finish‑to‑Start dependencies → critical path highlighted.
+
+Delay propagation: moving a bar shifts dependents.
+
+Clicking a bar opens a floating modal with full card details (tabs, comments, etc.).
+
+📋 Mode 3 – Kanban (fully functional)
+Columns: “Sin Empezar”, “En Progreso”, “Bloqueado”, “Completado”.
+
+Compact Kanban cards (title, avatars, progress, due date).
+
+Drag between columns changes status.
+
+Order by startDate or manual.
+
+Click card → full detail modal.
+
+🕸️ Mode 4 – Graph View (fully functional)
+Automatic force‑directed/layered layout of all cards and connections.
+
+Arrows for hierarchy and connections.
+
+Nodes show title + progress; expandable.
+
+Zoom/pan, selection, owner filter.
+
+🎥 Presentation Mode (Slide Show)
+“Present” button cycles through root cards (or selected ones), centering with smooth transitions (configurable duration, pause/advance with arrows, exit with Escape).
+
+⭐ Camera Bookmarks
+Save named camera positions (in Canvas/Graph views), accessible from a dropdown.
+
+⚙️ 7. FOCUS MODES AND GLOBAL ZONE CONFIGURATOR
+Focus modes (affect all cards): Work (hides children, expands tabs), Blocks (hides tabs, expands children), Hybrid (all visible).
+
+Global zone configurator: panel to reorder rows A‑E and hide/show any of them globally.
+
+🔢 8. WBS, SEARCH, TELEPORT, AND GLOW
+Recursive WBS up to 10 levels, shown in Zone C as a small pill.
+
+Global search: teleports camera to matching card, applies glow for 2 seconds (works in all views; Gantt scrolls to bar, Kanban highlights card).
+
+📊 9. HIERARCHICAL DATA INTELLIGENCE (ROLLUP) + CASCADING ALERTS
+9.1 Value rollup
+Economic: presupuesto / gastado of a parent = sum of all descendants. If parent has manual value, it adds; editing manually breaks aggregation (warning shown).
+
+Progress: weighted average of direct children. No children → keep manual.
+
+Aggregated values shown with “∑” icon and italic style.
+
+9.2 Cascading alert propagation
+Monitors each card’s subtree for:
+
+status: 'Bloqueado'
+
+reqs with status: 'pending'
+
+Incidents bubble up to the root; a red blinking badge (CSS pulse-border) shows total count in Zone C (detailed) or as an overlay in compact mode.
+
+Even fully collapsed, you know there’s a problem.
+
+🔗 10. SVG CONNECTION LAYER WITH ResizeObserver
+Animated Bézier curves in Canvas and Graph views, with tooltips.
+
+In Gantt, connections define dependencies.
+
+ResizeObserver on every card redraws connections automatically on size change.
+
+↩️ 11. CHANGE HISTORY (UNDO/REDO)
+Stack of 50 snapshots. Ctrl+Z / Ctrl+Y restore and re‑render.
+
+Persisted in localStorage.
+
+💬 12. COMMENTS ON CARDS (NEW)
+Each card has a “Comentarios” tab in Zone D (alongside Trabajo, Técnico, etc.).
+
+This tab contains a public comment thread visible to all collaborators (future‑proof).
+
+Features:
+
+Textarea to add a new comment (author = current user’s name, default “Yo”).
+
+Each comment shows: author avatar (initials), timestamp, text.
+
+Comments are stored in the card’s JSON as an array: comments: [{id, author, text, timestamp}].
+
+The tab badge shows the number of comments.
+
+This is separate from personal “IDEA” notes (which remain private in localStorage).
+
+🕐 13. ACTIVITY FEED / CHANGE LOG (NEW)
+The application tracks all significant actions in an activity log stored in localStorage (key activityLog).
+
+Each entry: {timestamp, actionType, cardId, cardTitle, description} (e.g., “Card moved”, “Status changed”, “Comment added”).
+
+The UI provides a toggle button in the top bar (icon: clock/history) that opens a collapsible side panel (from the right) showing the last 50 entries, sorted newest first.
+
+The panel is non‑intrusive, with a scrollable list; clicking an entry optionally highlights the relevant card.
+
+The log is updated automatically; no manual intervention needed.
+
+💾 14. VERSION CONTROL / DRAFTS (NEW)
+From the File → Save version as draft menu, the user can save a named snapshot of the entire project state.
+
+Snapshots are stored in localStorage under the key projectVersions as an array of {name, timestamp, state}.
+
+File → Load version shows a dropdown of saved drafts; selecting one restores that state (with confirmation).
+
+Auto‑save does not overwrite these named versions; they are explicit user actions.
+
+This allows maintaining different iterations or experiment branches without external files.
+
+👥 15. ROLES AND PERMISSIONS (STRUCTURE FOR FUTURE COLLABORATION)
+Although the current app is single‑user, the data model is prepared for multi‑user collaboration:
+
+Project‑level field users: array of {name, role} where role is "admin", "write", or "read".
+
+Card‑level optional field permissions: can restrict which roles can edit specific cards.
+
+The UI does not enforce these rules yet, but the data structures exist so that future extensions (backend, WebRTC, etc.) can seamlessly integrate access control.
+
+The current user can be simulated as “Leo” (admin) from the JSON.
+
+💾 16. PERSISTENCE, COPY/PASTE, IDEA NOTES, AND DIALOGS
+localStorage keys:
+
+currentProject – last saved state (auto‑save and manual save update this).
+
+currentProjectAutoSave – auto‑save backup (separate key for safety).
+
+projectVersions – array of named drafts.
+
+activityLog – array of change entries.
+
+undoStack, redoStack – for undo/redo.
+
+userNotes – personal notes per card.
+
+Copy (Ctrl+C) on selected card copies its data; Ctrl+V pastes a duplicate with new ID and offset.
+
+IDEA button saves private notes per card (never exported).
+
+Confirmation dialogs: before creating new project without saving, deleting cards with children, moving a card out of its parent.
+
+🎨 17. VISUAL STYLES AND CONSTRAINTS
+Minimum card width: 240px.
+
+Title elipsis; max 50 chars detailed, 30 chars compact.
+
+Buttons/inputs: border-radius: 8px, background #1e293b, transitions 0.2s.
+
+Premium dark mode everywhere.
+
+Gantt bars with gradient; critical path red highlight.
+
+Minimap, pulse‑border alert animation, hidden scrollbar class.
+
+Image object-fit: cover, rounded corners.
+
+All new panels (activity feed, version loader) use slide‑in/slide‑out animations and a consistent semi‑transparent dark background.
+
+📦 18. FINAL DELIVERABLES
+Generate two complete, functional files without placeholders:
+
+data.json – The AeroVend 1.0 template (ANNEX) with all cards and the updated fields. The icon field remains in the JSON but is not displayed on the card.
+
+index.html – All HTML/CSS/JS (Vanilla ES6+) implementing every requirement above, with:
+
+File menu (no separate export/import buttons).
+
+Auto‑save, versioning, comments, activity feed, roles data structure.
+
+Excalidraw‑style middle‑mouse panning.
+
+Fully functional Gantt, Kanban, Graph views.
+
+Clean card layout (no icon in header, detailed rows, compact postcard).
+
+📎 ANNEX – COMPLETE JSON OF THE “AEROVEND 1.0” PROJECT
+(The JSON follows exactly the structure from the previous prompt, with icon keys included but not rendered. For brevity, it is not repeated here, but the AI must use the same dataset as before with all cards and connections.)
+
+json
+
 {
   "projectName": "AeroVend 1.0 – Máquina Expendedora de Albahaca Viva",
   "canvasSettings": {
@@ -264,7 +379,6 @@ Generate **two complete, functional files** without placeholders or markers:
     {
       "id": "raiz-general",
       "title": "AeroVend 1.0 – Sistema Completo",
-      "icon": "🟢",
       "description": "Máquina expendedora automatizada para el cultivo y cosecha de albahaca viva. Integra aeroponía de alta presión, brazo robótico SCARA, iluminación LED y monitoreo IoT. [Documentación técnica](https://docs.aerovend.com)",
       "width": 400,
       "height": 300,
@@ -298,12 +412,12 @@ Generate **two complete, functional files** without placeholders or markers:
         "tecnico": { "altura": "2.4m", "ancho": "1.5m", "peso_max": "450kg" },
         "economico": { "presupuesto": 60000, "gastado": 15000 },
         "reqs": []
-      }
+      },
+      "comments": []
     },
     {
       "id": "elec-principal",
       "title": "Electrónica y Control",
-      "icon": "🔵",
       "description": "Toda la electrónica embebida, sensores, actuadores y PCB controladora basada en ESP32 con conectividad WiFi + CAN.",
       "width": 340,
       "height": 240,
@@ -340,11 +454,11 @@ Generate **two complete, functional files** without placeholders or markers:
           { "id": 1, "from": "Software", "text": "Protocolo MQTT estable", "status": "pending" }
         ]
       },
+      "comments": [],
       "childCards": [
         {
           "id": "elec-leds",
           "title": "Sistema de Iluminación LED",
-          "icon": "💡",
           "description": "Barras LED de espectro optimizado para fotosíntesis de albahaca. Potencia total 300W.",
           "width": 260,
           "height": 160,
@@ -378,12 +492,12 @@ Generate **two complete, functional files** without placeholders or markers:
             "tecnico": { "potencia": "300W", "espectro": "450-660nm" },
             "economico": { "presupuesto": 2500, "gastado": 1500 },
             "reqs": []
-          }
+          },
+          "comments": []
         },
         {
           "id": "elec-sensores",
           "title": "Red de Sensores",
-          "icon": "📊",
           "description": "Sensores DHT22, MH-Z19 y capacitivos para monitoreo ambiental en tiempo real.",
           "width": 250,
           "height": 150,
@@ -411,14 +525,14 @@ Generate **two complete, functional files** without placeholders or markers:
             "tecnico": { "tipo": "DHT22, MH-Z19, capacitivo" },
             "economico": { "presupuesto": 800, "gastado": 150 },
             "reqs": []
-          }
+          },
+          "comments": []
         }
       ]
     },
     {
       "id": "robotica-principal",
       "title": "Brazo Robótico y Automatización",
-      "icon": "🦾",
       "description": "Brazo SCARA de 4 DOF con payload de 500g para cosecha automatizada de albahaca.",
       "width": 360,
       "height": 250,
@@ -453,11 +567,11 @@ Generate **two complete, functional files** without placeholders or markers:
         "economico": { "presupuesto": 15000, "gastado": 2000 },
         "reqs": []
       },
+      "comments": [],
       "childCards": [
         {
           "id": "robotica-gripper",
           "title": "Efector Final (Gripper)",
-          "icon": "✋",
           "description": "Gripper flexible para cosecha sin dañar las hojas de albahaca.",
           "width": 250,
           "height": 140,
@@ -485,14 +599,14 @@ Generate **two complete, functional files** without placeholders or markers:
             "tecnico": {},
             "economico": { "presupuesto": 500, "gastado": 0 },
             "reqs": []
-          }
+          },
+          "comments": []
         }
       ]
     },
     {
       "id": "mec-fluidos",
       "title": "Mecánica de Fluidos",
-      "icon": "⚙️",
       "description": "Circuito de alta presión (5.5 bar, 1.2 L/min) con bombas de diafragma y acumulador.",
       "width": 350,
       "height": 260,
@@ -527,11 +641,11 @@ Generate **two complete, functional files** without placeholders or markers:
         "economico": { "presupuesto": 9000, "gastado": 2500 },
         "reqs": []
       },
+      "comments": [],
       "childCards": [
         {
           "id": "mec-bombas",
           "title": "Bombas de Diafragma",
-          "icon": "🚿",
           "description": "Modelo Seaflo 33-Series. Comparativa de modelos en curso.",
           "width": 250,
           "height": 140,
@@ -564,12 +678,12 @@ Generate **two complete, functional files** without placeholders or markers:
             "tecnico": { "modelo": "Seaflo 33-Series" },
             "economico": { "presupuesto": 1200, "gastado": 800 },
             "reqs": []
-          }
+          },
+          "comments": []
         },
         {
           "id": "mec-acumulador",
           "title": "Acumulador de Presión",
-          "icon": "🫧",
           "description": "Acumulador de 2L en acero inoxidable para estabilizar la presión del sistema.",
           "width": 240,
           "height": 130,
@@ -595,14 +709,14 @@ Generate **two complete, functional files** without placeholders or markers:
             "tecnico": { "volumen": "2L", "material": "acero inox" },
             "economico": { "presupuesto": 600, "gastado": 0 },
             "reqs": []
-          }
+          },
+          "comments": []
         }
       ]
     },
     {
       "id": "cultivo-biologia",
       "title": "Cultivo y Biología",
-      "icon": "🌱",
       "description": "Protocolo de germinación y solución nutritiva para albahaca genovesa. Densidad objetivo: 40 plantas/m².",
       "width": 340,
       "height": 250,
@@ -637,11 +751,11 @@ Generate **two complete, functional files** without placeholders or markers:
         "economico": { "presupuesto": 3500, "gastado": 400 },
         "reqs": []
       },
+      "comments": [],
       "childCards": [
         {
           "id": "cultivo-nutrientes",
           "title": "Nutrientes y pH",
-          "icon": "🧪",
           "description": "Preparación de solución stock A y B con EC 1.8 mS/cm y pH 5.8.",
           "width": 250,
           "height": 140,
@@ -669,14 +783,14 @@ Generate **two complete, functional files** without placeholders or markers:
             "tecnico": { "ec": "1.8 mS/cm", "ph": "5.8" },
             "economico": { "presupuesto": 600, "gastado": 50 },
             "reqs": []
-          }
+          },
+          "comments": []
         }
       ]
     },
     {
       "id": "software-principal",
       "title": "Software y Programación",
-      "icon": "💻",
       "description": "API de monitoreo en tiempo real y frontend de panel de control. Stack: Node.js, React, MQTT.",
       "width": 340,
       "height": 240,
@@ -712,12 +826,12 @@ Generate **two complete, functional files** without placeholders or markers:
         "reqs": [
           { "id": 2, "from": "Electrónica y Control", "text": "Esquema de tópicos MQTT", "status": "done" }
         ]
-      }
+      },
+      "comments": []
     },
     {
       "id": "estructura-sin-asignar",
       "title": "Estructura y Montaje",
-      "icon": "🏗️",
       "description": "Diseño del chasis modular para la máquina expendedora. Altura total 2.4m, ancho 1.5m. Sin responsable asignado aún.",
       "width": 320,
       "height": 200,
@@ -745,7 +859,8 @@ Generate **two complete, functional files** without placeholders or markers:
         "tecnico": {},
         "economico": { "presupuesto": 10000, "gastado": 0 },
         "reqs": []
-      }
+      },
+      "comments": []
     }
   ],
   "connections": [
@@ -757,10 +872,11 @@ Generate **two complete, functional files** without placeholders or markers:
     { "from": "raiz-general", "to": "estructura-sin-asignar" },
     { "from": "elec-principal", "to": "robotica-principal" },
     { "from": "mec-fluidos", "to": "cultivo-biologia" }
+  ],
+  "users": [
+    { "name": "Leo", "role": "admin" },
+    { "name": "Christian", "role": "write" },
+    { "name": "Ponce", "role": "write" },
+    { "name": "Sofía", "role": "write" }
   ]
 }
-```
-
----
-
-*The AI must use this JSON as the base template. If no changes are required, it will remain as is.*
