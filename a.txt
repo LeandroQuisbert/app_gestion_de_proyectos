@@ -1,145 +1,575 @@
-Actúa como un Ingeniero de Software Full-Stack Principal, Diseñador de Sistemas de Diseño Avanzados y Arquitecto de Interfaces Gráficas con amplia experiencia en entornos CAD, diagramación espacial (Figma/Miro) y sistemas HMI/SCADA industriales.
+ # PROMPT DEFINITIVO – AeroVend 1.0 (Gestor Visual de Proyectos)
 
-Debes construir una aplicación web interactiva de gestión espacial de proyectos basada en dos entregables específicos que residirán en la misma carpeta local. La estética general debe ser un modo oscuro premium estilo Vercel o Shadcn (fondos `#0b0f19`, tarjetas `#111827`, texto blanco nítido, acentos en azul, morado y verde) con un diseño UI/UX impecable donde ningún elemento se amontone.
+**Actúa como un Ingeniero de Software Full‑Stack Principal, Diseñador de Sistemas de Diseño Avanzados y Arquitecto de Interfaces Gráficas con amplia experiencia en entornos CAD, diagramación espacial (Figma/Miro) y sistemas HMI/SCADA industriales de alta densidad.**
 
-A continuación, se detallan las especificaciones rigurosas para ambos entregables:
+Construye una aplicación web interactiva de **gestión y presentación visual de proyectos** que combine Trello (Kanban), Miro (lienzo infinito) y SCADA (monitorización industrial). El objetivo principal es poder **explicar un proyecto complejo a personas nuevas (inversores, colaboradores) de un vistazo**.
 
-=========================================
-ENTREGABLE PARTE 1: ARCHIVO `data.json` (PLANTILLA ESTRUCTURAL BASE)
-=========================================
-Este archivo actuará exclusivamente como una plantilla limpia que defina la estructura de campos obligatoria para la aplicación. Debe modelar un array plano de nodos independientes vinculados por ID:
-1. Una tarjeta raíz ("card-raiz-completa") con sus campos y pestañas llenas.
-2. Una tarjeta raíz vacía ("card-raiz-vacia") para demostrar las conexiones SVG.
-3. Una tarjeta anidada ("card-hija-anidada") vinculada a la primera para demostrar la herencia jerárquica de hasta 10 niveles.
+El proyecto de ejemplo es **“AeroVend 1.0”**: una máquina expendedora gigante de albahaca viva cultivada con aeroponía de alta presión, brazo robótico de cosecha y sistema de iluminación LED automatizado. El CEO **Leo** se encarga de electrónica, LEDs, brazo robótico y automatización; **Christian** de la programación; **Ponce** de la mecánica de fluidos; **Sofía** de las albahacas y nutrientes. Otras áreas sin dueño aparecerán como “Sin asignar”.
 
-Estructura exacta del JSON:
+La estética será **modo oscuro premium estilo Vercel / Shadcn** (fondos `#0b0f19`, tarjetas `#111827`, texto blanco nítido, acentos en azul, morado y verde) y un diseño UI/UX impecable sin amontonamiento.
+
+---
+
+## 📁 1. PROYECTO DE EJEMPLO Y JSON INICIAL (data.json)
+
+El archivo `data.json` debe contener exactamente la estructura siguiente, reflejando el estado actual simulado del proyecto. Todas las tarjetas poseen los campos obligatorios: `status`, `startDate`, `dueDate`, `owner`, `area`, `progress`. Las notas personales (botón IDEA) NO se guardan aquí, sino en `localStorage` aparte.
+
+```json
 {
-  "projectName": "Plantilla Base SCADA Canvas",
+  "projectName": "AeroVend 1.0 – Máquina Expendedora de Albahaca Viva",
   "canvasSettings": {
     "currentX": 0,
     "currentY": 0,
     "currentScale": 1.0,
-    "canvasWidth": 5000,
+    "canvasWidth": 8000,
     "canvasHeight": 5000,
-    "globalViewMode": "hybrid", 
-    "globalZonesOrder": ["Zone A", "Zone B", "Zone C", "Zone D", "Zone E"],
-    "hiddenZones": []
+    "globalViewMode": "scada",
+    "globalZonesOrder": ["Sistema General", "Electrónica y Control", "Robótica", "Mecánica de Fluidos", "Cultivo y Biología", "Software", "Estructura y Montaje"],
+    "hiddenZones": [],
+    "showMiniPendingBlocks": true
   },
   "cards": [
     {
-      "id": "card-raiz-completa",
-      "title": "Título de la Tarjeta Completa",
-      "width": 320,
-      "height": 280,
-      "x": 120,
-      "y": 120,
+      "id": "raiz-general",
+      "title": "🟢 AeroVend 1.0 – Sistema Completo",
+      "width": 400,
+      "height": 300,
+      "x": 400,
+      "y": 200,
       "parentId": null,
       "collapsed": false,
-      "owner": "Álvaro",
-      "area": "Ing. Mecánica",
-      "progress": 65,
+      "owner": "Leo",
+      "area": "Sistema General",
+      "progress": 25,
+      "status": "En Progreso",
+      "startDate": "2025-02-01",
+      "dueDate": "2025-10-01",
       "resumenView": "progress",
       "layoutMode": "libre",
       "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#38bdf8" },
       "tabs": {
-        "trabajo": [{ "text": "Tarea de ejemplo checklist", "checked": false }],
-        "tecnico": { "param1": "valor" },
-        "economico": { "presupuesto": 1000, "gastado": 400 },
-        "reqs": [{ "id": 1, "from": "Logística", "text": "Requerimiento pendiente", "status": "pending" }]
+        "trabajo": [
+          { "text": "Diseño conceptual completo", "checked": true },
+          { "text": "Planos mecánicos y eléctricos", "checked": false }
+        ],
+        "tecnico": { "altura": "2.4m", "ancho": "1.5m", "peso_max": "450kg" },
+        "economico": { "presupuesto": 60000, "gastado": 15000 },
+        "reqs": []
       }
     },
     {
-      "id": "card-raiz-vacia",
-      "title": "Tarjeta Vacía Conectada",
-      "width": 250,
-      "height": 150,
-      "x": 640,
-      "y": 120,
+      "id": "elec-principal",
+      "title": "🔵 Electrónica y Control",
+      "width": 340,
+      "height": 240,
+      "x": 900,
+      "y": 150,
+      "parentId": null,
+      "collapsed": false,
+      "owner": "Leo",
+      "area": "Electrónica y Control",
+      "progress": 35,
+      "status": "En Progreso",
+      "startDate": "2025-02-15",
+      "dueDate": "2025-06-30",
+      "resumenView": "progress",
+      "layoutMode": "libre",
+      "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#3b82f6" },
+      "tabs": {
+        "trabajo": [
+          { "text": "Selección de sensores (T°, HR, CO2)", "checked": true },
+          { "text": "Diseño PCB controladora", "checked": false }
+        ],
+        "tecnico": { "mcu": "ESP32", "comunicacion": "WiFi + CAN" },
+        "economico": { "presupuesto": 12000, "gastado": 4000 },
+        "reqs": [
+          { "id": 1, "from": "Software", "text": "Protocolo MQTT estable", "status": "pending" }
+        ]
+      },
+      "childCards": [
+        {
+          "id": "elec-leds",
+          "title": "💡 Sistema de Iluminación LED",
+          "width": 260,
+          "height": 160,
+          "x": 50,
+          "y": 80,
+          "parentId": "elec-principal",
+          "collapsed": false,
+          "owner": "Leo",
+          "area": "Electrónica y Control",
+          "progress": 60,
+          "status": "En Progreso",
+          "startDate": "2025-03-01",
+          "dueDate": "2025-05-15",
+          "resumenView": "progress",
+          "layoutMode": "libre",
+          "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fbbf24" },
+          "tabs": {
+            "trabajo": [
+              { "text": "Espectro lumínico optimizado", "checked": true },
+              { "text": "Montaje de barras LED", "checked": false }
+            ],
+            "tecnico": { "potencia": "300W", "espectro": "450-660nm" },
+            "economico": { "presupuesto": 2500, "gastado": 1500 },
+            "reqs": []
+          }
+        },
+        {
+          "id": "elec-sensores",
+          "title": "📊 Red de Sensores",
+          "width": 250,
+          "height": 150,
+          "x": 60,
+          "y": 260,
+          "parentId": "elec-principal",
+          "collapsed": true,
+          "owner": "Leo",
+          "area": "Electrónica y Control",
+          "progress": 20,
+          "status": "En Progreso",
+          "startDate": "2025-03-15",
+          "dueDate": "2025-06-01",
+          "resumenView": "progress",
+          "layoutMode": "libre",
+          "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#34d399" },
+          "tabs": {
+            "trabajo": [
+              { "text": "Calibración de sensores", "checked": false }
+            ],
+            "tecnico": { "tipo": "DHT22, MH-Z19, capacitivo" },
+            "economico": { "presupuesto": 800, "gastado": 150 },
+            "reqs": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "robotica-principal",
+      "title": "🦾 Brazo Robótico y Automatización",
+      "width": 360,
+      "height": 250,
+      "x": 1350,
+      "y": 140,
+      "parentId": null,
+      "collapsed": false,
+      "owner": "Leo",
+      "area": "Robótica",
+      "progress": 15,
+      "status": "En Progreso",
+      "startDate": "2025-03-01",
+      "dueDate": "2025-08-30",
+      "resumenView": "progress",
+      "layoutMode": "libre",
+      "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#8b5cf6" },
+      "tabs": {
+        "trabajo": [
+          { "text": "Diseño cinemático del brazo (4 DOF)", "checked": true },
+          { "text": "Pruebas de repetibilidad", "checked": false }
+        ],
+        "tecnico": { "tipo": "SCARA", "payload": "500g" },
+        "economico": { "presupuesto": 15000, "gastado": 2000 },
+        "reqs": []
+      },
+      "childCards": [
+        {
+          "id": "robotica-gripper",
+          "title": "✋ Efector Final (Gripper)",
+          "width": 250,
+          "height": 140,
+          "x": 50,
+          "y": 80,
+          "parentId": "robotica-principal",
+          "collapsed": false,
+          "owner": "Leo",
+          "area": "Robótica",
+          "progress": 10,
+          "status": "Sin Empezar",
+          "startDate": "2025-04-01",
+          "dueDate": "2025-07-15",
+          "resumenView": "progress",
+          "layoutMode": "libre",
+          "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#c084fc" },
+          "tabs": {
+            "trabajo": [
+              { "text": "Seleccionar material flexible", "checked": false }
+            ],
+            "tecnico": {},
+            "economico": { "presupuesto": 500, "gastado": 0 },
+            "reqs": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "mec-fluidos",
+      "title": "⚙️ Mecánica de Fluidos",
+      "width": 350,
+      "height": 260,
+      "x": 200,
+      "y": 600,
+      "parentId": null,
+      "collapsed": false,
+      "owner": "Ponce",
+      "area": "Mecánica de Fluidos",
+      "progress": 20,
+      "status": "En Progreso",
+      "startDate": "2025-02-15",
+      "dueDate": "2025-07-30",
+      "resumenView": "progress",
+      "layoutMode": "libre",
+      "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#f97316" },
+      "tabs": {
+        "trabajo": [
+          { "text": "Dimensionado de bombas", "checked": true },
+          { "text": "Circuito de alta presión (80 PSI)", "checked": false }
+        ],
+        "tecnico": { "presion": "5.5 bar", "caudal": "1.2 L/min" },
+        "economico": { "presupuesto": 9000, "gastado": 2500 },
+        "reqs": []
+      },
+      "childCards": [
+        {
+          "id": "mec-bombas",
+          "title": "🚿 Bombas de Diafragma",
+          "width": 250,
+          "height": 140,
+          "x": 40,
+          "y": 90,
+          "parentId": "mec-fluidos",
+          "collapsed": false,
+          "owner": "Ponce",
+          "area": "Mecánica de Fluidos",
+          "progress": 30,
+          "status": "En Progreso",
+          "startDate": "2025-03-01",
+          "dueDate": "2025-06-15",
+          "resumenView": "progress",
+          "layoutMode": "libre",
+          "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fb923c" },
+          "tabs": {
+            "trabajo": [
+              { "text": "Comparativa de modelos", "checked": true }
+            ],
+            "tecnico": { "modelo": "Seaflo 33-Series" },
+            "economico": { "presupuesto": 1200, "gastado": 800 },
+            "reqs": []
+          }
+        },
+        {
+          "id": "mec-acumulador",
+          "title": "🫧 Acumulador de Presión",
+          "width": 240,
+          "height": 130,
+          "x": 60,
+          "y": 250,
+          "parentId": "mec-fluidos",
+          "collapsed": true,
+          "owner": "Ponce",
+          "area": "Mecánica de Fluidos",
+          "progress": 0,
+          "status": "Sin Empezar",
+          "startDate": "2025-04-15",
+          "dueDate": "2025-07-01",
+          "resumenView": "progress",
+          "layoutMode": "libre",
+          "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fbbf24" },
+          "tabs": {
+            "trabajo": [],
+            "tecnico": { "volumen": "2L", "material": "acero inox" },
+            "economico": { "presupuesto": 600, "gastado": 0 },
+            "reqs": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "cultivo-biologia",
+      "title": "🌱 Cultivo y Biología",
+      "width": 340,
+      "height": 250,
+      "x": 900,
+      "y": 650,
+      "parentId": null,
+      "collapsed": false,
+      "owner": "Sofía",
+      "area": "Cultivo y Biología",
+      "progress": 10,
+      "status": "En Progreso",
+      "startDate": "2025-03-01",
+      "dueDate": "2025-09-01",
+      "resumenView": "progress",
+      "layoutMode": "libre",
+      "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#10b981" },
+      "tabs": {
+        "trabajo": [
+          { "text": "Protocolo de germinación", "checked": false },
+          { "text": "Solución nutritiva óptima", "checked": false }
+        ],
+        "tecnico": { "variedad": "Albahaca Genovesa", "densidad": "40 plantas/m²" },
+        "economico": { "presupuesto": 3500, "gastado": 400 },
+        "reqs": []
+      },
+      "childCards": [
+        {
+          "id": "cultivo-nutrientes",
+          "title": "🧪 Nutrientes y pH",
+          "width": 250,
+          "height": 140,
+          "x": 50,
+          "y": 80,
+          "parentId": "cultivo-biologia",
+          "collapsed": false,
+          "owner": "Sofía",
+          "area": "Cultivo y Biología",
+          "progress": 5,
+          "status": "Sin Empezar",
+          "startDate": "2025-05-01",
+          "dueDate": "2025-08-15",
+          "resumenView": "progress",
+          "layoutMode": "libre",
+          "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#34d399" },
+          "tabs": {
+            "trabajo": [
+              { "text": "Preparar solución stock A y B", "checked": false }
+            ],
+            "tecnico": { "ec": "1.8 mS/cm", "ph": "5.8" },
+            "economico": { "presupuesto": 600, "gastado": 50 },
+            "reqs": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "software-principal",
+      "title": "💻 Software y Programación",
+      "width": 340,
+      "height": 240,
+      "x": 1400,
+      "y": 650,
+      "parentId": null,
+      "collapsed": false,
+      "owner": "Christian",
+      "area": "Software",
+      "progress": 30,
+      "status": "En Progreso",
+      "startDate": "2025-02-01",
+      "dueDate": "2025-09-01",
+      "resumenView": "progress",
+      "layoutMode": "libre",
+      "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#ec4899" },
+      "tabs": {
+        "trabajo": [
+          { "text": "API de monitoreo en tiempo real", "checked": true },
+          { "text": "Frontend panel de control", "checked": false }
+        ],
+        "tecnico": { "stack": "Node.js, React, MQTT" },
+        "economico": { "presupuesto": 8000, "gastado": 2500 },
+        "reqs": [
+          { "id": 2, "from": "Electrónica y Control", "text": "Esquema de tópicos MQTT", "status": "done" }
+        ]
+      }
+    },
+    {
+      "id": "estructura-sin-asignar",
+      "title": "🏗️ Estructura y Montaje",
+      "width": 320,
+      "height": 200,
+      "x": 200,
+      "y": 1000,
       "parentId": null,
       "collapsed": false,
       "owner": "",
-      "area": "",
+      "area": "Estructura y Montaje",
       "progress": 0,
+      "status": "Sin Empezar",
+      "startDate": "2025-06-01",
+      "dueDate": "2025-09-15",
       "resumenView": "progress",
       "layoutMode": "libre",
-      "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#374151" },
-      "tabs": { "trabajo": [], "tecnico": {}, "economico": { "presupuesto": 0, "gastado": 0 }, "reqs": [] }
-    },
-    {
-      "id": "card-hija-anidada",
-      "title": "Sub-Tarjeta Anidada Nivel 2",
-      "width": 240,
-      "height": 160,
-      "x": 40,
-      "y": 80,
-      "parentId": "card-raiz-completa",
-      "collapsed": false,
-      "owner": "",
-      "area": "",
-      "progress": 0,
-      "resumenView": "progress",
-      "layoutMode": "libre",
-      "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#818cf8" },
-      "tabs": { "trabajo": [], "tecnico": {}, "economico": { "presupuesto": 0, "gastado": 0 }, "reqs": [] }
+      "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#6b7280" },
+      "tabs": {
+        "trabajo": [
+          { "text": "Diseño del chasis modular", "checked": false }
+        ],
+        "tecnico": {},
+        "economico": { "presupuesto": 10000, "gastado": 0 },
+        "reqs": []
+      }
     }
   ],
   "connections": [
-    { "from": "card-raiz-completa", "to": "card-raiz-vacia" }
+    { "from": "raiz-general", "to": "elec-principal" },
+    { "from": "raiz-general", "to": "robotica-principal" },
+    { "from": "raiz-general", "to": "mec-fluidos" },
+    { "from": "raiz-general", "to": "cultivo-biologia" },
+    { "from": "raiz-general", "to": "software-principal" },
+    { "from": "raiz-general", "to": "estructura-sin-asignar" },
+    { "from": "elec-principal", "to": "robotica-principal" },
+    { "from": "mec-fluidos", "to": "cultivo-biologia" }
   ]
 }
+```
 
-=========================================
-ENTREGABLE PARTE 2: ARCHIVO `index.html`
-=========================================
-Debe contener toda la interfaz HTML5, los estilos CSS3 encapsulados y la lógica en Vanilla JavaScript (ES6+).
+---
 
-MÓDULOS DE ARQUITECTURA Y DISEÑO OBLIGATORIOS:
+## 🧩 2. ANATOMÍA MODULAR DE LA TARJETA (ZONAS A‑E)
 
-1. ANATOMÍA MODULAR E IDENTIFICADA DE LA TARJETA (<proyecto-card>):
-Cada tarjeta debe renderizar su estructura interna dividida estrictamente en las siguientes 5 filas visuales independientes, identificadas semánticamente en el código:
-- [Zone A: Header Principal]: Contiene únicamente el Badge con el Número Jerárquico (WBS), el Texto del Título del bloque y el Botón de Flecha (Chevron) para colapsar. Queda terminantemente PROHIBIDO mostrar texto de porcentaje (`%`) aquí, ya que está duplicado.
-- [Zone B: Línea de Progreso]: Una barra de progreso nativa estilizada que ocupa el 100% del ancho horizontal, reflejando el porcentaje visualmente.
-- [Zone C: Fila de Metadatos y Control Local]: Fila horizontal limpia con: Avatar/Nombre del Responsable (`owner`), Etiqueta del Área/Departamento, Texto explícito de Porcentaje (ej: "65%") y el Icono de Engranaje para configuraciones estéticas y de layout locales.
-- [Zone D: Panel de Pestañas Multidimensionales]: Contenedor interactivo que commuta entre las pestañas "Trabajo" (Checklist y botón `+ Tarea`), "Técnico" (Parámetros), "Económico" y "Reqs" (Módulo de alertas).
-- [Zone E: Contenedor Dropzone de Sub-Bloques]: Espacio reservado para albergar físicamente las sub-tarjetas hijas anidadas. Debe incluir un texto guía tenue en el fondo que actúe como marcador de posición cuando esté vacío.
+Cada tarjeta se renderiza con 5 zonas visuales estrictas, identificadas semánticamente:
 
-2. CONFIGURACIÓN GENERAL DE LA WEB Y MOTOR DE MODOS DE ENFOQUE FLUIDO:
-- En la barra de herramientas superior global, añade un botón o selector de "Ajustes del Sistema / Modos de Vista".
-- Este selector permitirá cambiar dinámicamente entre tres macro-modos de visualización que alterarán todas las tarjetas de manera reactiva:
-  * "Modo Trabajo (Focus Tareas)": Oculta la `Zone E` por completo y prioriza la expansión de la `Zone D` para gestionar checklists de manera masiva.
-  * "Modo Bloques (Focus Espacial)": Oculta la `Zone D` por completo, forzando a las tarjetas a comportarse como contenedores puros de ingeniería HMI, expandiendo al máximo la `Zone E` para visualizar subtarjetas anidadas.
-  * "Modo Híbrido (Por defecto)": Muestra todas las zonas visibles.
-- CONFIGURADOR DE ORDEN VISUAL GENERAL: El panel debe permitir al usuario alterar el array `globalZonesOrder` de la configuración. La aplicación debe leer este array y reordenar físicamente los elementos del DOM de las tarjetas en tiempo real (por ejemplo, permitiendo colocar la fila de metadatos `Zone C` antes o después de las pestañas `Zone D`). También permitirá ocultar o mostrar cualquiera de las 5 zonas individualmente a nivel global.
+- **Zone A – Header principal**  
+  - Badge con el código WBS jerárquico (hasta 10 niveles, p. ej. 1.2.1.1.1...).  
+  - Título de la tarjeta, con `flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis`.  
+  - Botón de colapso (chevron). **Prohibido mostrar el porcentaje aquí**.
 
-3. CONFIGURACIÓN DEL ANCLAJE Y SISTEMA DE COORDENADAS:
-- El punto de referencia absoluto para la posición de cualquier tarjeta en el espacio (valores 'x' e 'y') se sitúa ESTRICTAMENTE en su ESQUINA SUPERIOR IZQUIERDA. 
-- Si una tarjeta tiene un `parentId` activo, sus coordenadas de esquina superior izquierda (x, y) se calculan de manera relativa al contenedor interno de la tarjeta madre (`Zone E`). El motor debe recalcular las coordenadas del DOM al arrastrarla hacia adentro o hacia afuera del padre para evitar que el elemento se desvanezca o se teletransporte erráticamente fuera de los límites de la pantalla.
+- **Zone B – Línea de progreso**  
+  - Barra de progreso nativa estilizada que ocupa el 100% del ancho.
 
-4. REDIMENSIÓN DISCRETA DE ALTA PRECISIÓN (INTERVALOS DE 5PX):
-- Cada tarjeta contará con un tirador visual de redimensión en su esquina inferior derecha.
-- Al arrastrar este tirador, modificará el `width` y `height` basándose en la esquina superior izquierda como punto fijo inamovible.
-- REGLA MATEMÁTICA: Los deltas de movimiento del ratón se dividen por la escala de zoom actual (`transform.scale`) para una respuesta simétrica.
-- REGLA DE DISCRETIZACIÓN (SNAP EVERY 5PX): Tanto en tiempo real como al ejecutar el `mouseup`, las dimensiones físicas finales de la tarjeta se redondearán obligatoriamente a múltiplos exactos de 5 píxeles (ej: 30x30px, 35x35px, 240x245px). Jamás se permitirán valores decimales o que no encajen en saltos de 5px.
+- **Zone C – Fila de metadatos y control local**  
+  - Avatar/nombre del `owner`, etiqueta del `area`, texto explícito de porcentaje (ej: “65%”).  
+  - Icono de **engranaje** (abre menú de configuración local de la tarjeta).  
+  - **Botón “IDEA”** (bombilla): abre un panel flotante con textarea para notas personales (guardadas en `localStorage` clave `userNotes_{cardId}`).  
+  - **Mini‑bloques pendientes**: si la tarjeta está colapsada y `showMiniPendingBlocks = true`, se inyectan aquí pequeñas píldoras (código WBS del hijo) con hijos directos/indirectos cuyo progreso sea < 100%.
 
-5. MOVIMIENTO DISCRETO SNAP-TO-GRID A 40PX Y ALGORITMO DE COLISIÓN SEGURO:
-- El arrastre se realiza exclusivamente desde la barra de la cabecera (`Zone A`). Al soltar el click, las coordenadas X e Y de la esquina superior izquierda se ajustarán mediante Snap-to-Grid a múltiplos exactos de 40px.
-- ALGORITMO DE COLISIÓN EFECTIVO: Durante el arrastre, la tarjeta activa recibe `pointer-events: none;`. Al soltarla (`pointerup`), se calcula por intersección geométrica (`getBoundingClientRect`) sobre qué tarjeta fue soltada para inyectarla en su contenedor `Zone E` asignando el nuevo `parentId`, o restablecerlo a `null` si se suelta en el lienzo de fondo.
+- **Zone D – Panel de pestañas multidimensionales**  
+  - Pestañas: “Trabajo” (checklist + botón `+ Tarea`), “Técnico”, “Económico”, “Reqs” (alertas de requerimientos).
 
-6. LIENZO MÁXIMO AMPLIABLE MANUALMENTE:
-- El lienzo se iniciará con las dimensiones del JSON (`canvasWidth` y `canvasHeight` a 5000px). El movimiento (Pan) se ejecuta con CLICK DERECHO o RUEDA CENTRAL presionada, y el zoom dinámico se enfoca en el puntero.
-- El panel de ajustes global permitirá al usuario expandir manualmente el tamaño del lienzo ingresando nuevos valores (ej. de 5000px a 20000px), redimensionando inmediatamente la superficie virtual y su rejilla CSS de fondo.
+- **Zone E – Contenedor dropzone de sub‑bloques**  
+  - Espacio para tarjetas hijas anidadas. Si está vacío, muestra un texto guía tenue.  
+  - Se oculta en vistas Gantt y Kanban. También se oculta/muestra según modos de enfoque globales.
 
-7. INDEXACIÓN DE HASTA 10 NIVELES DE PROFUNDIDAD (WBS MULTIFUNCIONAL):
-- Una función recursiva calculará automáticamente códigos numéricos jerárquicos WBS capaces de soportar HASTA 10 NIVELES DE ANIDACIÓN CONTINUA (ej: 1.1.2.1.1.1.1.1.1.1). Este código se inyectará en la `Zone A`.
-- El buscador superior global permitirá mapear estos códigos profundos para ejecutar una traslación suave de cámara (teleport) centrando perfectamente la tarjeta buscada y aplicando un destello luminoso (*glow*).
+---
 
-8. DISEÑO TIPOGRÁFICO ANTI-APLASTAMIENTO Y ESTILO PREMIUM:
-- Queda prohibido que el título se fracture letra por letra en vertical. Ancho mínimo absoluto de tarjeta: 240px. El texto del título en la `Zone A` implementará obligatoriamente: `flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;`.
-- Todos los botones interactivos internos (`+ Tarea`, selectores de pestañas) deben lucir profesionales, con bordes redondeados limpios, fondos oscuros semi-transparentes y transiciones suaves, eliminando por completo los estilos estéticos por defecto del sistema operativo.
+## 🖱️ 3. INTERACCIONES DE ARRASTRE Y REDIMENSIÓN (CANVAS MODE)
 
-9. REGLAS DE CONTENEDORES INTERNOS (LAYOUTS) Y CAPA SVG:
-- El botón de engranaje (`Zone C`) permitirá alternar el layout de la `Zone E` entre "Libre" (posicionamiento absoluto snap) o modos automáticos ("Fila", "Columna" o "Grid"), donde las tarjetas hijas ignoran temporalmente sus coordenadas X/Y para alinearse de forma fluida bajo las reglas CSS del padre.
-- Una capa SVG trasera dibujará curvas de Bézier animadas (`stroke-dasharray`) que unirán las tarjetas raíz principales según el array `connections`, actualizándose de forma reactiva ante movimientos, cambios de layout globales o colapsados de nodos.
-- Persistencia total y transparente de los estados mediante `localStorage`, incluyendo botones de exportación e importación de archivos JSON.
+### 3.1 Arrastre (solo desde Zone A)
+- Movimiento 1:1 siguiendo al puntero (dividiendo deltas por `transform.scale`), **sin restricción de snap en tiempo real** para máxima fluidez.
+- **Ghost Box visual**: mientras se arrastra, se pinta una silueta fantasma (borde discontinuo cian semi‑transparente) en la posición donde la tarjeta encajaría al soltarla, calculando:
+  - Posición: múltiplo de **40px** más cercano.
+  - Tamaño (si se está redimensionando): múltiplo de **5px** más cercano (ver redimensión).
+- Al soltar (`pointerup`):
+  - La posición (X,Y) se ajusta al múltiplo de **40px** más cercano.
+  - Si se suelta sobre otra tarjeta (colisión detectada con `getBoundingClientRect`), se asigna el `parentId` correspondiente y las coordenadas se vuelven relativas al contenedor Zone E del nuevo padre.
+  - Si se suelta en el lienzo, `parentId = null` y coordenadas absolutas.
+- Durante el arrastre, la tarjeta arrastrada tiene `pointer-events: none` para permitir la detección de colisión en el elemento subyacente.
 
-Genera ambos archivos con código de producción limpio, modular, completamente articulado y libre de elipsis o marcadores de posición incompletos.
+### 3.2 Redimensión (tirador inferior derecha)
+- Arrastrando el tirador modifica `width` y `height` desde la esquina superior izquierda fija.
+- En **tiempo real**, las dimensiones siguen al ratón sin snap, pero el **ghost box** muestra la silueta con el tamaño que tendrá al soltar (múltiplo de 5px).
+- Al soltar, las dimensiones se redondean al múltiplo de **5px** más cercano (ej: 240x245, 250x250). **Jamás se permiten decimales o tamaños que no sean múltiplos de 5px.**
+- **Doble click en el tirador → Autofit**: recalcula automáticamente el alto óptimo para empaquetar todas las zonas visibles actuales (A,B,C,D,E según colapso y modo global), eliminando espacios vacíos. El resultado se redondea al múltiplo de 5px más cercano.
+
+### 3.3 Snap-to-Grid (posiciones) y coordenadas
+- El punto de anclaje de cualquier tarjeta es su **esquina superior izquierda**.
+- Coordenadas relativas al padre: si `parentId` no es null, `x` e `y` son relativas al contenedor Zone E.
+- Al cambiar el padre (arrastrar dentro/fuera), se recalculan las coordenadas para mantener la posición visual.
+
+---
+
+## 🧭 4. MODOS DE VISUALIZACIÓN GLOBAL (VISTAS PRINCIPALES)
+
+El usuario puede cambiar entre tres modos desde un menú superior:
+
+### 🗺️ Modo 1 – Espacial / Diagrama de Bloques (SCADA Canvas)
+- Lienzo infinito con zoom (rueda) y paneo (clic derecho o rueda central).  
+- Rejilla de fondo CSS (patrón de puntos/líneas).  
+- Posicionamiento absoluto de tarjetas con todas las zonas A‑E visibles (según configuración).  
+- Capa SVG de conexiones Bézier animadas entre tarjetas raíz.  
+- **Optimizaciones**: culling (ocultar tarjetas fuera del viewport), `will-change: transform`, aislamiento SVG (solo recalcular conexión al mover la tarjeta implicada), debounce en eventos con `requestAnimationFrame`.
+
+### 📊 Modo 2 – Cronograma / Gantt
+- Se ocultan rejilla y SVG.  
+- Calendario horizontal (días/semanas).  
+- Cada tarjeta (raíz) se convierte en una barra horizontal con ancho proporcional a `dueDate - startDate`.  
+- Arrastre de barras: desplaza fechas manteniendo duración; redimensión de extremos: cambia duración.  
+- Solo se muestran **Zone A, B, C** (compacto). Zone E oculta. Tooltip con más detalles.  
+- Virtualización: solo renderizar barras visibles en el viewport.
+
+### 📋 Modo 3 – Tablero Kanban
+- Columnas fijas: “Sin Empezar”, “En Progreso”, “Bloqueado”, “Completado”.  
+- Cada tarjeta raíz se muestra como tarjeta compacta (título, owner, progreso, fechas). Al hacer clic se puede expandir un modal con todas las pestañas.  
+- Arrastre entre columnas → actualiza `status` de la tarjeta.  
+- Orden interno por `startDate` o manual (persistido en `localStorage`).  
+- Zone E oculta. Virtualización vertical por columna.
+
+---
+
+## ⚙️ 5. MOTOR DE MODOS DE ENFOQUE Y CONFIGURADOR DE ZONAS
+
+### 5.1 Modos de enfoque globales (afectan a todas las tarjetas)
+Selector en barra superior con tres opciones:
+- **Modo Trabajo (Focus Tareas)**: oculta Zone E, expande Zone D al máximo.
+- **Modo Bloques (Focus Espacial)**: oculta Zone D, maximiza Zone E.
+- **Modo Híbrido (por defecto)**: todas las zonas visibles.
+
+### 5.2 Configurador global de zonas
+- Panel accesible desde la barra superior que permite:
+  - Reordenar las 5 zonas (arrastrando elementos de una lista) modificando `globalZonesOrder`. Las tarjetas se reordenan en tiempo real.
+  - Ocultar/mostrar zonas individualmente (modifica `hiddenZones`).
+- Estas acciones son independientes de los modos de enfoque.
+
+---
+
+## 🔢 6. WBS, BUSCADOR, TELEPORT Y GLOW
+
+- **Cálculo recursivo del WBS**: para hasta 10 niveles de profundidad (ej: 1.2.1.1.1.1.1.1.1.1). Se inyecta en la Zone A.
+- **Buscador global**: input que acepta código WBS completo o parcial.
+  - En Canvas: mueve la cámara suavemente hasta centrar la tarjeta coincidente.
+  - En Gantt/Kanban: scroll hasta la barra/tarjeta y aplica un resplandor (glow) que desaparece tras 2 segundos.
+- **Expansión en cascada por nivel**: input numérico (1‑10) y botón “Expandir”. Pone `collapsed = false` en todas las tarjetas con profundidad ≤ nivel seleccionado.
+
+---
+
+## 🖼️ 7. LIENZO INFINITO AMPLIABLE MANUALMENTE
+
+- Dimensiones iniciales desde `canvasSettings.canvasWidth` / `canvasHeight` (8000x5000).  
+- Paneo con clic derecho o rueda central presionada. Zoom con rueda (enfocado al cursor).  
+- Panel de ajustes global permite cambiar el tamaño del lienzo hasta 20000x20000 px, redimensionando la superficie y la rejilla de fondo.
+
+---
+
+## 🔗 8. CAPA SVG DE CONEXIONES TIPO SCADA (TUBERÍAS ANIMADAS)
+
+- Capa SVG superpuesta en el Canvas (modo 1).  
+- Curvas de Bézier cúbicas entre tarjetas definidas en `connections` (solo nodos con `parentId === null`).  
+- Animación `stroke-dasharray` para efecto de flujo.  
+- Se actualizan reactivamente al mover tarjetas, cambiar layouts o colapsar nodos.
+
+---
+
+## 💾 9. PERSISTENCIA, UNDO/REDO, COPIAR/PEGAR Y NOTAS IDEA
+
+- **localStorage**: guarda automáticamente tras cada acción:
+  - `appState`: `cards`, `connections`, `canvasSettings`, `hiddenZones`, `globalZonesOrder`, `showMiniPendingBlocks`, etc.
+  - `undoStack` y `redoStack` (máx 50 snapshots del estado completo).
+  - `userNotes`: objeto `{ cardId: string }` para notas personales.
+- **Undo/Redo**: Ctrl+Z deshace, Ctrl+Y rehace. Restaura el estado completo y re‑renderiza el modo actual.
+- **Copiar/Pegar**: al seleccionar una tarjeta (clic sobre ella, borde resaltado), Ctrl+C copia su ID. Ctrl+V crea un duplicado (ID único) con la misma información y posición desplazada +20px en X e Y. Si no se implementa, al menos mostrar un tooltip informativo.
+- **Botón IDEA** (ver Zone C): abre un textarea flotante, guarda en `userNotes_{cardId}`, no se exporta.
+- **Exportar JSON**: descarga un archivo `data.json` con el estado actual (sin notas personales).
+- **Importar JSON**: carga un archivo, reemplaza el estado (previo aviso) y resetea el historial undo/redo.
+
+---
+
+## 🎨 10. ESTILOS VISUALES Y RESTRICCIONES
+
+- Ancho mínimo de tarjeta: **240px**.
+- El título en Zone A **nunca** se rompe en vertical (forzar elipsis con las reglas CSS descritas).
+- Todos los botones internos (`+ Tarea`, pestañas, engranaje) con `border-radius: 8px`, fondo `#1e293b`, transiciones de 0.2s, sin estilos de sistema operativo.
+- Modo oscuro premium consistente en todas las vistas.
+- Scroll suave y comportamiento profesional en toda la interfaz.
+- En vista Gantt: barras con gradiente y tooltips.
+- En vista Kanban: columnas con fondo `#1e293b`, tarjetas con efecto hover.
+
+---
+
+## 📦 11. ENTREGABLES FINALES
+
+Genera **dos archivos** completos, funcionales, sin marcadores ni placeholders:
+
+1. **`data.json`** – con la estructura exacta mostrada en la sección 1.
+2. **`index.html`** – código HTML/CSS/JS (Vanilla ES6+) que implementa **todos** los requisitos descritos en este prompt.
+
+---
+
+*Tras la implementación, se podrán evaluar mejoras futuras como sincronización con backend o vista de carga de recursos por persona.*
