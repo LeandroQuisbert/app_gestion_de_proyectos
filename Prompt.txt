@@ -1,4 +1,4 @@
-# PROMPT – VizPM v2.12 (Visual Project Manager OS)
+# PROMPT – VizPM v2.13 (Visual Project Manager OS)
 
 ## 1. 📑 INDICE PRINCIPAL
 1. [System Rules & Constraints](#1-system-rules--constraints-critical)
@@ -7,19 +7,20 @@
 4. [Card Anatomy & Hierarchy](#4-card-anatomy--hierarchy-the-core)
 5. [Smart Side Panel](#5-smart-side-panel-triangle-toggle)
 6. [Reactive Views](#6-reactive-views-single-source-of-truth)
-7. [Executive Dashboard](#7-executive-dashboard)
-8. [Data Intelligence](#8-data-intelligence-rollup--alerts)
-9. [Interactions & Performance](#9-interactions--performance)
-10. [Persistence & Versioning](#10-persistence--versioning)
-11. [Collaboration Prep](#11-collaboration-prep)
-12. [Visual Modes & Styling](#12-visual-modes--styling)
-13. [Deliverables & Execution](#13-deliverables--execution)
+7. [KPIs View](#7-kpis-view)
+8. [Organigrama View](#8-organigrama-view)
+9. [Data Intelligence](#9-data-intelligence-rollup--alerts)
+10. [Interactions & Performance](#10-interactions--performance)
+11. [Persistence & Versioning](#11-persistence--versioning)
+12. [Collaboration & User Management](#12-collaboration--user-management)
+13. [Visual Modes & Styling](#13-visual-modes--styling)
+14. [Deliverables & Execution](#14-deliverables--execution)
 
 
 ### 1. System Rules & Constraints (CRITICAL)
 1.1. **NO PLACEHOLDERS**: DO NOT use comments like `// ... implement logic here`, `/* TODO */`, or `// rest of the code`. Write the **complete, working Vanilla JS code** for every feature, especially drag-and-drop, state management, and SVG rendering.
 
-1.2. **SINGLE SOURCE OF TRUTH**: Use a centralized, reactive state manager (e.g., JavaScript `Proxy` or a simple Pub/Sub pattern). Mutating the state must automatically trigger efficient re-renders across Canvas, Gantt, Kanban, and Graph views.
+1.2. **SINGLE SOURCE OF TRUTH**: Use a centralized, reactive state manager (e.g., JavaScript `Proxy` or a simple Pub/Sub pattern). Mutating the state must automatically trigger efficient re-renders across Canvas, Gantt, Kanban, Organigrama, and KPIs views.
 
 1.3. **MODULAR CODE STRUCTURE**: Organize the JS into clear, distinct blocks: `// --- 1. STATE & STORE ---`, `// --- 2. DATA LOADING & INIT ---`, `// --- 3. RENDER ENGINE ---`, `// --- 4. EVENT LISTENERS & INTERACTIONS ---`, `// --- 5. UTILITIES ---`.
 
@@ -32,7 +33,7 @@
 1.7. **NO STANDALONE EXPORT/IMPORT**: Saving always downloads a `.json` file, and opening loads a `.json` file. Do not create separate "Export/Import" buttons.
 
 ### 2. Global Architecture (App Shell)
-2.1. **Top Header**: "VizPM" logo (left), File Menu (New, Open, Save, Save Draft, Load Version), Global View Toggles (Canvas, Gantt, Kanban, Graph), clear Simple/Advanced toggle switch, User Avatar (simulated as "Leo", admin).
+2.1. **Top Header**: "VizPM" logo (left), File Menu (New, Open, Save, Save Draft, Load Version), Global View Toggles (Canvas, Gantt, Kanban, Organigrama, KPIs), clear Simple/Advanced toggle switch, User Avatar (simulated as "Leo", admin).
 
 2.2. **Bottom Taskbar**: Icons for open project windows. Allows switching, minimizing, or closing them.
 
@@ -84,76 +85,116 @@
 
 6.2. **Gantt**: Root cards as horizontal bars on a calendar. Drag/resize updates `startDate`/`dueDate` globally. Connections define Finish-to-Start dependencies; critical path is highlighted in red.
 
-6.3. **Kanban**: Columns (Not Started, In Progress, Blocked, Completed). Compact cards. Dragging between columns changes `status` globally.
+6.3. **Kanban**: Columns (Not Started, In Progress, Blocked, Completed). Compact cards. Dragging between columns changes `status` globally. Shows tasks from ALL cards (including commercial/management tasks), filterable by `owner`, `area`, or `phase`.
 
-6.4. **Graph**: Force-directed/hierarchical layout of all cards and connections. Expandable nodes showing title + progress.
+6.4. **Presentation Mode**: Smooth camera transitions cycling through root/selected cards (configurable duration, arrow keys to advance, Escape to exit).
 
-6.5. **Presentation Mode**: Smooth camera transitions cycling through root/selected cards (configurable duration, arrow keys to advance, Escape to exit).
+6.5. **Camera Bookmarks**: Ability to save named camera positions (X, Y, Scale) in Canvas view, accessible from a dropdown. Essential for smooth Presentation Mode.
 
-6.6. **Camera Bookmarks**: Ability to save named camera positions (X, Y, Scale) in Canvas/Graph views, accessible from a dropdown. Essential for smooth Presentation Mode.
+6.6. **Global Filters**: A filter panel in the header allows applying filters (by `owner`, `area`, `status`, `phase`) to ALL views (Canvas, Gantt, Kanban, Organigrama, KPIs). Filters are persistent across view switches.
 
-### 7. Executive Dashboard
-7.1. **Location**: Top panel inside the Project Window.
+### 7. KPIs View
+7.1. **Location**: Dedicated view accessible via the "KPIs" toggle in the Global View Toggles.
 
-7.2. **Behavior**: **Fully collapsible** via toggle to save vertical space.
+7.2. **Behavior**: Full-screen view showing real-time project metrics. NOT a collapsible panel, but a dedicated view that can be accessed anytime.
 
-7.3. **Content**: Real-time KPIs: Global % progress (weighted average), Budget vs Spent (donut chart), Active blockers list, Critical path nodes, Next 5 milestones.
+7.3. **Content**:
+- Global % progress (weighted average of all macro-blocks).
+- Budget vs Spent (donut chart).
+- Active blockers list (cards with `status: 'Blocked'`).
+- Critical path nodes (from Gantt dependencies).
+- Next 5 milestones (upcoming `dueDate` values).
+- Team workload distribution (tasks per user).
 
-### 8. Data Intelligence (Rollup & Alerts)
-8.1. **Hierarchical Rollup**: Parent `presupuesto`/`gastado` = sum of all descendants. Parent `progress` = weighted average of direct children. Aggregated values show a "∑" icon and italic style. Manual edit of a parent value breaks aggregation (shows warning).
+7.4. **Data Source**: Aggregates data from ALL cards in the project, including commercial/management tasks (not just technical blocks).
 
-8.2. **Cascading Alerts**: Monitors subtrees for `status: 'Blocked'` or `reqs` with `status: 'pending'`. Incidents bubble up to the root, showing a red blinking badge (CSS `pulse-border`) in Zone C (or overlay in compact mode), even if fully collapsed.
+### 8. Organigrama View
+8.1. **Location**: Dedicated view accessible via the "Organigrama" toggle in the Global View Toggles.
 
-8.3. **Smart Notifications**: `notificationRules` engine in JSON (e.g., `trigger: "dueDate < 48h"`, `action: "badge + webhook"`).
+8.2. **Structure**: Inverted tree with the admin user (Leo) at the root, and other users (Ponfe, Christian, Sofía, Marco) as child nodes.
 
-### 9. Interactions & Performance
-9.1. **Optimized Drag**: GPU-accelerated "ghost" proxy during drag. Real DOM updates only on `drop`.
+8.3. **Content per User Node**:
+- Avatar (Google-style circle with initials).
+- Name and role.
+- Current workload (number of active tasks).
+- % of tasks completed.
+- Expandable section showing all tasks assigned to that user (from any card in the project).
 
-9.2. **Marquee Selection**: Semi-transparent blue rectangle. Uses `requestAnimationFrame` and viewport culling to evaluate only visible cards.
+8.4. **Permissions (v2.13 Basic)**:
+- **Default behavior**: Users higher in the hierarchy can see all tasks of their subordinates. Subordinates only see their own tasks.
+- **Future enhancement note**: *"In future versions, admins will be able to configure custom permissions per card/area, overriding the default hierarchy."*
 
-9.3. **Smart Drop Zones**: Dragging over a card highlights 3 zones: Top edge (insert as previous sibling), Center (insert as child), Bottom edge (insert as next sibling).
+8.5. **Admin Features (Leo as Superuser)**:
+- Add/remove users from the Organigrama.
+- Reassign tasks between users.
+- Change user roles (admin/write/read).
+- View all tasks across the entire project.
 
-9.4. **Shortcuts**: Ctrl+Z/Y (Undo/Redo, 50 steps), Ctrl+C/V (Duplicate with new ID and offset), Delete (with confirmation dialog: "Promote children to parent level" OR "Delete children entirely").
+### 9. Data Intelligence (Rollup & Alerts)
+9.1. **Hierarchical Rollup**: Parent `presupuesto`/`gastado` = sum of all descendants. Parent `progress` = weighted average of direct children. Aggregated values show a "∑" icon and italic style. Manual edit of a parent value breaks aggregation (shows warning).
 
-### 10. Persistence & Versioning
-10.1. **localStorage keys**: `vizpm_projects`, `vizpm_open_windows`, `vizpm_global_settings`, `vizpm_activity_log`, `projectVersions`, `undoStack`, `redoStack`, `userNotes`.
+9.2. **Cascading Alerts**: Monitors subtrees for `status: 'Blocked'` or `reqs` with `status: 'pending'`. Incidents bubble up to the root, showing a red blinking badge (CSS `pulse-border`) in Zone C (or overlay in compact mode), even if fully collapsed.
 
-10.2. **Auto-save**: Every 5 minutes + 2s debounce after significant actions (drop, resize end, status change).
+9.3. **Smart Notifications**: `notificationRules` engine in JSON (e.g., `trigger: "dueDate < 48h"`, `action: "badge + webhook"`).
 
-10.3. **Versions**: "Save as draft" creates a named snapshot in `projectVersions`. "Load version" restores with confirmation. Auto-save does not overwrite named versions.
+### 10. Interactions & Performance
+10.1. **Optimized Drag**: GPU-accelerated "ghost" proxy during drag. Real DOM updates only on `drop`.
 
-10.4. **Persistent IDEA Notes**: Saved inside the card's JSON (`ideaNotes: [{text, timestamp}]`), ensuring they export/import with the project (unlike temporary session notes).
+10.2. **Marquee Selection**: Semi-transparent blue rectangle. Uses `requestAnimationFrame` and viewport culling to evaluate only visible cards.
 
-10.5. **Activity Feed UI**: A toggle button in the top header (clock/history icon) opens a collapsible right side panel showing the last 50 entries from `vizpm_activity_log`. Clicking an entry automatically switches to the appropriate view, pans the camera to the relevant card, and highlights it.
+10.3. **Smart Drop Zones**: Dragging over a card highlights 3 zones: Top edge (insert as previous sibling), Center (insert as child), Bottom edge (insert as next sibling).
 
-10.6. **Window State Persistence**: The state of each project window (position X,Y, size Width,Height, maximized status) must be saved in the project's JSON under the `windowState` object for persistence across saves and loads.
+10.4. **Shortcuts**: Ctrl+Z/Y (Undo/Redo, 50 steps), Ctrl+C/V (Duplicate with new ID and offset), Delete (with confirmation dialog: "Promote children to parent level" OR "Delete children entirely").
 
-### 11. Collaboration Prep
-11.1. **Data Model**: Includes `users: [{name, role: "admin"|"write"|"read"}]` and optional `permissions` per card.
+### 11. Persistence & Versioning
+11.1. **localStorage keys**: `vizpm_projects`, `vizpm_open_windows`, `vizpm_global_settings`, `vizpm_activity_log`, `projectVersions`, `undoStack`, `redoStack`, `userNotes`.
 
-11.2. **State Mutations**: Are structured as operations: `{ userId, timestamp, targetId, field, value }` (ready for future Yjs/CRDT integration and offline-first queueing).
+11.2. **Auto-save**: Every 5 minutes + 2s debounce after significant actions (drop, resize end, status change).
 
-### 12. Visual Modes & Styling
-12.1. **Simple / Advanced**: Global toggle. "Simple" hides WBS codes, rollup math, Graph view, and technical tabs. "Advanced" shows everything.
+11.3. **Versions**: "Save as draft" creates a named snapshot in `projectVersions`. "Load version" restores with confirmation. Auto-save does not overwrite named versions.
 
-12.2. **Focus Modes**: "Work" (hides children, expands tabs), "Blocks" (hides tabs, expands children), "Hybrid" (all visible).
+11.4. **Persistent IDEA Notes**: Saved inside the card's JSON (`ideaNotes: [{text, timestamp}]`), ensuring they export/import with the project (unlike temporary session notes).
 
-12.3. **Theme**: Premium dark mode (Vercel/Shadcn style). Backgrounds `#0b0f19`, cards `#111827`, crisp white text, accents in blue, purple, and green.
+11.5. **Activity Feed UI**: A toggle button in the top header (clock/history icon) opens a collapsible right side panel showing the last 50 entries from `vizpm_activity_log`. Clicking an entry automatically switches to the appropriate view, pans the camera to the relevant card, and highlights it.
 
-12.4. **UI Details**: `border-radius: 8px`, input backgrounds `#1e293b`, 0.2s transitions. Images use `object-fit: cover` with rounded corners.
+11.6. **Window State Persistence**: The state of each project window (position X,Y, size Width,Height, maximized status) must be saved in the project's JSON under the `windowState` object for persistence across saves and loads.
 
-12.5. **Animations**: Smooth slide-in/slide-out for side panels, dashboard, activity feed, and modals.
+### 12. Collaboration & User Management
+12.1. **Data Model**: Includes `users: [{name, role: "admin"|"write"|"read", reportsTo: string|null, joinedAt: timestamp}]` and optional `permissions` per card.
 
-### 13. Deliverables & Execution
-13.1. **Output**: Generate **ONE single, fully functional `index.html` file** without placeholders.
+12.2. **Hierarchical Permissions (v2.13 Basic)**:
+- Users with `role: "admin"` can see and manage all users and tasks.
+- Users with `role: "write"` or `"read"` can see tasks of users who `reportsTo` them (directly or indirectly).
+- Each user can always see their own tasks.
 
-13.2. **Content**: It must contain all HTML, Tailwind/DaisyUI CDN links, FontAwesome CDN, and Vanilla ES6+ JS implementing **every point above**.
+12.3. **State Mutations**: Are structured as operations: `{ userId, timestamp, targetId, field, value }` (ready for future Yjs/CRDT integration and offline-first queueing).
 
-13.3. **Initial State Loading**: On load, the JS **must fetch `data.json`** from the same directory using `fetch('data.json')`.
+12.4. **Task Assignment**: Each task in `tabs.trabajo` must have an `assignee` field (username) to enable Organigrama view and workload tracking.
 
-13.4. **Error Handling**: If `data.json` fails to load, display a friendly UI error message and provide a button to "Create New Empty Project".
+### 13. Visual Modes & Styling
+13.1. **Simple / Advanced**: Global toggle. "Simple" hides WBS codes, rollup math, Organigrama view, and technical tabs. "Advanced" shows everything.
 
-13.5. **Data Expectation**: The code must perfectly parse the "AeroVend 1.0 v2.12" schema (June 1, 2026 start, July 3, 2026 Uniovi Emprende deadline, 7 macro-blocks, 3-level hierarchy, `zonesOrder`, `hiddenZones`, `layoutOrientation`, `ideaNotes`, realistic team data, `windowState`).
+13.2. **Focus Modes**: "Work" (hides children, expands tabs), "Blocks" (hides tabs, expands children), "Hybrid" (all visible).
+
+13.3. **Theme**: Premium dark mode (Vercel/Shadcn style). Backgrounds `#0b0f19`, cards `#111827`, crisp white text, accents in blue, purple, and green.
+
+13.4. **UI Details**: `border-radius: 8px`, input backgrounds `#1e293b`, 0.2s transitions. Images use `object-fit: cover` with rounded corners.
+
+13.5. **Animations**: Smooth slide-in/slide-out for side panels, KPIs view, Organigrama view, activity feed, and modals.
+
+### 14. Deliverables & Execution
+14.1. **Output**: Generate **ONE single, fully functional `index.html` file** without placeholders.
+
+14.2. **Content**: It must contain all HTML, Tailwind/DaisyUI CDN links, FontAwesome CDN, and Vanilla ES6+ JS implementing **every point above**.
+
+14.3. **Initial State Loading**: On load, the JS **must fetch `data.json`** from the same directory using `fetch('data.json')`.
+
+14.4. **Error Handling**: If `data.json` fails to load, display a friendly UI error message and provide a button to "Create New Empty Project".
+
+14.5. **Data Expectation**: The code must perfectly parse the "AeroVend 1.0 v2.13" schema (June 1, 2026 start, July 3, 2026 Uniovi Emprende deadline, macro-blocks including `gestion-proyecto` with `comercial-marco` as child, 3-level hierarchy, `zonesOrder`, `hiddenZones`, `layoutOrientation`, `ideaNotes`, realistic team data with `assignee` in tasks, `phase` in cards, `windowState`, hierarchical user structure with `reportsTo`).
 
 ---
 **OUTPUT FORMAT**: Provide ONLY the complete `index.html` code block. Do not add conversational text before or after the code block. Start directly with `<!DOCTYPE html>`.
+
+---
+
