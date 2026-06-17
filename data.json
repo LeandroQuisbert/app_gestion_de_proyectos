@@ -20,6 +20,7 @@
   "layoutOrientation": "default",
   "cardType": "proyecto",
   "autoComplete": false,
+  "phase": "Planning",
   "zonesOrder": ["A", "B", "C", "D", "E"],
   "hiddenZones": [],
   "image": {
@@ -31,19 +32,19 @@
   "style": { "bg": "#0b0f19", "opacity": 1.0, "borderColor": "#38bdf8" },
   "tabs": {
     "trabajo": [
-      { "text": "Definición de alcance y requisitos del sistema", "checked": true, "createdAt": "2026-06-01T09:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T09:00:00Z", "updatedBy": "Leo" },
-      { "text": "Diseño conceptual completo", "checked": true, "createdAt": "2026-06-01T09:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T09:15:00Z", "updatedBy": "Leo" },
-      { "text": "Planos mecánicos preliminares", "checked": false, "createdAt": "2026-06-01T09:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T09:30:00Z", "updatedBy": "Leo" },
-      { "text": "Planos eléctricos preliminares", "checked": false, "createdAt": "2026-06-01T09:35:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T09:35:00Z", "updatedBy": "Leo" },
-      { "text": "Integración de subsistemas", "checked": false, "createdAt": "2026-06-01T09:40:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T09:40:00Z", "updatedBy": "Leo" },
-      { "text": "Presentación Uniovi Emprende (DEADLINE 3 julio)", "checked": false, "createdAt": "2026-06-01T09:45:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T09:45:00Z", "updatedBy": "Leo" }
+      { "text": "Definición de alcance y requisitos del sistema", "checked": true, "assignee": "Leo", "createdAt": "2026-06-01T09:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T09:00:00Z", "updatedBy": "Leo" },
+      { "text": "Diseño conceptual completo", "checked": true, "assignee": "Leo", "createdAt": "2026-06-01T09:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T09:15:00Z", "updatedBy": "Leo" },
+      { "text": "Planos mecánicos preliminares", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-01T09:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T09:30:00Z", "updatedBy": "Leo" },
+      { "text": "Planos eléctricos preliminares", "checked": false, "assignee": "Leo", "createdAt": "2026-06-01T09:35:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T09:35:00Z", "updatedBy": "Leo" },
+      { "text": "Integración de subsistemas", "checked": false, "assignee": "Leo", "createdAt": "2026-06-01T09:40:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T09:40:00Z", "updatedBy": "Leo" },
+      { "text": "Presentación Uniovi Emprende (DEADLINE 3 julio)", "checked": false, "assignee": "Leo", "createdAt": "2026-06-01T09:45:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T09:45:00Z", "updatedBy": "Leo" }
     ],
     "tecnico": { "altura_total": "2.4m", "ancho": "1.5m", "profundidad": "0.8m", "peso_max": "450kg", "consumo_estimado": "2.5kW", "capacidad_plantas": "120 plantas" },
     "economico": { "presupuesto": 75000, "gastado": 12000, "createdAt": "2026-06-01T10:00:00Z", "createdBy": "Leo" },
     "reqs": []
   },
   "comments": [
-    { "id": 1, "author": "Leo", "text": "Kickoff del proyecto. Fecha límite crítica: 3 julio para Uniovi Emprende. Equipo confirmado: Leo (electrónica/robótica/LEDs), Ponce (mecánica/fluidos/estructura), Christian (servidor/software), Sofía (biología/nutrientes).", "timestamp": "2026-06-01T10:00:00Z", "pinned": true },
+    { "id": 1, "author": "Leo", "text": "Kickoff del proyecto. Fecha límite crítica: 3 julio para Uniovi Emprende. Equipo confirmado: Leo (electrónica/robótica/LEDs), Ponfe (mecánica/fluidos/estructura), Christian (servidor/software), Sofía (biología/nutrientes).", "timestamp": "2026-06-01T10:00:00Z", "pinned": true },
     { "id": 2, "author": "Leo", "text": "Prioridad máxima: sistema de riego funcional y brazo robótico operativo para la demo. Todo lo demás puede estar en progreso.", "timestamp": "2026-06-02T09:30:00Z", "pinned": false }
   ],
   "ideaNotes": [
@@ -90,17 +91,18 @@
       "layoutOrientation": "default",
       "cardType": "macro-bloque",
       "autoComplete": false,
+      "phase": "Planning",
       "zonesOrder": ["A", "C", "D", "E"],
       "hiddenZones": ["B"],
       "image": { "src": "", "position": "right", "width": 80, "height": 80 },
       "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#fbbf24" },
       "tabs": {
         "trabajo": [
-          { "text": "Formación del equipo y asignación de roles", "checked": true, "createdAt": "2026-06-01T08:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T08:00:00Z", "updatedBy": "Leo" },
-          { "text": "Definición de hitos y cronograma", "checked": true, "createdAt": "2026-06-01T08:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T08:15:00Z", "updatedBy": "Leo" },
-          { "text": "Preparación de pitch para Uniovi Emprende", "checked": false, "createdAt": "2026-06-01T08:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T08:30:00Z", "updatedBy": "Leo" },
-          { "text": "Diseño de diapositivas y demo video", "checked": false, "createdAt": "2026-06-01T08:45:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T08:45:00Z", "updatedBy": "Leo" },
-          { "text": "Ensayo de presentación", "checked": false, "createdAt": "2026-06-01T09:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T09:00:00Z", "updatedBy": "Leo" }
+          { "text": "Formación del equipo y asignación de roles", "checked": true, "assignee": "Leo", "createdAt": "2026-06-01T08:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T08:00:00Z", "updatedBy": "Leo" },
+          { "text": "Definición de hitos y cronograma", "checked": true, "assignee": "Leo", "createdAt": "2026-06-01T08:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T08:15:00Z", "updatedBy": "Leo" },
+          { "text": "Preparación de pitch para Uniovi Emprende", "checked": false, "assignee": "Marco", "createdAt": "2026-06-01T08:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T08:30:00Z", "updatedBy": "Leo" },
+          { "text": "Diseño de diapositivas y demo video", "checked": false, "assignee": "Marco", "createdAt": "2026-06-01T08:45:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T08:45:00Z", "updatedBy": "Leo" },
+          { "text": "Ensayo de presentación", "checked": false, "assignee": "Leo", "createdAt": "2026-06-01T09:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T09:00:00Z", "updatedBy": "Leo" }
         ],
         "tecnico": { "deadline": "3 julio 2026", "formato": "Pitch 10min + demo", "lugar": "Uniovi Emprende" },
         "economico": { "presupuesto": 2000, "gastado": 500, "createdAt": "2026-06-01T09:15:00Z", "createdBy": "Leo" },
@@ -136,15 +138,16 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Planning",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fde047" },
           "tabs": {
             "trabajo": [
-              { "text": "Estructura del pitch", "checked": false, "createdAt": "2026-06-15T09:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-15T09:00:00Z", "updatedBy": "Leo" },
-              { "text": "Diseño de diapositivas", "checked": false, "createdAt": "2026-06-15T09:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-15T09:15:00Z", "updatedBy": "Leo" },
-              { "text": "Grabación de demo video", "checked": false, "createdAt": "2026-06-15T09:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-15T09:30:00Z", "updatedBy": "Leo" }
+              { "text": "Estructura del pitch", "checked": false, "assignee": "Marco", "createdAt": "2026-06-15T09:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-15T09:00:00Z", "updatedBy": "Leo" },
+              { "text": "Diseño de diapositivas", "checked": false, "assignee": "Marco", "createdAt": "2026-06-15T09:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-15T09:15:00Z", "updatedBy": "Leo" },
+              { "text": "Grabación de demo video", "checked": false, "assignee": "Leo", "createdAt": "2026-06-15T09:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-15T09:30:00Z", "updatedBy": "Leo" }
             ],
             "tecnico": { "duracion": "10min", "formato": "PDF + video" },
             "economico": { "presupuesto": 500, "gastado": 0, "createdAt": "2026-06-15T09:45:00Z", "createdBy": "Leo" },
@@ -176,20 +179,65 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Dev",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "right", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fde047" },
           "tabs": {
             "trabajo": [
-              { "text": "Manual de usuario", "checked": false, "createdAt": "2026-06-20T09:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-20T09:00:00Z", "updatedBy": "Leo" },
-              { "text": "Documentación de APIs", "checked": false, "createdAt": "2026-06-20T09:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-20T09:15:00Z", "updatedBy": "Leo" }
+              { "text": "Manual de usuario", "checked": false, "assignee": "Leo", "createdAt": "2026-06-20T09:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-20T09:00:00Z", "updatedBy": "Leo" },
+              { "text": "Documentación de APIs", "checked": false, "assignee": "Christian", "createdAt": "2026-06-20T09:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-20T09:15:00Z", "updatedBy": "Leo" }
             ],
             "tecnico": { "formato": "Markdown + PDF" },
             "economico": { "presupuesto": 300, "gastado": 0, "createdAt": "2026-06-20T09:30:00Z", "createdBy": "Leo" },
             "reqs": []
           },
           "comments": [],
+          "ideaNotes": [],
+          "childCards": []
+        },
+        {
+          "id": "comercial-marco",
+          "title": "Comercial y Marketing",
+          "description": "Tareas de marketing, ventas, estudios de mercado y relaciones públicas. Coordinado por Marco.",
+          "width": 360,
+          "height": 260,
+          "x": 1500,
+          "y": 500,
+          "parentId": "gestion-proyecto",
+          "collapsed": false,
+          "compactView": false,
+          "owner": "Marco",
+          "area": "Comercial",
+          "progress": 5,
+          "status": "Sin Empezar",
+          "startDate": "2026-06-03",
+          "dueDate": "2026-07-03",
+          "resumenView": "progress",
+          "layoutMode": "grid",
+          "layoutOrientation": "default",
+          "cardType": "componente",
+          "autoComplete": false,
+          "phase": "Commercial",
+          "zonesOrder": ["A", "C", "D", "E"],
+          "hiddenZones": ["B"],
+          "image": { "src": "", "position": "right", "width": 100, "height": "auto" },
+          "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#8b5cf6" },
+          "tabs": {
+            "trabajo": [
+              { "text": "Análisis de competencia", "checked": false, "assignee": "Marco", "createdAt": "2026-06-03T10:00:00Z", "createdBy": "Marco", "updatedAt": "2026-06-03T10:00:00Z", "updatedBy": "Marco" },
+              { "text": "Desarrollo de estrategia de precios", "checked": false, "assignee": "Marco", "createdAt": "2026-06-03T10:15:00Z", "createdBy": "Marco", "updatedAt": "2026-06-03T10:15:00Z", "updatedBy": "Marco" },
+              { "text": "Contacto con potenciales clientes", "checked": false, "assignee": "Marco", "createdAt": "2026-06-03T10:30:00Z", "createdBy": "Marco", "updatedAt": "2026-06-03T10:30:00Z", "updatedBy": "Marco" },
+              { "text": "Diseño de campaña de marketing", "checked": false, "assignee": "Marco", "createdAt": "2026-06-03T10:45:00Z", "createdBy": "Marco", "updatedAt": "2026-06-03T10:45:00Z", "updatedBy": "Marco" }
+            ],
+            "tecnico": { "canal_venta": "B2B + Vending", "estrategia": "Suscripción + venta unitaria" },
+            "economico": { "presupuesto": 3000, "gastado": 0, "createdAt": "2026-06-03T11:00:00Z", "createdBy": "Marco" },
+            "reqs": []
+          },
+          "comments": [
+            { "id": 1, "author": "Marco", "text": "Comenzando análisis de mercado. Primer contacto con 3 restaurantes locales.", "timestamp": "2026-06-03T11:00:00Z", "pinned": false }
+          ],
           "ideaNotes": [],
           "childCards": []
         }
@@ -206,7 +254,7 @@
       "parentId": "main",
       "collapsed": false,
       "compactView": false,
-      "owner": "Ponce",
+      "owner": "Ponfe",
       "area": "Sistema de Riego Aeropónico",
       "progress": 18,
       "status": "En Progreso",
@@ -217,6 +265,7 @@
       "layoutOrientation": "default",
       "cardType": "macro-bloque",
       "autoComplete": false,
+      "phase": "Dev",
       "zonesOrder": ["A", "B", "C", "D", "E"],
       "hiddenZones": [],
       "image": {
@@ -228,18 +277,18 @@
       "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#f97316" },
       "tabs": {
         "trabajo": [
-          { "text": "Dimensionado del circuito completo", "checked": true, "createdAt": "2026-06-01T10:00:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-01T10:00:00Z", "updatedBy": "Ponce" },
-          { "text": "Selección de bomba compresora alta presión", "checked": false, "createdAt": "2026-06-01T10:15:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-01T10:15:00Z", "updatedBy": "Ponce" },
-          { "text": "Selección de acumulador de presión", "checked": false, "createdAt": "2026-06-01T10:30:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-01T10:30:00Z", "updatedBy": "Ponce" },
-          { "text": "Diseño de tuberías y conexiones", "checked": false, "createdAt": "2026-06-01T10:45:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-01T10:45:00Z", "updatedBy": "Ponce" },
-          { "text": "Pruebas de presión y caudal", "checked": false, "createdAt": "2026-06-01T11:00:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-01T11:00:00Z", "updatedBy": "Ponce" }
+          { "text": "Dimensionado del circuito completo", "checked": true, "assignee": "Ponfe", "createdAt": "2026-06-01T10:00:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-01T10:00:00Z", "updatedBy": "Ponfe" },
+          { "text": "Selección de bomba compresora alta presión", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-01T10:15:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-01T10:15:00Z", "updatedBy": "Ponfe" },
+          { "text": "Selección de acumulador de presión", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-01T10:30:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-01T10:30:00Z", "updatedBy": "Ponfe" },
+          { "text": "Diseño de tuberías y conexiones", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-01T10:45:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-01T10:45:00Z", "updatedBy": "Ponfe" },
+          { "text": "Pruebas de presión y caudal", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-01T11:00:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-01T11:00:00Z", "updatedBy": "Ponfe" }
         ],
         "tecnico": { "presion_objetivo": "5.5 bar (80 PSI)", "caudal": "1.5 L/min", "temperatura_agua": "18-22°C", "volumen_tanque": "50L" },
-        "economico": { "presupuesto": 12000, "gastado": 2500, "createdAt": "2026-06-01T11:15:00Z", "createdBy": "Ponce" },
+        "economico": { "presupuesto": 12000, "gastado": 2500, "createdAt": "2026-06-01T11:15:00Z", "createdBy": "Ponfe" },
         "reqs": []
       },
       "comments": [
-        { "id": 1, "author": "Ponce", "text": "Investigando bombas compresoras. Opciones: Cat Pumps 310, General Pump TSWS4040. Necesito confirmar caudal y presión.", "timestamp": "2026-06-03T11:00:00Z", "pinned": false },
+        { "id": 1, "author": "Ponfe", "text": "Investigando bombas compresoras. Opciones: Cat Pumps 310, General Pump TSWS4040. Necesito confirmar caudal y presión.", "timestamp": "2026-06-03T11:00:00Z", "pinned": false },
         { "id": 2, "author": "Leo", "text": "Recuerda que la bomba debe ser silenciosa para la máquina expendedora. Máximo 50dB.", "timestamp": "2026-06-03T14:30:00Z", "pinned": false }
       ],
       "ideaNotes": [
@@ -257,7 +306,7 @@
           "parentId": "riego-principal",
           "collapsed": false,
           "compactView": false,
-          "owner": "Ponce",
+          "owner": "Ponfe",
           "area": "Sistema de Riego Aeropónico",
           "progress": 25,
           "status": "En Progreso",
@@ -268,18 +317,19 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Dev",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fb923c" },
           "tabs": {
             "trabajo": [
-              { "text": "Selección de tanque 50L inox 316", "checked": true, "createdAt": "2026-06-05T09:00:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-05T09:00:00Z", "updatedBy": "Ponce" },
-              { "text": "Instalación de sensores de nivel", "checked": false, "createdAt": "2026-06-05T09:15:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-05T09:15:00Z", "updatedBy": "Ponce" },
-              { "text": "Conexiones de entrada/salida", "checked": false, "createdAt": "2026-06-05T09:30:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-05T09:30:00Z", "updatedBy": "Ponce" }
+              { "text": "Selección de tanque 50L inox 316", "checked": true, "assignee": "Ponfe", "createdAt": "2026-06-05T09:00:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-05T09:00:00Z", "updatedBy": "Ponfe" },
+              { "text": "Instalación de sensores de nivel", "checked": false, "assignee": "Leo", "createdAt": "2026-06-05T09:15:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-05T09:15:00Z", "updatedBy": "Ponfe" },
+              { "text": "Conexiones de entrada/salida", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-05T09:30:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-05T09:30:00Z", "updatedBy": "Ponfe" }
             ],
             "tecnico": { "volumen": "50L", "material": "acero inox 316", "sensores": "nivel + temperatura" },
-            "economico": { "presupuesto": 850, "gastado": 400, "createdAt": "2026-06-05T09:45:00Z", "createdBy": "Ponce" },
+            "economico": { "presupuesto": 850, "gastado": 400, "createdAt": "2026-06-05T09:45:00Z", "createdBy": "Ponfe" },
             "reqs": []
           },
           "comments": [],
@@ -308,15 +358,16 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Dev",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "right", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#34d399" },
           "tabs": {
             "trabajo": [
-              { "text": "Selección de bomba peristáltica", "checked": false, "createdAt": "2026-06-10T09:00:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-10T09:00:00Z", "updatedBy": "Sofía" },
-              { "text": "Calibración de dosificación", "checked": false, "createdAt": "2026-06-10T09:15:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-10T09:15:00Z", "updatedBy": "Sofía" },
-              { "text": "Integración con sensores EC/pH", "checked": false, "createdAt": "2026-06-10T09:30:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-10T09:30:00Z", "updatedBy": "Sofía" }
+              { "text": "Selección de bomba peristáltica", "checked": false, "assignee": "Sofía", "createdAt": "2026-06-10T09:00:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-10T09:00:00Z", "updatedBy": "Sofía" },
+              { "text": "Calibración de dosificación", "checked": false, "assignee": "Sofía", "createdAt": "2026-06-10T09:15:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-10T09:15:00Z", "updatedBy": "Sofía" },
+              { "text": "Integración con sensores EC/pH", "checked": false, "assignee": "Leo", "createdAt": "2026-06-10T09:30:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-10T09:30:00Z", "updatedBy": "Sofía" }
             ],
             "tecnico": { "tipo": "peristáltica", "caudal_max": "100 mL/min", "control": "PWM desde ESP32" },
             "economico": { "presupuesto": 450, "gastado": 0, "createdAt": "2026-06-10T09:45:00Z", "createdBy": "Sofía" },
@@ -339,7 +390,7 @@
           "parentId": "riego-principal",
           "collapsed": false,
           "compactView": false,
-          "owner": "Ponce",
+          "owner": "Ponfe",
           "area": "Sistema de Riego Aeropónico",
           "progress": 15,
           "status": "En Progreso",
@@ -350,22 +401,23 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Dev",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fdba74" },
           "tabs": {
             "trabajo": [
-              { "text": "Comparativa de modelos (Cat Pumps vs General Pump)", "checked": true, "createdAt": "2026-06-03T10:00:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-03T10:00:00Z", "updatedBy": "Ponce" },
-              { "text": "Pruebas de caudal y presión", "checked": false, "createdAt": "2026-06-03T10:15:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-03T10:15:00Z", "updatedBy": "Ponce" },
-              { "text": "Instalación con silenciador", "checked": false, "createdAt": "2026-06-03T10:30:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-03T10:30:00Z", "updatedBy": "Ponce" }
+              { "text": "Comparativa de modelos (Cat Pumps vs General Pump)", "checked": true, "assignee": "Ponfe", "createdAt": "2026-06-03T10:00:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-03T10:00:00Z", "updatedBy": "Ponfe" },
+              { "text": "Pruebas de caudal y presión", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-03T10:15:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-03T10:15:00Z", "updatedBy": "Ponfe" },
+              { "text": "Instalación con silenciador", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-03T10:30:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-03T10:30:00Z", "updatedBy": "Ponfe" }
             ],
             "tecnico": { "presion": "5.5 bar", "caudal": "1.5 L/min", "ruido_max": "50dB", "voltaje": "230V AC" },
-            "economico": { "presupuesto": 1800, "gastado": 600, "createdAt": "2026-06-03T10:45:00Z", "createdBy": "Ponce" },
+            "economico": { "presupuesto": 1800, "gastado": 600, "createdAt": "2026-06-03T10:45:00Z", "createdBy": "Ponfe" },
             "reqs": []
           },
           "comments": [
-            { "id": 1, "author": "Ponce", "text": "Cat Pumps 310 parece la mejor opción. Caudal estable y silenciosa. Precio: ~1200€.", "timestamp": "2026-06-05T16:00:00Z", "pinned": false }
+            { "id": 1, "author": "Ponfe", "text": "Cat Pumps 310 parece la mejor opción. Caudal estable y silenciosa. Precio: ~1200€.", "timestamp": "2026-06-05T16:00:00Z", "pinned": false }
           ],
           "ideaNotes": [
             { "text": "Verificar si necesita un bypass o válvula de seguridad para proteger las boquillas.", "timestamp": "2026-06-05T16:30:00Z" }
@@ -383,7 +435,7 @@
           "parentId": "riego-principal",
           "collapsed": false,
           "compactView": false,
-          "owner": "Ponce",
+          "owner": "Ponfe",
           "area": "Sistema de Riego Aeropónico",
           "progress": 8,
           "status": "Sin Empezar",
@@ -394,18 +446,19 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Design",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "right", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fbbf24" },
           "tabs": {
             "trabajo": [
-              { "text": "Cálculo de volumen necesario", "checked": true, "createdAt": "2026-06-15T09:00:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-15T09:00:00Z", "updatedBy": "Ponce" },
-              { "text": "Selección de acumulador 2L", "checked": false, "createdAt": "2026-06-15T09:15:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-15T09:15:00Z", "updatedBy": "Ponce" },
-              { "text": "Instalación y pruebas", "checked": false, "createdAt": "2026-06-15T09:30:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-15T09:30:00Z", "updatedBy": "Ponce" }
+              { "text": "Cálculo de volumen necesario", "checked": true, "assignee": "Ponfe", "createdAt": "2026-06-15T09:00:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-15T09:00:00Z", "updatedBy": "Ponfe" },
+              { "text": "Selección de acumulador 2L", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-15T09:15:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-15T09:15:00Z", "updatedBy": "Ponfe" },
+              { "text": "Instalación y pruebas", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-15T09:30:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-15T09:30:00Z", "updatedBy": "Ponfe" }
             ],
             "tecnico": { "volumen": "2L", "material": "acero inox 316", "presion_max": "7 bar" },
-            "economico": { "presupuesto": 650, "gastado": 0, "createdAt": "2026-06-15T09:45:00Z", "createdBy": "Ponce" },
+            "economico": { "presupuesto": 650, "gastado": 0, "createdAt": "2026-06-15T09:45:00Z", "createdBy": "Ponfe" },
             "reqs": []
           },
           "comments": [],
@@ -423,7 +476,7 @@
           "parentId": "riego-principal",
           "collapsed": false,
           "compactView": false,
-          "owner": "Ponce",
+          "owner": "Ponfe",
           "area": "Sistema de Riego Aeropónico",
           "progress": 12,
           "status": "Sin Empezar",
@@ -434,18 +487,19 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Dev",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#a3e635" },
           "tabs": {
             "trabajo": [
-              { "text": "Selección de micronaje (100 micras)", "checked": true, "createdAt": "2026-06-10T09:00:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-10T09:00:00Z", "updatedBy": "Ponce" },
-              { "text": "Compra de filtros", "checked": false, "createdAt": "2026-06-10T09:15:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-10T09:15:00Z", "updatedBy": "Ponce" },
-              { "text": "Instalación en línea", "checked": false, "createdAt": "2026-06-10T09:30:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-10T09:30:00Z", "updatedBy": "Ponce" }
+              { "text": "Selección de micronaje (100 micras)", "checked": true, "assignee": "Ponfe", "createdAt": "2026-06-10T09:00:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-10T09:00:00Z", "updatedBy": "Ponfe" },
+              { "text": "Compra de filtros", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-10T09:15:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-10T09:15:00Z", "updatedBy": "Ponfe" },
+              { "text": "Instalación en línea", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-10T09:30:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-10T09:30:00Z", "updatedBy": "Ponfe" }
             ],
             "tecnico": { "micras": "100", "tipo": "malla + disco", "material": "polipropileno" },
-            "economico": { "presupuesto": 320, "gastado": 80, "createdAt": "2026-06-10T09:45:00Z", "createdBy": "Ponce" },
+            "economico": { "presupuesto": 320, "gastado": 80, "createdAt": "2026-06-10T09:45:00Z", "createdBy": "Ponfe" },
             "reqs": []
           },
           "comments": [],
@@ -463,7 +517,7 @@
           "parentId": "riego-principal",
           "collapsed": false,
           "compactView": false,
-          "owner": "Ponce",
+          "owner": "Ponfe",
           "area": "Sistema de Riego Aeropónico",
           "progress": 5,
           "status": "Sin Empezar",
@@ -474,17 +528,18 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Test",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "right", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#22d3ee" },
           "tabs": {
             "trabajo": [
-              { "text": "Pruebas de patrón de spray", "checked": false, "createdAt": "2026-06-20T09:00:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-20T09:00:00Z", "updatedBy": "Ponce" },
-              { "text": "Instalación en cámaras de cultivo", "checked": false, "createdAt": "2026-06-20T09:15:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-20T09:15:00Z", "updatedBy": "Ponce" }
+              { "text": "Pruebas de patrón de spray", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-20T09:00:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-20T09:00:00Z", "updatedBy": "Ponfe" },
+              { "text": "Instalación en cámaras de cultivo", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-20T09:15:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-20T09:15:00Z", "updatedBy": "Ponfe" }
             ],
             "tecnico": { "angulo": "80°", "caudal": "0.6 L/min", "material": "acero inox 316" },
-            "economico": { "presupuesto": 480, "gastado": 0, "createdAt": "2026-06-20T09:30:00Z", "createdBy": "Ponce" },
+            "economico": { "presupuesto": 480, "gastado": 0, "createdAt": "2026-06-20T09:30:00Z", "createdBy": "Ponfe" },
             "reqs": []
           },
           "comments": [],
@@ -515,6 +570,7 @@
       "layoutOrientation": "default",
       "cardType": "macro-bloque",
       "autoComplete": false,
+      "phase": "Dev",
       "zonesOrder": ["A", "B", "C", "D", "E"],
       "hiddenZones": [],
       "image": {
@@ -526,11 +582,11 @@
       "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#8b5cf6" },
       "tabs": {
         "trabajo": [
-          { "text": "Diseño cinemático tipo CNC acostado", "checked": true, "createdAt": "2026-06-01T11:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T11:00:00Z", "updatedBy": "Leo" },
-          { "text": "Selección de guías lineales y rieles", "checked": false, "createdAt": "2026-06-01T11:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T11:15:00Z", "updatedBy": "Leo" },
-          { "text": "Diseño de efector de corte", "checked": false, "createdAt": "2026-06-01T11:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T11:30:00Z", "updatedBy": "Leo" },
-          { "text": "Programación de trayectoria", "checked": false, "createdAt": "2026-06-01T11:45:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T11:45:00Z", "updatedBy": "Leo" },
-          { "text": "Integración con sistema de empaquetado", "checked": false, "createdAt": "2026-06-01T12:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T12:00:00Z", "updatedBy": "Leo" }
+          { "text": "Diseño cinemático tipo CNC acostado", "checked": true, "assignee": "Leo", "createdAt": "2026-06-01T11:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T11:00:00Z", "updatedBy": "Leo" },
+          { "text": "Selección de guías lineales y rieles", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-01T11:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T11:15:00Z", "updatedBy": "Leo" },
+          { "text": "Diseño de efector de corte", "checked": false, "assignee": "Leo", "createdAt": "2026-06-01T11:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T11:30:00Z", "updatedBy": "Leo" },
+          { "text": "Programación de trayectoria", "checked": false, "assignee": "Leo", "createdAt": "2026-06-01T11:45:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T11:45:00Z", "updatedBy": "Leo" },
+          { "text": "Integración con sistema de empaquetado", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-01T12:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T12:00:00Z", "updatedBy": "Leo" }
         ],
         "tecnico": { "tipo": "CNC 2 ejes (XY)", "alcance_x": "1200mm", "alcance_y": "600mm", "precision": "±0.5mm", "velocidad_max": "200mm/s" },
         "economico": { "presupuesto": 18000, "gastado": 3000, "createdAt": "2026-06-01T12:15:00Z", "createdBy": "Leo" },
@@ -538,7 +594,7 @@
       },
       "comments": [
         { "id": 1, "author": "Leo", "text": "El diseño tipo CNC acostado es más robusto que un brazo SCARA para este caso. Permite cubrir toda el área de cultivo.", "timestamp": "2026-06-02T11:00:00Z", "pinned": false },
-        { "id": 2, "author": "Ponce", "text": "Yo me encargo de la estructura mecánica (rieles, motores, chasis). Tú haces la electrónica y control.", "timestamp": "2026-06-02T14:00:00Z", "pinned": false }
+        { "id": 2, "author": "Ponfe", "text": "Yo me encargo de la estructura mecánica (rieles, motores, chasis). Tú haces la electrónica y control.", "timestamp": "2026-06-02T14:00:00Z", "pinned": false }
       ],
       "ideaNotes": [
         { "text": "Usar motores NEMA 23 con encoders cerrados para precisión. Drivers TB6600 o DM542.", "timestamp": "2026-06-02T16:00:00Z" }
@@ -555,7 +611,7 @@
           "parentId": "robotica-principal",
           "collapsed": false,
           "compactView": false,
-          "owner": "Ponce",
+          "owner": "Ponfe",
           "area": "Brazo Robótico y Automatización",
           "progress": 15,
           "status": "En Progreso",
@@ -566,23 +622,24 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Dev",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#c084fc" },
           "tabs": {
             "trabajo": [
-              { "text": "Diseño CAD de estructura", "checked": true, "createdAt": "2026-06-05T09:00:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-05T09:00:00Z", "updatedBy": "Ponce" },
-              { "text": "Compra de perfiles aluminio 2020", "checked": false, "createdAt": "2026-06-05T09:15:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-05T09:15:00Z", "updatedBy": "Ponce" },
-              { "text": "Compra de guías lineales HIWIN", "checked": false, "createdAt": "2026-06-05T09:30:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-05T09:30:00Z", "updatedBy": "Ponce" },
-              { "text": "Montaje de ejes X e Y", "checked": false, "createdAt": "2026-06-05T09:45:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-05T09:45:00Z", "updatedBy": "Ponce" }
+              { "text": "Diseño CAD de estructura", "checked": true, "assignee": "Ponfe", "createdAt": "2026-06-05T09:00:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-05T09:00:00Z", "updatedBy": "Ponfe" },
+              { "text": "Compra de perfiles aluminio 2020", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-05T09:15:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-05T09:15:00Z", "updatedBy": "Ponfe" },
+              { "text": "Compra de guías lineales HIWIN", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-05T09:30:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-05T09:30:00Z", "updatedBy": "Ponfe" },
+              { "text": "Montaje de ejes X e Y", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-05T09:45:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-05T09:45:00Z", "updatedBy": "Ponfe" }
             ],
             "tecnico": { "material": "aluminio 2020", "guias": "HIWIN HGH15", "correas": "GT2 6mm" },
-            "economico": { "presupuesto": 3500, "gastado": 800, "createdAt": "2026-06-05T10:00:00Z", "createdBy": "Ponce" },
+            "economico": { "presupuesto": 3500, "gastado": 800, "createdAt": "2026-06-05T10:00:00Z", "createdBy": "Ponfe" },
             "reqs": []
           },
           "comments": [
-            { "id": 1, "author": "Ponce", "text": "Pedido de perfiles de aluminio realizado. Llegan en 5 días.", "timestamp": "2026-06-06T10:00:00Z", "pinned": false }
+            { "id": 1, "author": "Ponfe", "text": "Pedido de perfiles de aluminio realizado. Llegan en 5 días.", "timestamp": "2026-06-06T10:00:00Z", "pinned": false }
           ],
           "ideaNotes": [],
           "childCards": []
@@ -609,15 +666,16 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Dev",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "right", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#a78bfa" },
           "tabs": {
             "trabajo": [
-              { "text": "Selección de NEMA 23 con encoder", "checked": true, "createdAt": "2026-06-08T09:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-08T09:00:00Z", "updatedBy": "Leo" },
-              { "text": "Compra de motores y drivers", "checked": false, "createdAt": "2026-06-08T09:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-08T09:15:00Z", "updatedBy": "Leo" },
-              { "text": "Cableado y conexión a ESP32", "checked": false, "createdAt": "2026-06-08T09:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-08T09:30:00Z", "updatedBy": "Leo" }
+              { "text": "Selección de NEMA 23 con encoder", "checked": true, "assignee": "Leo", "createdAt": "2026-06-08T09:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-08T09:00:00Z", "updatedBy": "Leo" },
+              { "text": "Compra de motores y drivers", "checked": false, "assignee": "Leo", "createdAt": "2026-06-08T09:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-08T09:15:00Z", "updatedBy": "Leo" },
+              { "text": "Cableado y conexión a ESP32", "checked": false, "assignee": "Leo", "createdAt": "2026-06-08T09:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-08T09:30:00Z", "updatedBy": "Leo" }
             ],
             "tecnico": { "modelo": "NEMA 23 2.8A", "torque": "1.9 Nm", "driver": "DM542", "encoder": "1000 PPR" },
             "economico": { "presupuesto": 1800, "gastado": 600, "createdAt": "2026-06-08T09:45:00Z", "createdBy": "Leo" },
@@ -649,15 +707,16 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Design",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#e879f9" },
           "tabs": {
             "trabajo": [
-              { "text": "Diseño de mecanismo de corte", "checked": false, "createdAt": "2026-06-20T09:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-20T09:00:00Z", "updatedBy": "Leo" },
-              { "text": "Selección de tijera/cuchilla", "checked": false, "createdAt": "2026-06-20T09:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-20T09:15:00Z", "updatedBy": "Leo" },
-              { "text": "Pruebas de corte en albahaca", "checked": false, "createdAt": "2026-06-20T09:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-20T09:30:00Z", "updatedBy": "Leo" }
+              { "text": "Diseño de mecanismo de corte", "checked": false, "assignee": "Leo", "createdAt": "2026-06-20T09:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-20T09:00:00Z", "updatedBy": "Leo" },
+              { "text": "Selección de tijera/cuchilla", "checked": false, "assignee": "Leo", "createdAt": "2026-06-20T09:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-20T09:15:00Z", "updatedBy": "Leo" },
+              { "text": "Pruebas de corte en albahaca", "checked": false, "assignee": "Leo", "createdAt": "2026-06-20T09:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-20T09:30:00Z", "updatedBy": "Leo" }
             ],
             "tecnico": { "tipo": "tijera neumática", "accionamiento": "cilindro 10mm" },
             "economico": { "presupuesto": 650, "gastado": 0, "createdAt": "2026-06-20T09:45:00Z", "createdBy": "Leo" },
@@ -689,15 +748,16 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Dev",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "right", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#f0abfc" },
           "tabs": {
             "trabajo": [
-              { "text": "Captura de dataset de albahaca", "checked": false, "createdAt": "2026-06-15T09:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-15T09:00:00Z", "updatedBy": "Leo" },
-              { "text": "Entrenamiento de modelo YOLOv8", "checked": false, "createdAt": "2026-06-15T09:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-15T09:15:00Z", "updatedBy": "Leo" },
-              { "text": "Integración con control del brazo", "checked": false, "createdAt": "2026-06-15T09:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-15T09:30:00Z", "updatedBy": "Leo" }
+              { "text": "Captura de dataset de albahaca", "checked": false, "assignee": "Leo", "createdAt": "2026-06-15T09:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-15T09:00:00Z", "updatedBy": "Leo" },
+              { "text": "Entrenamiento de modelo YOLOv8", "checked": false, "assignee": "Leo", "createdAt": "2026-06-15T09:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-15T09:15:00Z", "updatedBy": "Leo" },
+              { "text": "Integración con control del brazo", "checked": false, "assignee": "Leo", "createdAt": "2026-06-15T09:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-15T09:30:00Z", "updatedBy": "Leo" }
             ],
             "tecnico": { "camara": "Intel RealSense D435", "modelo": "YOLOv8-nano", "inferencia": "<50ms" },
             "economico": { "presupuesto": 550, "gastado": 0, "createdAt": "2026-06-15T09:45:00Z", "createdBy": "Leo" },
@@ -720,7 +780,7 @@
           "parentId": "robotica-principal",
           "collapsed": false,
           "compactView": false,
-          "owner": "Ponce",
+          "owner": "Ponfe",
           "area": "Brazo Robótico y Automatización",
           "progress": 5,
           "status": "Sin Empezar",
@@ -731,17 +791,18 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Design",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#d8b4fe" },
           "tabs": {
             "trabajo": [
-              { "text": "Diseño de tolva de recepción", "checked": false, "createdAt": "2026-06-25T09:00:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-25T09:00:00Z", "updatedBy": "Ponce" },
-              { "text": "Mecanismo de sellado de bolsas", "checked": false, "createdAt": "2026-06-25T09:15:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-25T09:15:00Z", "updatedBy": "Ponce" }
+              { "text": "Diseño de tolva de recepción", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-25T09:00:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-25T09:00:00Z", "updatedBy": "Ponfe" },
+              { "text": "Mecanismo de sellado de bolsas", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-25T09:15:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-25T09:15:00Z", "updatedBy": "Ponfe" }
             ],
             "tecnico": { "capacidad": "50g por bolsa", "sellado": "térmico" },
-            "economico": { "presupuesto": 900, "gastado": 0, "createdAt": "2026-06-25T09:30:00Z", "createdBy": "Ponce" },
+            "economico": { "presupuesto": 900, "gastado": 0, "createdAt": "2026-06-25T09:30:00Z", "createdBy": "Ponfe" },
             "reqs": []
           },
           "comments": [],
@@ -772,6 +833,7 @@
       "layoutOrientation": "default",
       "cardType": "macro-bloque",
       "autoComplete": false,
+      "phase": "Dev",
       "zonesOrder": ["A", "B", "C", "D", "E"],
       "hiddenZones": [],
       "image": {
@@ -783,11 +845,11 @@
       "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#fbbf24" },
       "tabs": {
         "trabajo": [
-          { "text": "Diseño de espectro lumínico (450-660nm)", "checked": true, "createdAt": "2026-06-01T13:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T13:00:00Z", "updatedBy": "Leo" },
-          { "text": "Selección de barras Samsung LM301H", "checked": true, "createdAt": "2026-06-01T13:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T13:15:00Z", "updatedBy": "Leo" },
-          { "text": "Diseño de PCB y drivers", "checked": false, "createdAt": "2026-06-01T13:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T13:30:00Z", "updatedBy": "Leo" },
-          { "text": "Programación de ciclos de luz", "checked": false, "createdAt": "2026-06-01T13:45:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T13:45:00Z", "updatedBy": "Leo" },
-          { "text": "Montaje en cámaras de cultivo", "checked": false, "createdAt": "2026-06-01T14:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T14:00:00Z", "updatedBy": "Leo" }
+          { "text": "Diseño de espectro lumínico (450-660nm)", "checked": true, "assignee": "Leo", "createdAt": "2026-06-01T13:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T13:00:00Z", "updatedBy": "Leo" },
+          { "text": "Selección de barras Samsung LM301H", "checked": true, "assignee": "Leo", "createdAt": "2026-06-01T13:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T13:15:00Z", "updatedBy": "Leo" },
+          { "text": "Diseño de PCB y drivers", "checked": false, "assignee": "Leo", "createdAt": "2026-06-01T13:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T13:30:00Z", "updatedBy": "Leo" },
+          { "text": "Programación de ciclos de luz", "checked": false, "assignee": "Christian", "createdAt": "2026-06-01T13:45:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T13:45:00Z", "updatedBy": "Leo" },
+          { "text": "Montaje en cámaras de cultivo", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-01T14:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-01T14:00:00Z", "updatedBy": "Leo" }
         ],
         "tecnico": { "potencia_total": "400W", "espectro": "450nm + 660nm", "ppfd": "600 µmol/m²/s", "horario": "16h luz / 8h oscuridad" },
         "economico": { "presupuesto": 4500, "gastado": 2200, "createdAt": "2026-06-01T14:15:00Z", "createdBy": "Leo" },
@@ -822,15 +884,16 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Dev",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "right", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fde047" },
           "tabs": {
             "trabajo": [
-              { "text": "Diseño de layout de LEDs", "checked": true, "createdAt": "2026-06-05T09:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-05T09:00:00Z", "updatedBy": "Leo" },
-              { "text": "Pedido de barras", "checked": false, "createdAt": "2026-06-05T09:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-05T09:15:00Z", "updatedBy": "Leo" },
-              { "text": "Pruebas de PPFD", "checked": false, "createdAt": "2026-06-05T09:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-05T09:30:00Z", "updatedBy": "Leo" }
+              { "text": "Diseño de layout de LEDs", "checked": true, "assignee": "Leo", "createdAt": "2026-06-05T09:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-05T09:00:00Z", "updatedBy": "Leo" },
+              { "text": "Pedido de barras", "checked": false, "assignee": "Leo", "createdAt": "2026-06-05T09:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-05T09:15:00Z", "updatedBy": "Leo" },
+              { "text": "Pruebas de PPFD", "checked": false, "assignee": "Leo", "createdAt": "2026-06-05T09:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-05T09:30:00Z", "updatedBy": "Leo" }
             ],
             "tecnico": { "modelo": "Samsung LM301H", "longitud": "60cm", "cantidad": "8 barras" },
             "economico": { "presupuesto": 2800, "gastado": 1600, "createdAt": "2026-06-05T09:45:00Z", "createdBy": "Leo" },
@@ -862,15 +925,16 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Dev",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fbbf24" },
           "tabs": {
             "trabajo": [
-              { "text": "Selección de drivers", "checked": true, "createdAt": "2026-06-10T09:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-10T09:00:00Z", "updatedBy": "Leo" },
-              { "text": "Configuración de corriente", "checked": false, "createdAt": "2026-06-10T09:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-10T09:15:00Z", "updatedBy": "Leo" },
-              { "text": "Integración con ESP32 (PWM)", "checked": false, "createdAt": "2026-06-10T09:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-10T09:30:00Z", "updatedBy": "Leo" }
+              { "text": "Selección de drivers", "checked": true, "assignee": "Leo", "createdAt": "2026-06-10T09:00:00Z", "createdBy": "Leo", "updatedAt": "2026-06-10T09:00:00Z", "updatedBy": "Leo" },
+              { "text": "Configuración de corriente", "checked": false, "assignee": "Leo", "createdAt": "2026-06-10T09:15:00Z", "createdBy": "Leo", "updatedAt": "2026-06-10T09:15:00Z", "updatedBy": "Leo" },
+              { "text": "Integración con ESP32 (PWM)", "checked": false, "assignee": "Leo", "createdAt": "2026-06-10T09:30:00Z", "createdBy": "Leo", "updatedAt": "2026-06-10T09:30:00Z", "updatedBy": "Leo" }
             ],
             "tecnico": { "modelo": "HLG-480H-48A", "potencia": "480W", "dimmable": "0-10V" },
             "economico": { "presupuesto": 1200, "gastado": 400, "createdAt": "2026-06-10T09:45:00Z", "createdBy": "Leo" },
@@ -904,6 +968,7 @@
       "layoutOrientation": "default",
       "cardType": "macro-bloque",
       "autoComplete": false,
+      "phase": "Dev",
       "zonesOrder": ["A", "B", "C", "D", "E"],
       "hiddenZones": [],
       "image": {
@@ -915,11 +980,11 @@
       "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#10b981" },
       "tabs": {
         "trabajo": [
-          { "text": "Definición de parámetros de cultivo", "checked": true, "createdAt": "2026-06-01T15:00:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-01T15:00:00Z", "updatedBy": "Sofía" },
-          { "text": "Selección de nutrientes (precios y cantidades)", "checked": false, "createdAt": "2026-06-01T15:15:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-01T15:15:00Z", "updatedBy": "Sofía" },
-          { "text": "Protocolo de germinación", "checked": false, "createdAt": "2026-06-01T15:30:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-01T15:30:00Z", "updatedBy": "Sofía" },
-          { "text": "Pruebas de crecimiento", "checked": false, "createdAt": "2026-06-01T15:45:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-01T15:45:00Z", "updatedBy": "Sofía" },
-          { "text": "Optimización de ciclo de 21 días", "checked": false, "createdAt": "2026-06-01T16:00:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-01T16:00:00Z", "updatedBy": "Sofía" }
+          { "text": "Definición de parámetros de cultivo", "checked": true, "assignee": "Sofía", "createdAt": "2026-06-01T15:00:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-01T15:00:00Z", "updatedBy": "Sofía" },
+          { "text": "Selección de nutrientes (precios y cantidades)", "checked": false, "assignee": "Sofía", "createdAt": "2026-06-01T15:15:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-01T15:15:00Z", "updatedBy": "Sofía" },
+          { "text": "Protocolo de germinación", "checked": false, "assignee": "Sofía", "createdAt": "2026-06-01T15:30:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-01T15:30:00Z", "updatedBy": "Sofía" },
+          { "text": "Pruebas de crecimiento", "checked": false, "assignee": "Sofía", "createdAt": "2026-06-01T15:45:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-01T15:45:00Z", "updatedBy": "Sofía" },
+          { "text": "Optimización de ciclo de 21 días", "checked": false, "assignee": "Sofía", "createdAt": "2026-06-01T16:00:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-01T16:00:00Z", "updatedBy": "Sofía" }
         ],
         "tecnico": { "variedad": "Albahaca Genovesa", "densidad": "40 plantas/m²", "ciclo": "21 días", "temperatura": "22-26°C", "humedad": "60-70%" },
         "economico": { "presupuesto": 5500, "gastado": 1200, "createdAt": "2026-06-01T16:15:00Z", "createdBy": "Sofía" },
@@ -955,14 +1020,15 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Dev",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#34d399" },
           "tabs": {
             "trabajo": [
-              { "text": "Investigación de parámetros óptimos", "checked": true, "createdAt": "2026-06-02T09:00:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-02T09:00:00Z", "updatedBy": "Sofía" },
-              { "text": "Validación en pruebas piloto", "checked": false, "createdAt": "2026-06-02T09:15:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-02T09:15:00Z", "updatedBy": "Sofía" }
+              { "text": "Investigación de parámetros óptimos", "checked": true, "assignee": "Sofía", "createdAt": "2026-06-02T09:00:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-02T09:00:00Z", "updatedBy": "Sofía" },
+              { "text": "Validación en pruebas piloto", "checked": false, "assignee": "Sofía", "createdAt": "2026-06-02T09:15:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-02T09:15:00Z", "updatedBy": "Sofía" }
             ],
             "tecnico": { "temperatura": "22-26°C", "humedad": "60-70%", "ec": "1.6-2.0 mS/cm", "ph": "5.8-6.2" },
             "economico": { "presupuesto": 800, "gastado": 400, "createdAt": "2026-06-02T09:30:00Z", "createdBy": "Sofía" },
@@ -994,15 +1060,16 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Dev",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "right", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#6ee7b7" },
           "tabs": {
             "trabajo": [
-              { "text": "Comparativa de marcas (FloraSeries vs HydroBuddy)", "checked": false, "createdAt": "2026-06-10T09:00:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-10T09:00:00Z", "updatedBy": "Sofía" },
-              { "text": "Definición de cantidades mínimas", "checked": false, "createdAt": "2026-06-10T09:15:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-10T09:15:00Z", "updatedBy": "Sofía" },
-              { "text": "Protocolo de dosificación", "checked": false, "createdAt": "2026-06-10T09:30:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-10T09:30:00Z", "updatedBy": "Sofía" }
+              { "text": "Comparativa de marcas (FloraSeries vs HydroBuddy)", "checked": false, "assignee": "Sofía", "createdAt": "2026-06-10T09:00:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-10T09:00:00Z", "updatedBy": "Sofía" },
+              { "text": "Definición de cantidades mínimas", "checked": false, "assignee": "Sofía", "createdAt": "2026-06-10T09:15:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-10T09:15:00Z", "updatedBy": "Sofía" },
+              { "text": "Protocolo de dosificación", "checked": false, "assignee": "Sofía", "createdAt": "2026-06-10T09:30:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-10T09:30:00Z", "updatedBy": "Sofía" }
             ],
             "tecnico": { "tipo": "solución stock A + B", "cantidad_min": "5L por bidón", "duracion": "3 meses" },
             "economico": { "presupuesto": 1200, "gastado": 200, "createdAt": "2026-06-10T09:45:00Z", "createdBy": "Sofía" },
@@ -1038,14 +1105,15 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Design",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#a7f3d0" },
           "tabs": {
             "trabajo": [
-              { "text": "Diseño de cámara de germinación", "checked": false, "createdAt": "2026-06-15T09:00:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-15T09:00:00Z", "updatedBy": "Sofía" },
-              { "text": "Pruebas de tasa de germinación", "checked": false, "createdAt": "2026-06-15T09:15:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-15T09:15:00Z", "updatedBy": "Sofía" }
+              { "text": "Diseño de cámara de germinación", "checked": false, "assignee": "Sofía", "createdAt": "2026-06-15T09:00:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-15T09:00:00Z", "updatedBy": "Sofía" },
+              { "text": "Pruebas de tasa de germinación", "checked": false, "assignee": "Sofía", "createdAt": "2026-06-15T09:15:00Z", "createdBy": "Sofía", "updatedAt": "2026-06-15T09:15:00Z", "updatedBy": "Sofía" }
             ],
             "tecnico": { "sustrato": "lana de roca", "temperatura": "24°C", "humedad": "90%", "dias": "5-7 días" },
             "economico": { "presupuesto": 600, "gastado": 0, "createdAt": "2026-06-15T09:30:00Z", "createdBy": "Sofía" },
@@ -1079,6 +1147,7 @@
       "layoutOrientation": "default",
       "cardType": "macro-bloque",
       "autoComplete": false,
+      "phase": "Dev",
       "zonesOrder": ["A", "B", "C", "D", "E"],
       "hiddenZones": [],
       "image": {
@@ -1090,11 +1159,11 @@
       "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#ec4899" },
       "tabs": {
         "trabajo": [
-          { "text": "Diseño de arquitectura backend", "checked": true, "createdAt": "2026-06-01T17:00:00Z", "createdBy": "Christian", "updatedAt": "2026-06-01T17:00:00Z", "updatedBy": "Christian" },
-          { "text": "Implementación de servidor Node.js", "checked": false, "createdAt": "2026-06-01T17:15:00Z", "createdBy": "Christian", "updatedAt": "2026-06-01T17:15:00Z", "updatedBy": "Christian" },
-          { "text": "API REST para CRUD de plantas y sensores", "checked": false, "createdAt": "2026-06-01T17:30:00Z", "createdBy": "Christian", "updatedAt": "2026-06-01T17:30:00Z", "updatedBy": "Christian" },
-          { "text": "Frontend React con dashboard en tiempo real", "checked": false, "createdAt": "2026-06-01T17:45:00Z", "createdBy": "Christian", "updatedAt": "2026-06-01T17:45:00Z", "updatedBy": "Christian" },
-          { "text": "Broker MQTT (Mosquitto) para IoT", "checked": false, "createdAt": "2026-06-01T18:00:00Z", "createdBy": "Christian", "updatedAt": "2026-06-01T18:00:00Z", "updatedBy": "Christian" }
+          { "text": "Diseño de arquitectura backend", "checked": true, "assignee": "Christian", "createdAt": "2026-06-01T17:00:00Z", "createdBy": "Christian", "updatedAt": "2026-06-01T17:00:00Z", "updatedBy": "Christian" },
+          { "text": "Implementación de servidor Node.js", "checked": false, "assignee": "Christian", "createdAt": "2026-06-01T17:15:00Z", "createdBy": "Christian", "updatedAt": "2026-06-01T17:15:00Z", "updatedBy": "Christian" },
+          { "text": "API REST para CRUD de plantas y sensores", "checked": false, "assignee": "Christian", "createdAt": "2026-06-01T17:30:00Z", "createdBy": "Christian", "updatedAt": "2026-06-01T17:30:00Z", "updatedBy": "Christian" },
+          { "text": "Frontend React con dashboard en tiempo real", "checked": false, "assignee": "Christian", "createdAt": "2026-06-01T17:45:00Z", "createdBy": "Christian", "updatedAt": "2026-06-01T17:45:00Z", "updatedBy": "Christian" },
+          { "text": "Broker MQTT (Mosquitto) para IoT", "checked": false, "assignee": "Christian", "createdAt": "2026-06-01T18:00:00Z", "createdBy": "Christian", "updatedAt": "2026-06-01T18:00:00Z", "updatedBy": "Christian" }
         ],
         "tecnico": { "backend": "Node.js + Express", "frontend": "React 18 + TypeScript", "db": "PostgreSQL", "mqtt": "Mosquitto", "auth": "JWT" },
         "economico": { "presupuesto": 9500, "gastado": 2800, "createdAt": "2026-06-01T18:15:00Z", "createdBy": "Christian" },
@@ -1129,15 +1198,16 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Dev",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "right", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#f472b6" },
           "tabs": {
             "trabajo": [
-              { "text": "Configuración de servidor VPS", "checked": true, "createdAt": "2026-06-03T09:00:00Z", "createdBy": "Christian", "updatedAt": "2026-06-03T09:00:00Z", "updatedBy": "Christian" },
-              { "text": "Diseño de endpoints REST", "checked": false, "createdAt": "2026-06-03T09:15:00Z", "createdBy": "Christian", "updatedAt": "2026-06-03T09:15:00Z", "updatedBy": "Christian" },
-              { "text": "Implementación de CRUD", "checked": false, "createdAt": "2026-06-03T09:30:00Z", "createdBy": "Christian", "updatedAt": "2026-06-03T09:30:00Z", "updatedBy": "Christian" }
+              { "text": "Configuración de servidor VPS", "checked": true, "assignee": "Christian", "createdAt": "2026-06-03T09:00:00Z", "createdBy": "Christian", "updatedAt": "2026-06-03T09:00:00Z", "updatedBy": "Christian" },
+              { "text": "Diseño de endpoints REST", "checked": false, "assignee": "Christian", "createdAt": "2026-06-03T09:15:00Z", "createdBy": "Christian", "updatedAt": "2026-06-03T09:15:00Z", "updatedBy": "Christian" },
+              { "text": "Implementación de CRUD", "checked": false, "assignee": "Christian", "createdAt": "2026-06-03T09:30:00Z", "createdBy": "Christian", "updatedAt": "2026-06-03T09:30:00Z", "updatedBy": "Christian" }
             ],
             "tecnico": { "framework": "Express", "orm": "Sequelize", "hosting": "VPS Ubuntu" },
             "economico": { "presupuesto": 3200, "gastado": 1400, "createdAt": "2026-06-03T09:45:00Z", "createdBy": "Christian" },
@@ -1169,15 +1239,16 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Design",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "left", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#fb7185" },
           "tabs": {
             "trabajo": [
-              { "text": "Diseño de UI/UX", "checked": false, "createdAt": "2026-06-15T09:00:00Z", "createdBy": "Christian", "updatedAt": "2026-06-15T09:00:00Z", "updatedBy": "Christian" },
-              { "text": "Implementación de componentes", "checked": false, "createdAt": "2026-06-15T09:15:00Z", "createdBy": "Christian", "updatedAt": "2026-06-15T09:15:00Z", "updatedBy": "Christian" },
-              { "text": "Integración con API backend", "checked": false, "createdAt": "2026-06-15T09:30:00Z", "createdBy": "Christian", "updatedAt": "2026-06-15T09:30:00Z", "updatedBy": "Christian" }
+              { "text": "Diseño de UI/UX", "checked": false, "assignee": "Christian", "createdAt": "2026-06-15T09:00:00Z", "createdBy": "Christian", "updatedAt": "2026-06-15T09:00:00Z", "updatedBy": "Christian" },
+              { "text": "Implementación de componentes", "checked": false, "assignee": "Christian", "createdAt": "2026-06-15T09:15:00Z", "createdBy": "Christian", "updatedAt": "2026-06-15T09:15:00Z", "updatedBy": "Christian" },
+              { "text": "Integración con API backend", "checked": false, "assignee": "Christian", "createdAt": "2026-06-15T09:30:00Z", "createdBy": "Christian", "updatedAt": "2026-06-15T09:30:00Z", "updatedBy": "Christian" }
             ],
             "tecnico": { "framework": "React 18", "estado": "Redux Toolkit", "graficos": "Recharts" },
             "economico": { "presupuesto": 3800, "gastado": 800, "createdAt": "2026-06-15T09:45:00Z", "createdBy": "Christian" },
@@ -1209,15 +1280,16 @@
           "layoutOrientation": "default",
           "cardType": "componente",
           "autoComplete": false,
+          "phase": "Dev",
           "zonesOrder": ["A", "C", "D"],
           "hiddenZones": ["B", "E"],
           "image": { "src": "", "position": "right", "width": 50, "height": 50 },
           "style": { "bg": "#1e1b4b", "opacity": 0.9, "borderColor": "#f9a8d4" },
           "tabs": {
             "trabajo": [
-              { "text": "Instalación de Mosquitto", "checked": true, "createdAt": "2026-06-05T09:00:00Z", "createdBy": "Christian", "updatedAt": "2026-06-05T09:00:00Z", "updatedBy": "Christian" },
-              { "text": "Definición de tópicos", "checked": false, "createdAt": "2026-06-05T09:15:00Z", "createdBy": "Christian", "updatedAt": "2026-06-05T09:15:00Z", "updatedBy": "Christian" },
-              { "text": "Pruebas de latencia", "checked": false, "createdAt": "2026-06-05T09:30:00Z", "createdBy": "Christian", "updatedAt": "2026-06-05T09:30:00Z", "updatedBy": "Christian" }
+              { "text": "Instalación de Mosquitto", "checked": true, "assignee": "Christian", "createdAt": "2026-06-05T09:00:00Z", "createdBy": "Christian", "updatedAt": "2026-06-05T09:00:00Z", "updatedBy": "Christian" },
+              { "text": "Definición de tópicos", "checked": false, "assignee": "Christian", "createdAt": "2026-06-05T09:15:00Z", "createdBy": "Christian", "updatedAt": "2026-06-05T09:15:00Z", "updatedBy": "Christian" },
+              { "text": "Pruebas de latencia", "checked": false, "assignee": "Christian", "createdAt": "2026-06-05T09:30:00Z", "createdBy": "Christian", "updatedAt": "2026-06-05T09:30:00Z", "updatedBy": "Christian" }
             ],
             "tecnico": { "broker": "Mosquitto", "protocolo": "MQTT 5.0", "qos": "1" },
             "economico": { "presupuesto": 450, "gastado": 200, "createdAt": "2026-06-05T09:45:00Z", "createdBy": "Christian" },
@@ -1240,7 +1312,7 @@
       "parentId": "main",
       "collapsed": false,
       "compactView": false,
-      "owner": "Ponce",
+      "owner": "Ponfe",
       "area": "Estructura y Máquina Vending",
       "progress": 8,
       "status": "Sin Empezar",
@@ -1251,66 +1323,24 @@
       "layoutOrientation": "default",
       "cardType": "macro-bloque",
       "autoComplete": false,
+      "phase": "Design",
       "zonesOrder": ["A", "C", "D", "E"],
       "hiddenZones": ["B"],
       "image": { "src": "", "position": "right", "width": 100, "height": "auto" },
       "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#6b7280" },
       "tabs": {
         "trabajo": [
-          { "text": "Diseño del chasis modular", "checked": false, "createdAt": "2026-06-10T09:00:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-10T09:00:00Z", "updatedBy": "Ponce" },
-          { "text": "Sección de vending y salida", "checked": false, "createdAt": "2026-06-10T09:15:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-10T09:15:00Z", "updatedBy": "Ponce" },
-          { "text": "Interfaz táctil de usuario", "checked": false, "createdAt": "2026-06-10T09:30:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-10T09:30:00Z", "updatedBy": "Ponce" },
-          { "text": "Sistema de pago (monedas/billetes/TPV)", "checked": false, "createdAt": "2026-06-10T09:45:00Z", "createdBy": "Ponce", "updatedAt": "2026-06-10T09:45:00Z", "updatedBy": "Ponce" }
+          { "text": "Diseño del chasis modular", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-10T09:00:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-10T09:00:00Z", "updatedBy": "Ponfe" },
+          { "text": "Sección de vending y salida", "checked": false, "assignee": "Ponfe", "createdAt": "2026-06-10T09:15:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-10T09:15:00Z", "updatedBy": "Ponfe" },
+          { "text": "Interfaz táctil de usuario", "checked": false, "assignee": "Christian", "createdAt": "2026-06-10T09:30:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-10T09:30:00Z", "updatedBy": "Ponfe" },
+          { "text": "Sistema de pago (monedas/billetes/TPV)", "checked": false, "assignee": "Marco", "createdAt": "2026-06-10T09:45:00Z", "createdBy": "Ponfe", "updatedAt": "2026-06-10T09:45:00Z", "updatedBy": "Ponfe" }
         ],
         "tecnico": { "material": "aluminio 6063 + acero inox", "altura": "2.4m", "ancho": "1.5m", "profundidad": "0.8m" },
-        "economico": { "presupuesto": 12500, "gastado": 500, "createdAt": "2026-06-10T10:00:00Z", "createdBy": "Ponce" },
+        "economico": { "presupuesto": 12500, "gastado": 500, "createdAt": "2026-06-10T10:00:00Z", "createdBy": "Ponfe" },
         "reqs": []
       },
       "comments": [
-        { "id": 1, "author": "Ponce", "text": "Diseño preliminar del chasis en CAD. Pendiente definir la sección de vending.", "timestamp": "2026-06-12T10:00:00Z", "pinned": false }
-      ],
-      "ideaNotes": [],
-      "childCards": []
-    },
-    {
-      "id": "comercial-marco",
-      "title": "Comercial y Marketing",
-      "description": "Tareas de marketing, ventas, estudios de mercado y relaciones públicas. Coordinado por Marco.",
-      "width": 360,
-      "height": 260,
-      "x": 1500,
-      "y": 500,
-      "parentId": "main",
-      "collapsed": false,
-      "compactView": false,
-      "owner": "Marco",
-      "area": "Comercial",
-      "progress": 5,
-      "status": "Sin Empezar",
-      "startDate": "2026-06-03",
-      "dueDate": "2026-07-03",
-      "resumenView": "progress",
-      "layoutMode": "grid",
-      "layoutOrientation": "default",
-      "cardType": "macro-bloque",
-      "autoComplete": false,
-      "zonesOrder": ["A", "C", "D", "E"],
-      "hiddenZones": ["B"],
-      "image": { "src": "", "position": "right", "width": 100, "height": "auto" },
-      "style": { "bg": "#111827", "opacity": 1.0, "borderColor": "#8b5cf6" },
-      "tabs": {
-        "trabajo": [
-          { "text": "Análisis de competencia", "checked": false, "createdAt": "2026-06-03T10:00:00Z", "createdBy": "Marco", "updatedAt": "2026-06-03T10:00:00Z", "updatedBy": "Marco" },
-          { "text": "Desarrollo de estrategia de precios", "checked": false, "createdAt": "2026-06-03T10:15:00Z", "createdBy": "Marco", "updatedAt": "2026-06-03T10:15:00Z", "updatedBy": "Marco" },
-          { "text": "Contacto con potenciales clientes", "checked": false, "createdAt": "2026-06-03T10:30:00Z", "createdBy": "Marco", "updatedAt": "2026-06-03T10:30:00Z", "updatedBy": "Marco" },
-          { "text": "Diseño de campaña de marketing", "checked": false, "createdAt": "2026-06-03T10:45:00Z", "createdBy": "Marco", "updatedAt": "2026-06-03T10:45:00Z", "updatedBy": "Marco" }
-        ],
-        "tecnico": { "canal_venta": "B2B + Vending", "estrategia": "Suscripción + venta unitaria" },
-        "economico": { "presupuesto": 3000, "gastado": 0, "createdAt": "2026-06-03T11:00:00Z", "createdBy": "Marco" },
-        "reqs": []
-      },
-      "comments": [
-        { "id": 1, "author": "Marco", "text": "Comenzando análisis de mercado. Primer contacto con 3 restaurantes locales.", "timestamp": "2026-06-03T11:00:00Z", "pinned": false }
+        { "id": 1, "author": "Ponfe", "text": "Diseño preliminar del chasis en CAD. Pendiente definir la sección de vending.", "timestamp": "2026-06-12T10:00:00Z", "pinned": false }
       ],
       "ideaNotes": [],
       "childCards": []
@@ -1327,11 +1357,11 @@
     { "from": "estructura-principal", "to": "riego-principal" }
   ],
   "users": [
-    { "name": "Leo", "role": "admin", "joinedAt": "2026-06-01T09:00:00Z" },
-    { "name": "Ponce", "role": "write", "joinedAt": "2026-06-01T09:00:00Z" },
-    { "name": "Christian", "role": "write", "joinedAt": "2026-06-01T09:00:00Z" },
-    { "name": "Sofía", "role": "write", "joinedAt": "2026-06-01T09:00:00Z" },
-    { "name": "Marco", "role": "write", "joinedAt": "2026-06-03T10:00:00Z" }
+    { "name": "Leo", "role": "admin", "reportsTo": null, "joinedAt": "2026-06-01T09:00:00Z" },
+    { "name": "Ponfe", "role": "write", "reportsTo": "Leo", "joinedAt": "2026-06-01T09:00:00Z" },
+    { "name": "Christian", "role": "write", "reportsTo": "Leo", "joinedAt": "2026-06-01T09:00:00Z" },
+    { "name": "Sofía", "role": "write", "reportsTo": "Leo", "joinedAt": "2026-06-01T09:00:00Z" },
+    { "name": "Marco", "role": "write", "reportsTo": "Leo", "joinedAt": "2026-06-03T10:00:00Z" }
   ],
   "notificationRules": [
     { "id": 1, "trigger": "status == 'Bloqueado'", "action": "badge" },
