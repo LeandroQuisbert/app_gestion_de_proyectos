@@ -1,4 +1,4 @@
-# DEFINITIVE PROMPT – VizPM v2.1 (Visual Project Manager OS)
+# DEFINITIVE PROMPT – VizPM v2.11 (Visual Project Manager OS)
 
 ## 📑 INDEX
 1. **System Rules & Constraints** (CRITICAL)
@@ -23,6 +23,8 @@
 - **MODULAR CODE STRUCTURE**: Organize the JS into clear, distinct blocks: `// --- 1. STATE & STORE ---`, `// --- 2. DATA LOADING & INIT ---`, `// --- 3. RENDER ENGINE ---`, `// --- 4. EVENT LISTENERS & INTERACTIONS ---`, `// --- 5. UTILITIES ---`.
 - **CSS EFFICIENCY**: Rely heavily on **Tailwind CSS and DaisyUI** utility classes via CDN to minimize custom CSS. Enforce `data-theme="dark"` on the `<html>` tag. Use **FontAwesome** (or similar CDN) for all interface icons.
 - **PERFORMANCE**: Use `requestAnimationFrame` for drag/marquee. Use CSS `transform` for panning/zooming to avoid layout thrashing. `ResizeObserver` must **ONLY** update SVG connection paths, **never** re-render the card's internal DOM.
+- **DYNAMIC RENDERING**: When building the card UI, use a dynamic JavaScript loop that iterates through the card's `zonesOrder` array. Only render the zone if it is NOT in the `hiddenZones` array. Do not hardcode the HTML structure of the card with massive if/else chains.
+- **NO STANDALONE EXPORT/IMPORT**: Saving always downloads a `.json` file, and opening loads a `.json` file. Do not create separate "Export/Import" buttons.
 
 ## 2. GLOBAL ARCHITECTURE (APP SHELL)
 - **Top Header**: "VizPM" logo (left), File Menu (New, Open, Save, Save Draft, Load Version), Global View Toggles (Canvas, Gantt, Kanban, Graph), clear Simple/Advanced toggle switch, User Avatar (simulated as "Leo", admin).
@@ -36,16 +38,14 @@
 
 ## 4. CARD ANATOMY & HIERARCHY (THE CORE)
 Strict 3-level hierarchy: Macro-block → Component → Sub-component. Highly configurable via the Advanced Side Panel.
-- **Collapsed Mode**: Shows **ONLY Zone A**. Everything else is hidden.
+- **Collapsed Mode**: By default, hides Zones B, D, E, and F, showing only Zone A. However, it MUST respect custom user configurations (e.g., keeping Zone C's mini pending blocks visible) as defined in the side panel.
 - **Compact Mode (`compactView: true`)**: Fixed 4:3 ratio. Full-cover background image with dark gradient overlay. Shows: truncated title (max 30 chars), mini avatars, mini progress bar, and "Quick view" toggle.
-- **Detailed Mode Zones** (Default top-to-bottom, order/visibility configurable):
-  - **Zone A (Unified Header + Progress)**: Always visible if not collapsed. 
-    - *A1*: Dark bg, left accent border (`borderColor`), title (max 50 chars, ellipsis), collapse/expand chevron, "Quick view" eye icon. **STRICTLY PROHIBITED: No icons, WBS codes, or percentages here.**
-    - *A2*: Thin full-width progress bar reflecting `% progress`.
-  - **Zone B (Main Media)**: Primary image (`image.src`). Configurable as top banner or left/right column.
-  - **Zone C (Metadata)**: Owner avatars (Google-style circles with initials, max 3 + "+N"), Area tag (pill), % text, Gear icon (opens side panel), IDEA bulb icon. *If collapsed and `showMiniPendingBlocks` is true*: shows small pills with WBS codes of children with progress < 100% + alert indicators. *Advanced toggle*: "Compact Metadata" shrinks this to a single minimal line.
+- **Detailed Mode Zones** (Rendered dynamically based on `zonesOrder` array, skipping any zone in `hiddenZones`):
+  - **Zone A (Unified Header)**: Dark bg, left accent border (`borderColor`), title (max 50 chars, ellipsis), collapse/expand chevron, "Quick view" eye icon. **STRICTLY PROHIBITED: No icons, WBS codes, or percentages here.**
+  - **Zone B (Main Media)**: Primary image (`image.src`). Configurable as top banner, OR left/right column. If left/right, the image takes fixed dimensions and the remaining rows (C, D, E) flow neatly beside it using CSS Flexbox.
+  - **Zone C (Metadata)**: Auto-calculated WBS code pill (e.g., "1.2.1"), Area tag (pill), % text, Gear icon (opens side panel), IDEA bulb icon. **Owner avatars**: Google-style circles with initials (max 3 + "+N"). **CRITICAL**: If `owner` is empty or "Sin asignar", display a gray placeholder avatar with "?" and the text "Sin asignar" to prevent app crashes. *Advanced toggle*: "Compact Metadata" shrinks this row to a single minimal line.
   - **Zone D (Tabs)**: "Work" (checklist + "Auto-complete" toggle that sets status to "Completed"), "Technical", "Economic", "Reqs", "Comments" (public thread with avatar, timestamp, text).
-  - **Zone E (Child Dropzone)**: Container for child cards. Shows guide text if empty. Hidden if collapsed.
+  - **Zone E (Child Dropzone)**: Container for child cards. Shows guide text if empty.
   - **Zone F (Optional Child Gallery)**: Advanced toggle to show a grid (`grid-cols-2` or `3`) of child cards' main images.
 - **Layout Config**: Per-card `zonesOrder` (e.g., `["A", "C", "E", "D"]`), `hiddenZones` (e.g., `["B"]`), and `layoutOrientation` (force children in Zone E to `"vertical"` or `"horizontal"`).
 - **Internal Layout Modes (`layoutMode`)**: `"libre"` (absolute x/y), `"fila"` (horizontal flex), `"columna"` (vertical flex), `"grid"` (auto CSS grid).
@@ -62,6 +62,7 @@ Strict 3-level hierarchy: Macro-block → Component → Sub-component. Highly co
 - **Kanban**: Columns (Not Started, In Progress, Blocked, Completed). Compact cards. Dragging between columns changes `status` globally.
 - **Graph**: Force-directed/hierarchical layout of all cards and connections. Expandable nodes showing title + progress.
 - **Presentation Mode**: Smooth camera transitions cycling through root/selected cards (configurable duration, arrow keys to advance, Escape to exit).
+- **Camera Bookmarks**: Ability to save named camera positions (X, Y, Scale) in Canvas/Graph views, accessible from a dropdown. Essential for smooth Presentation Mode.
 
 ## 7. EXECUTIVE DASHBOARD
 - Top panel inside the Project Window, **fully collapsible** via toggle to save vertical space.
@@ -76,13 +77,14 @@ Strict 3-level hierarchy: Macro-block → Component → Sub-component. Highly co
 - **Optimized Drag**: GPU-accelerated "ghost" proxy during drag. Real DOM updates only on `drop`.
 - **Marquee Selection**: Semi-transparent blue rectangle. Uses `requestAnimationFrame` and viewport culling to evaluate only visible cards.
 - **Smart Drop Zones**: Dragging over a card highlights 3 zones: Top edge (insert as previous sibling), Center (insert as child), Bottom edge (insert as next sibling).
-- **Shortcuts**: Ctrl+Z/Y (Undo/Redo, 50 steps), Ctrl+C/V (Duplicate with new ID and offset), Delete (with confirmation dialog for cards with children).
+- **Shortcuts**: Ctrl+Z/Y (Undo/Redo, 50 steps), Ctrl+C/V (Duplicate with new ID and offset), Delete (with confirmation dialog: "Promote children to parent level" OR "Delete children entirely").
 
 ## 10. PERSISTENCE & VERSIONING
 - **localStorage keys**: `vizpm_projects`, `vizpm_open_windows`, `vizpm_global_settings`, `vizpm_activity_log`, `projectVersions`, `undoStack`, `redoStack`, `userNotes`.
 - **Auto-save**: Every 5 minutes + 2s debounce after significant actions (drop, resize end, status change).
 - **Versions**: "Save as draft" creates a named snapshot in `projectVersions`. "Load version" restores with confirmation. Auto-save does not overwrite named versions.
 - **Persistent IDEA Notes**: Saved inside the card's JSON (`ideaNotes: [{text, timestamp}]`), ensuring they export/import with the project (unlike temporary session notes).
+- **Activity Feed UI**: A toggle button in the top header (clock/history icon) opens a collapsible right side panel showing the last 50 entries from `vizpm_activity_log`. Clicking an entry automatically switches to the appropriate view, pans the camera to the relevant card, and highlights it.
 
 ## 11. COLLABORATION PREP
 - Data model includes `users: [{name, role: "admin"|"write"|"read"}]` and optional `permissions` per card.
@@ -100,7 +102,18 @@ Generate **ONE single, fully functional `index.html` file** without placeholders
 - It must contain all HTML, Tailwind/DaisyUI CDN links, FontAwesome CDN, and Vanilla ES6+ JS implementing **every point above**.
 - **Initial State Loading**: On load, the JS **must fetch `data.json`** from the same directory using `fetch('data.json')`. 
 - **Error Handling**: If `data.json` fails to load, display a friendly UI error message and provide a button to "Create New Empty Project".
-- **Data Expectation**: The code must perfectly parse the "AeroVend 1.0 v2.1" schema (June 1, 2026 start, July 3, 2026 Uniovi Emprende deadline, 7 macro-blocks, 3-level hierarchy, `zonesOrder`, `hiddenZones`, `layoutOrientation`, `ideaNotes`, realistic team data).
+- **Data Expectation**: The code must perfectly parse the "AeroVend 1.0 v2.11" schema (June 1, 2026 start, July 3, 2026 Uniovi Emprende deadline, 7 macro-blocks, 3-level hierarchy, `zonesOrder`, `hiddenZones`, `layoutOrientation`, `ideaNotes`, realistic team data).
 
 ---
 **OUTPUT FORMAT**: Provide ONLY the complete `index.html` code block. Do not add conversational text before or after the code block. Start directly with `<!DOCTYPE html>`.
+
+---
+
+### 🚀 Resumen de Cambios y Mejoras (v2.11)
+
+- **✅ Corrección de Lógica:** El "Modo Colapsado" ahora es configurable y respetuoso con las preferencias del usuario.
+- **✅ Prevención de Errores:** Manejo explícito de `owner` vacío para evitar que la app se rompa.
+- **✅ Código Más Limpio:** Instrucción de "Renderizado Dinámico" para que la IA escriba código escalable y sin `if/else` innecesarios.
+- **✅ Funcionalidades Recuperadas:** Camera Bookmarks, Activity Feed clicable, y confirmación de borrado con opciones.
+- **✅ Eliminación de Verificación de JSON:** Se removió la regla problemática que causaba errores de carga.
+- **✅ Simplificación:** Se eliminaron referencias a logs innecesarios, manteniendo solo lo esencial.
