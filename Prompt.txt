@@ -1,9 +1,9 @@
-# PROMPT – VizPM v2.13 (Visual Project Manager OS)
+# PROMPT – VizPM v2.14 (Visual Project Manager OS)
 
 ## 1. 📑 INDICE PRINCIPAL
 1. [System Rules & Constraints](#1-system-rules--constraints-critical)
 2. [Global Architecture (App Shell)](#2-global-architecture-app-shell)
-3. [Project Window & Canvas (`main`)](#3-project-window--canvas-main)
+3. [Infinite Canvas (`main`)](#3-infinite-canvas-main)
 4. [Card Anatomy & Hierarchy](#4-card-anatomy--hierarchy-the-core)
 5. [Smart Side Panel](#5-smart-side-panel-triangle-toggle)
 6. [Reactive Views](#6-reactive-views-single-source-of-truth)
@@ -16,6 +16,7 @@
 13. [Visual Modes & Styling](#13-visual-modes--styling)
 14. [Deliverables & Execution](#14-deliverables--execution)
 
+---
 
 ### 1. System Rules & Constraints (CRITICAL)
 1.1. **NO PLACEHOLDERS**: DO NOT use comments like `// ... implement logic here`, `/* TODO */`, or `// rest of the code`. Write the **complete, working Vanilla JS code** for every feature, especially drag-and-drop, state management, and SVG rendering.
@@ -32,19 +33,45 @@
 
 1.7. **NO STANDALONE EXPORT/IMPORT**: Saving always downloads a `.json` file, and opening loads a `.json` file. Do not create separate "Export/Import" buttons.
 
+---
+
 ### 2. Global Architecture (App Shell)
 2.1. **Top Header**: "VizPM" logo (left), File Menu (New, Open, Save, Save Draft, Load Version), Global View Toggles (Canvas, Gantt, Kanban, Organigrama, KPIs), clear Simple/Advanced toggle switch, User Avatar (simulated as "Leo", admin).
 
-2.2. **Bottom Taskbar**: Icons for open project windows. Allows switching, minimizing, or closing them.
+2.2. **Global Persistence**: `localStorage` saves global settings, open projects, and activity logs.
 
-2.3. **Global Persistence**: `localStorage` saves global settings, open windows, and activity logs.
+2.3. **Empty Initial State**: On first load, the app shows an empty canvas with a welcome message and buttons to "Create New Project" or "Open Existing Project". No automatic data loading.
 
-### 3. Project Window & Canvas (`main`)
-3.1. **Project Window Initialization**: Each project opens as a floating, resizable OS-like window. **Upon creation, the window MUST be maximized by default**, occupying the entire available space within the App Shell.
+---
 
-3.2. **OS Behavior**: Movable (drag title bar), resizable (corners), minimizable to taskbar, maximizable (toggle to/from maximized state), closable (with save dialog). The window's state (position X,Y, size Width,Height, maximized status) must be saved in the project's JSON state under a new field `windowState: { x, y, width, height, maximized }`.
+### 3. Infinite Canvas (`main`)
+3.1. **Canvas as Root**: The infinite canvas is technically the root card (`id: "main"`, `parentId: null`). It holds all project properties (title, desc, tabs, owner, progress, dates) and contains macro-blocks as direct children. Initial size: 8000x5000px (configurable).
 
-3.3. **Canvas as Root**: The infinite canvas is technically the root card (`id: "main"`, `parentId: null`). It holds all project properties (title, desc, tabs, owner, progress, dates) and contains macro-blocks as direct children. Initial size: 8000x5000px (configurable).
+3.2. **Excalidraw-Style Navigation**:
+- **Scroll Wheel on empty background**: Vertical pan (up/down).
+- **Ctrl + Scroll Wheel**: Zoom in/out centered on cursor.
+- **Shift + Scroll Wheel on empty background**: Horizontal pan (left/right).
+- **Spacebar + Left Click + Drag**: Pan the canvas (universal design tool standard like Figma/Miro).
+- **Click on a card + Drag**: Move the card (not the canvas).
+
+3.3. **Zoom Reset Shortcuts**:
+- **Ctrl + 1**: Reset zoom to 100% (standard view, configurable in settings).
+- **Ctrl + 2**: Fit all blocks in view (only applicable in Canvas view).
+- **Ctrl + 3**: Fit all blocks in view with all cards collapsed.
+
+3.4. **Universal Keyboard Shortcuts** (must be implemented globally):
+- **Ctrl + C** (Cmd + C on Mac): Copy selected task, text, or element.
+- **Ctrl + X** (Cmd + X on Mac): Cut the element.
+- **Ctrl + V** (Cmd + V on Mac): Paste the element or create a copy of the task in the current column/canvas.
+- **Ctrl + Z** (Cmd + Z on Mac): Undo the last action (e.g., if you moved a task by mistake).
+- **Ctrl + Y** or **Ctrl + Shift + Z**: Redo the undone action.
+- **Ctrl + A**: Select all (text in an input or all tasks in a list).
+- **Supr / Backspace**: Delete the selected task or element.
+- **Esc**: Cancel editing, close modals, dropdown menus, or deselect.
+
+3.5. **Canvas Special Behavior**: The `main` card is special: it cannot be "selected" like other cards. It only serves as the infinite canvas container for navigation. All interactions with the background (pan, zoom) affect the canvas, not the card itself.
+
+---
 
 ### 4. Card Anatomy & Hierarchy (The Core)
 4.1. **Hierarchy**: Strict 3-level hierarchy: Macro-block → Component → Sub-component. Highly configurable via the Advanced Side Panel.
@@ -73,12 +100,16 @@
 
 4.7. **Adaptive Scroll**: If resized, **Zone A remains sticky** (`top: 0`). Zones C-F get `overflow-y: auto` with a hidden scrollbar (CSS class `.no-scrollbar`).
 
+---
+
 ### 5. Smart Side Panel (Triangle Toggle)
 5.1. **Visibility**: A triangle button (▶/◀) is **always visible** on the right edge of the project window.
 
 5.2. **Behavior**: **Auto-expands** when any card is clicked, showing deep-edit properties for that specific card.
 
 5.3. **Contents**: Title/desc inputs, all Tabs, and an **"Advanced Card Config"** section: Zone reordering/hiding, Compact Metadata toggle, Child Orientation toggle, Child Gallery toggle, Notification rules, Permissions, Change history, Detailed connections.
+
+---
 
 ### 6. Reactive Views (Single Source of Truth)
 6.1. **Canvas (SCADA)**: Infinite pan/zoom, GPU transforms, background grid, animated SVG Bézier connections, minimap, owner filter (dims non-matching cards).
@@ -92,6 +123,8 @@
 6.5. **Camera Bookmarks**: Ability to save named camera positions (X, Y, Scale) in Canvas view, accessible from a dropdown. Essential for smooth Presentation Mode.
 
 6.6. **Global Filters**: A filter panel in the header allows applying filters (by `owner`, `area`, `status`, `phase`) to ALL views (Canvas, Gantt, Kanban, Organigrama, KPIs). Filters are persistent across view switches.
+
+---
 
 ### 7. KPIs View
 7.1. **Location**: Dedicated view accessible via the "KPIs" toggle in the Global View Toggles.
@@ -108,6 +141,8 @@
 
 7.4. **Data Source**: Aggregates data from ALL cards in the project, including commercial/management tasks (not just technical blocks).
 
+---
+
 ### 8. Organigrama View
 8.1. **Location**: Dedicated view accessible via the "Organigrama" toggle in the Global View Toggles.
 
@@ -120,7 +155,7 @@
 - % of tasks completed.
 - Expandable section showing all tasks assigned to that user (from any card in the project).
 
-8.4. **Permissions (v2.13 Basic)**:
+8.4. **Permissions (v2.14 Basic)**:
 - **Default behavior**: Users higher in the hierarchy can see all tasks of their subordinates. Subordinates only see their own tasks.
 - **Future enhancement note**: *"In future versions, admins will be able to configure custom permissions per card/area, overriding the default hierarchy."*
 
@@ -130,12 +165,16 @@
 - Change user roles (admin/write/read).
 - View all tasks across the entire project.
 
+---
+
 ### 9. Data Intelligence (Rollup & Alerts)
 9.1. **Hierarchical Rollup**: Parent `presupuesto`/`gastado` = sum of all descendants. Parent `progress` = weighted average of direct children. Aggregated values show a "∑" icon and italic style. Manual edit of a parent value breaks aggregation (shows warning).
 
 9.2. **Cascading Alerts**: Monitors subtrees for `status: 'Blocked'` or `reqs` with `status: 'pending'`. Incidents bubble up to the root, showing a red blinking badge (CSS `pulse-border`) in Zone C (or overlay in compact mode), even if fully collapsed.
 
 9.3. **Smart Notifications**: `notificationRules` engine in JSON (e.g., `trigger: "dueDate < 48h"`, `action: "badge + webhook"`).
+
+---
 
 ### 10. Interactions & Performance
 10.1. **Optimized Drag**: GPU-accelerated "ghost" proxy during drag. Real DOM updates only on `drop`.
@@ -144,10 +183,10 @@
 
 10.3. **Smart Drop Zones**: Dragging over a card highlights 3 zones: Top edge (insert as previous sibling), Center (insert as child), Bottom edge (insert as next sibling).
 
-10.4. **Shortcuts**: Ctrl+Z/Y (Undo/Redo, 50 steps), Ctrl+C/V (Duplicate with new ID and offset), Delete (with confirmation dialog: "Promote children to parent level" OR "Delete children entirely").
+---
 
 ### 11. Persistence & Versioning
-11.1. **localStorage keys**: `vizpm_projects`, `vizpm_open_windows`, `vizpm_global_settings`, `vizpm_activity_log`, `projectVersions`, `undoStack`, `redoStack`, `userNotes`.
+11.1. **localStorage keys**: `vizpm_projects`, `vizpm_global_settings`, `vizpm_activity_log`, `projectVersions`, `undoStack`, `redoStack`, `userNotes`.
 
 11.2. **Auto-save**: Every 5 minutes + 2s debounce after significant actions (drop, resize end, status change).
 
@@ -157,12 +196,12 @@
 
 11.5. **Activity Feed UI**: A toggle button in the top header (clock/history icon) opens a collapsible right side panel showing the last 50 entries from `vizpm_activity_log`. Clicking an entry automatically switches to the appropriate view, pans the camera to the relevant card, and highlights it.
 
-11.6. **Window State Persistence**: The state of each project window (position X,Y, size Width,Height, maximized status) must be saved in the project's JSON under the `windowState` object for persistence across saves and loads.
+---
 
 ### 12. Collaboration & User Management
 12.1. **Data Model**: Includes `users: [{name, role: "admin"|"write"|"read", reportsTo: string|null, joinedAt: timestamp}]` and optional `permissions` per card.
 
-12.2. **Hierarchical Permissions (v2.13 Basic)**:
+12.2. **Hierarchical Permissions (v2.14 Basic)**:
 - Users with `role: "admin"` can see and manage all users and tasks.
 - Users with `role: "write"` or `"read"` can see tasks of users who `reportsTo` them (directly or indirectly).
 - Each user can always see their own tasks.
@@ -170,6 +209,8 @@
 12.3. **State Mutations**: Are structured as operations: `{ userId, timestamp, targetId, field, value }` (ready for future Yjs/CRDT integration and offline-first queueing).
 
 12.4. **Task Assignment**: Each task in `tabs.trabajo` must have an `assignee` field (username) to enable Organigrama view and workload tracking.
+
+---
 
 ### 13. Visual Modes & Styling
 13.1. **Simple / Advanced**: Global toggle. "Simple" hides WBS codes, rollup math, Organigrama view, and technical tabs. "Advanced" shows everything.
@@ -182,19 +223,21 @@
 
 13.5. **Animations**: Smooth slide-in/slide-out for side panels, KPIs view, Organigrama view, activity feed, and modals.
 
+---
+
 ### 14. Deliverables & Execution
 14.1. **Output**: Generate **ONE single, fully functional `index.html` file** without placeholders.
 
 14.2. **Content**: It must contain all HTML, Tailwind/DaisyUI CDN links, FontAwesome CDN, and Vanilla ES6+ JS implementing **every point above**.
 
-14.3. **Initial State Loading**: On load, the JS **must fetch `data.json`** from the same directory using `fetch('data.json')`.
+14.3. **Initial State**: On load, the app shows an empty canvas with a welcome screen containing two buttons: "Create New Project" and "Open Existing Project". **NO automatic data loading**.
 
-14.4. **Error Handling**: If `data.json` fails to load, display a friendly UI error message and provide a button to "Create New Empty Project".
+14.4. **File Loading**: The "Open" button in the File Menu must open a file picker (`<input type="file" accept=".json">`). When a file is selected, parse the JSON and inject it into the state.
 
-14.5. **Data Expectation**: The code must perfectly parse the "AeroVend 1.0 v2.13" schema (June 1, 2026 start, July 3, 2026 Uniovi Emprende deadline, macro-blocks including `gestion-proyecto` with `comercial-marco` as child, 3-level hierarchy, `zonesOrder`, `hiddenZones`, `layoutOrientation`, `ideaNotes`, realistic team data with `assignee` in tasks, `phase` in cards, `windowState`, hierarchical user structure with `reportsTo`).
+14.5. **Data Expectation**: The code must perfectly parse the "AeroVend 1.0 v2.14" schema (June 1, 2026 start, July 3, 2026 Uniovi Emprende deadline, macro-blocks including `gestion-proyecto` with `comercial-marco` as child, 3-level hierarchy, `zonesOrder`, `hiddenZones`, `layoutOrientation`, `ideaNotes`, realistic team data with `assignee` in tasks, `phase` in cards, hierarchical user structure with `reportsTo`).
 
 ---
+
 **OUTPUT FORMAT**: Provide ONLY the complete `index.html` code block. Do not add conversational text before or after the code block. Start directly with `<!DOCTYPE html>`.
 
 ---
-
